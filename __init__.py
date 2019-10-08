@@ -7,7 +7,7 @@ def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'password':
-            error = 'Invalid Credentials. Please try again.'
+            error = 'Invalid username or password.'
         else:
             return render_template('home.html', username=request.form['username'])
     return render_template('login.html', error=error)
