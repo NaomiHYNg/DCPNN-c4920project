@@ -24,6 +24,7 @@
     <div class="Navigation bar">
         <div class="w3-container w3-black">
             <div class="w3-bar w3-black">
+
                 <form action="{{ url_for('home') }}" method="POST" style="display:inline;">
                     <input type="hidden" name="username" value={{ username }}>
                     <input class="w3-btn w3-black" type="submit" value="Home">
@@ -43,6 +44,7 @@
                     <input type="hidden" name="username" value={{ username }}>
                     <input class="w3-btn w3-black" type="submit" value="Contact">
                 </form>
+
             </div>
         </div>
     </div>
