@@ -44,5 +44,13 @@ def contact():
 
     return render_template('contact.html')
 
+@app.route('/summary', methods=['GET', 'POST'])
+def summary():
+
+    if request.method == 'POST':
+        return render_template('summary.html', username=request.form['username'])
+
+    return render_template('summary.html')
+
 if __name__ == "__main__":
     app.run(debug=True)
