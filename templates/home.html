@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Fitness Tailor</title>
+        <link rel="stylesheet" href="/static/css/check.css">
         <link rel="stylesheet" href="/static/css/w3.css">
     </head>
 
@@ -18,13 +19,14 @@
         }
 
         [type=radio]:checked + img {
-          outline: 2px solid #f00;
+          outline: 4px solid #37474f;
         }
     </style>
 
-    <body>
+    <body style="background-color:#ff9e0f">
 
         {% include 'snips/header.html' %}
+
         <div class="w3-cell-row">
 
             <div class="w3-container w3-cell w3-center">
@@ -79,7 +81,7 @@
 
             <div class="w3-container w3-cell w3-center">
 
-                <div class="w3-staatliches" style="font-size:24px">
+                <div class="w3-staatliches" style="font-size:24px;font-weight:bold">
                     EQUIPMENT AVAILABILITY
                 </div>
 
@@ -89,25 +91,58 @@
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="equip1" value="Barbell"> Barbell<br><br>
-                                <input type="checkbox" name="equip2" value="Dumbbells"> Dumbbells<br><br>
-                                <input type="checkbox" name="equip3" value="Kettlebells"> Hangbar<br><br>
+                                <label class="container">Barbell
+                                <input type="checkbox" name="equip" value="Barbell">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Dumbbells
+                                <input type="checkbox" name="equip" value="Dumbbells">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Hangbar
+                                <input type="checkbox" name="equip" value="Hangbar">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="equip4" value="Medicine Ball"> Medicine Ball<br><br>
-                                <input type="checkbox" name="equip5" value="Exercise Ball"> Exercise Ball<br><br>
-                                <input type="checkbox" name="equip6" value="Sandbags"> Sandbags<br><br>
+                                <label class="container">Medicine Ball
+                                <input type="checkbox" name="equip" value="Medicine Ball">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Exercise Ball
+                                <input type="checkbox" name="equip" value="Exercise Ball">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Sandbags
+                                <input type="checkbox" name="equip" value="Sandbags">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="equip7" value="Elliptical"> Elliptical<br><br>
-                                <input type="checkbox" name="equip8" value="Treadmill"> Treadmill<br><br>
-                                <input type="checkbox" name="equip9" value="Stairladder"> Stairladder<br><br>
+                                <label class="container">Elliptical
+                                <input type="checkbox" name="equip" value="Elliptical">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Treadmill
+                                <input type="checkbox" name="equip" value="Treadmill">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Stairladder
+                                <input type="checkbox" name="equip" value="Stairladder">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
@@ -118,7 +153,7 @@
 
             <div class="w3-container w3-cell w3-center">
 
-                <div class="w3-staatliches" style="font-size:24px">
+                <div class="w3-staatliches" style="font-size:24px;font-weight:bold">
                     MUSCLE GROUPS
                 </div>
 
@@ -128,25 +163,58 @@
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="muscle1" value="Chest"> Chest<br><br>
-                                <input type="checkbox" name="muscle2" value="Biceps"> Biceps<br><br>
-                                <input type="checkbox" name="muscle3" value="Triceps"> Triceps<br><br>
+                                <label class="container">Chest
+                                <input type="checkbox" name="muscle" value="Chest">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Triceps
+                                <input type="checkbox" name="muscle" value="Triceps">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Biceps
+                                <input type="checkbox" name="muscle" value="Biceps">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="muscle4" value="Quadriceps"> Quadriceps<br><br>
-                                <input type="checkbox" name="muscle5" value="Hamstrings"> Hamstrings<br><br>
-                                <input type="checkbox" name="muscle6" value="Calves"> Calves<br><br>
+                                <label class="container">Quadriceps
+                                <input type="checkbox" name="muscle" value="Quadriceps">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Hamstrings
+                                <input type="checkbox" name="muscle" value="Hamstrings">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Calves
+                                <input type="checkbox" name="muscle" value="Calves">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
                         <div class="w3-container w3-cell w3-center">
                             <form>
-                                <input type="checkbox" name="muscle7" value="Upper Abs"> Upper Abs<br><br>
-                                <input type="checkbox" name="muscle8" value="Lower Abs"> Lower Abs<br><br>
-                                <input type="checkbox" name="muscle9" value="Obliques"> Obliques<br><br>
+                                <label class="container">Upper Abs
+                                <input type="checkbox" name="muscle" value="Upper Abs">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Lower Abs
+                                <input type="checkbox" name="muscle" value="Lower Abs">
+                                <span class="checkmark"></span>
+                                </label>
+
+                                <label class="container">Obliques
+                                <input type="checkbox" name="muscle" value="Obliques">
+                                <span class="checkmark"></span>
+                                </label>
                             </form>
                         </div>
 
@@ -163,8 +231,10 @@
         <br>
 
         <div class="Generate Button">
-            <div class="w3-container w3-center">
-                <a href="#"><img src="/static/images/generate.png" alt="Logo" width="250" height="250"></a>
+            <div class="generate w3-container w3-center">
+                <a href="#">
+                    <img src="/static/images/generate.png" alt="Logo" width="250" height="250">
+                </a>
             </div>
         </div>
 
