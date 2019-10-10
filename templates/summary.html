@@ -5,6 +5,17 @@
         <link rel="stylesheet" href="/static/css/w3.css">
     </head>
 
+    <script>
+        function openWorkout(cityName) {
+          var i;
+          var x = document.getElementsByClassName("workout");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+          }
+          document.getElementById(cityName).style.display = "block";
+        }
+    </script>
+
     <body style="background-color:#ff9e0f">
         {% include 'snips/header.html' %}
 
@@ -25,17 +36,6 @@
         <div id="Arms" class="w3-container w3-theme2 w3-center workout" style="display:none">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/i1YgFZB6alI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
-
-    <script>
-        function openWorkout(cityName) {
-          var i;
-          var x = document.getElementsByClassName("workout");
-          for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-          }
-          document.getElementById(cityName).style.display = "block";
-        }
-    </script>
 
     </body>
 </html>
