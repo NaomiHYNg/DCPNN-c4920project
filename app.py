@@ -10,7 +10,8 @@ from flask_restplus import reqparse
 import re
 
 # Helper Functions
-app = Flask(__name__)
+#app = Flask(__name__)
+from project import app #import project folder as module (contains __init__.py)
 api = Api(app)
 
 @api.route('/exercises')
@@ -55,5 +56,4 @@ class AllCollections(Resource):
 	# def post(self)
 
 if __name__ == '__main__':    
-
     app.run(debug=True)

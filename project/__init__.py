@@ -4,7 +4,8 @@ app = Flask(__name__)
 
 global user
 
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
@@ -14,6 +15,7 @@ def login():
             return render_template('home.html', username=request.form['username'])
     return render_template('login.html', error=error)
 
+@app.route('/', methods=['GET', 'POST']) #root directory should be the home page?
 @app.route('/home', methods=['GET', 'POST'])
 def home():
 
@@ -46,5 +48,5 @@ def contact():
 
     return render_template('contact.html')
 
-if __name__ == "__main__":
-    app.run(debug=True)
+#if __name__ == "__main__":
+   # app.run(debug=True)
