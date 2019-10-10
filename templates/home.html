@@ -1,23 +1,179 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Fitness Tailor</title>
-    <link rel="stylesheet" href="/static/css/w3.css">
-  </head>
-  <body>
+    <head>
+        <title>Fitness Tailor</title>
+        <link rel="stylesheet" href="/static/css/w3.css">
+    </head>
 
-    {% include 'snips/header.html' %}
+    <style>
+        [type=radio] {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
 
-    {% include 'snips/navbar.html' %}
+        [type=radio] + img {
+          cursor: pointer;
+        }
 
-    <div class="Generate Button">
-        <div class="w3-container w3-center">
-            <a href="#"><img src="/static/images/generate.png" alt="Logo" width="250" height="250"></a>
+        [type=radio]:checked + img {
+          outline: 2px solid #f00;
+        }
+    </style>
+
+    <body>
+
+        {% include 'snips/header.html' %}
+        <div class="w3-cell-row">
+
+            <div class="w3-container w3-cell w3-center">
+                <div class="w3-staatliches" style="font-size:24px">
+                    Energy Level:
+                    <label>
+                        <input type="radio" name="test" value="low">
+                        <img src="/static/images/sad.png" style="height:50px; width:50px; vertical-align:middle;">
+                    </label>
+
+                    <label>
+                        <input type="radio" name="test" value="medium" checked>
+                        <img src="/static/images/neutral.png" style="height:50px; width:50px; vertical-align:middle;">
+                    </label>
+
+                    <label>
+                      <input type="radio" name="test" value="high">
+                      <img src="/static/images/happy.png" style="height:50px; width:50px; vertical-align:middle;">
+                    </label>
+                </div>
+            </div>
+
+            <div class="w3-container w3-cell w3-center">
+                <div class="w3-staatliches" style="font-size:24px">
+                    Time:
+                    <select>
+                        <option value="0.5 hr">30 minutes</option>
+                        <option value="1 hr" selected="selected">1 hour</option>
+                        <option value="2 hr">2 hours</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="w3-container w3-cell w3-center">
+                <div class="w3-staatliches" style="font-size:24px">
+                    Interval Time:
+                    <select>
+                        <option value="short">Short</option>
+                        <option value="normal" selected="selected">Normal</option>
+                        <option value="long">Long</option>
+                    </select>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    {% include 'snips/footer.html' %}
+        <br>
+        <br>
+        <br>
 
-  </body>
+        <div class="w3-cell-row">
+
+            <div class="w3-container w3-cell w3-center">
+
+                <div class="w3-staatliches" style="font-size:24px">
+                    EQUIPMENT AVAILABILITY
+                </div>
+
+                <div class="w3-staatliches" style="font-size:14px">
+
+                    <div class="w3-cell-row">
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="equip1" value="Barbell"> Barbell<br><br>
+                                <input type="checkbox" name="equip2" value="Dumbbells"> Dumbbells<br><br>
+                                <input type="checkbox" name="equip3" value="Kettlebells"> Hangbar<br><br>
+                            </form>
+                        </div>
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="equip4" value="Medicine Ball"> Medicine Ball<br><br>
+                                <input type="checkbox" name="equip5" value="Exercise Ball"> Exercise Ball<br><br>
+                                <input type="checkbox" name="equip6" value="Sandbags"> Sandbags<br><br>
+                            </form>
+                        </div>
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="equip7" value="Elliptical"> Elliptical<br><br>
+                                <input type="checkbox" name="equip8" value="Treadmill"> Treadmill<br><br>
+                                <input type="checkbox" name="equip9" value="Stairladder"> Stairladder<br><br>
+                            </form>
+                        </div>
+
+                    </div>
+
+            </div>
+        </div>
+
+            <div class="w3-container w3-cell w3-center">
+
+                <div class="w3-staatliches" style="font-size:24px">
+                    MUSCLE GROUPS
+                </div>
+
+                <div class="w3-staatliches" style="font-size:14px">
+
+                    <div class="w3-cell-row">
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="muscle1" value="Chest"> Chest<br><br>
+                                <input type="checkbox" name="muscle2" value="Biceps"> Biceps<br><br>
+                                <input type="checkbox" name="muscle3" value="Triceps"> Triceps<br><br>
+                            </form>
+                        </div>
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="muscle4" value="Quadriceps"> Quadriceps<br><br>
+                                <input type="checkbox" name="muscle5" value="Hamstrings"> Hamstrings<br><br>
+                                <input type="checkbox" name="muscle6" value="Calves"> Calves<br><br>
+                            </form>
+                        </div>
+
+                        <div class="w3-container w3-cell w3-center">
+                            <form>
+                                <input type="checkbox" name="muscle7" value="Upper Abs"> Upper Abs<br><br>
+                                <input type="checkbox" name="muscle8" value="Lower Abs"> Lower Abs<br><br>
+                                <input type="checkbox" name="muscle9" value="Obliques"> Obliques<br><br>
+                            </form>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        <div class="Generate Button">
+            <div class="w3-container w3-center">
+                <a href="#"><img src="/static/images/generate.png" alt="Logo" width="250" height="250"></a>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+
+        {% include 'snips/footer.html' %}
+
+    </body>
 
 </html>

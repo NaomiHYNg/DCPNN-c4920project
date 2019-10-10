@@ -1,10 +1,29 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Staatliches">
+
+<style>
+    .w3-theme {color:#fff !important; background-color:#37474f !important}
+    .w3-text-theme {color:#ff9e0f !important}
+    .w3-staatliches {font-family: 'Staatliches', serif}
+</style>
+
 <div class="header">
-    <header class="w3-container w3-black w3-center">
-        <form action="{{ url_for('home') }}" method="POST" style="display:inline;">
-                <input type="hidden" name="username" value={{ username }}>
-                <input type="image" src="/static/images/logo.png" border="0" alt="Logo" style="width: 100px; height: 100px;" />
-        </form>
-        <h1 style="font-size:30px">Fitness Tailor</h1>
-        <h2 style="font-size:14px">Find a workout that fits you</h2>
-    </header>
+
+    <div class="w3-container w3-theme">
+        <header class="w3-container w3-theme w3-right w3-text-theme">
+            <h1 style="font-size:30px; text-align:center">
+                <div class="w3-staatliches">
+                    FITNESS TAILOR
+                    <form action="{{ url_for('home') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="username" value={{ username }}>
+                        <input type="image" src="/static/images/logo.png" border="0" alt="Logo" style="width: 80px; height: 80px;vertical-align:middle;"/>
+                    </form>
+                </div>
+            </h1>
+        </header>
+    </div>
+
+    <div class="w3-container w3-white w3-right" style="height:100px">
+        <h2 class="w3-staatliches" style="font-size:24px">WORKOUTS CURATED JUST FOR YOU</h2>
+    </div>
+
 </div>
