@@ -19,7 +19,7 @@
 
     <div class="Login Information">
         <div class="w3-container w3-black w3-right">
-            <h3 style="font-size:16px">Logged in as {{ username }}.</h3>
+            <!--<h3 style="font-size:16px">Logged in as {{ username }}.</h3>-->
             <a class="w3-button w3-white" href="/">Sign out</a>
         </div>
     </div>
@@ -46,6 +46,12 @@
                 <form action="{{ url_for('contact') }}" method="POST" style="display:inline;">
                     <input type="hidden" name="username" value={{ username }}>
                     <input class="w3-btn w3-black" type="submit" value="Contact">
+                </form>
+                <!--add button for login which redirects to  login page-->
+                <!--thought it might look nicer here?--> 
+                <form action="{{ url_for('login') }}" method="POST" style="float:right;">
+                        <input type="hidden" name="username" value={{ username }}>
+                        <input class="w3-btn w3-black" type="submit" value="Login">
                 </form>
 
             </div>

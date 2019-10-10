@@ -2,16 +2,20 @@ from flask import Flask, render_template, redirect, url_for, request
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET', 'POST'])
+global user
+
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'password':
-            error = 'Invalid username or password.'
+            error = 'Invalid Credentials. Please try again.'
         else:
             return render_template('home.html', username=request.form['username'])
     return render_template('login.html', error=error)
 
+@app.route('/', methods=['GET', 'POST']) #root directory should be the home page?
 @app.route('/home', methods=['GET', 'POST'])
 def home():
 
@@ -44,5 +48,5 @@ def contact():
 
     return render_template('contact.html')
 
-if __name__ == "__main__":
-    app.run(debug=True)
+#if __name__ == "__main__":
+   # app.run(debug=True)
