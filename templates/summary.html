@@ -8,15 +8,34 @@
     <body style="background-color:#ff9e0f">
         {% include 'snips/header.html' %}
 
-        <div class="w3-sidebar w3-theme w3-bar-block" style="width:25%">
-            <a href="#" class="w3-bar-item w3-button">Link 1</a>
-            <a href="#" class="w3-bar-item w3-button">Link 2</a>
-            <a href="#" class="w3-bar-item w3-button">Link 3</a>
+        <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:25%">
+            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Legs')">Legs</button>
+            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Chest')">Chest</button>
+            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Arms')">Arms</button>
         </div>
 
-        <div class="w3-container w3-theme2 w3-center" style="height:500px">
+        <div id="Legs" class="w3-container w3-theme2 w3-center workout" style="display:block">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/ljO4jkwv8wQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
+
+        <div id="Chest" class="w3-container w3-theme2 w3-center workout" style="display:none">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/vcBig73ojpE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div id="Arms" class="w3-container w3-theme2 w3-center workout" style="display:none">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/i1YgFZB6alI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+    <script>
+        function openWorkout(cityName) {
+          var i;
+          var x = document.getElementsByClassName("workout");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+          }
+          document.getElementById(cityName).style.display = "block";
+        }
+    </script>
 
     </body>
 </html>

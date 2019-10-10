@@ -232,9 +232,10 @@
 
         <div class="Generate Button">
             <div class="generate w3-container w3-center">
-                <a href="#">
-                    <img src="/static/images/generate.png" alt="Logo" width="250" height="250">
-                </a>
+                <form action="{{ url_for('summary') }}" method="POST">
+                    <input type="hidden" name="username" value={{ username }}>
+                    <input type="image" src="/static/images/generate.png" border="0" alt="Generate" width="250" height="250">
+                </form>
             </div>
         </div>
 
