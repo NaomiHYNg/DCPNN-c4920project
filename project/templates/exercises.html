@@ -1,8 +1,17 @@
-<table>
-    % for i in workout:
-        <tr>
-            <td>${i['exercise']}</td>
-            <td>${i['description']}</td>
-        </tr>
-    % endfor
-</table>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fitness Tailor</title>
+    <link rel="stylesheet" href="/static/css/w3.css">
+  </head>
+  <body>
+    <table>
+        {% for i in workout %}
+            <tr>
+                <td>{{i.exercise}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+  </body>
+</html>        
