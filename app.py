@@ -14,16 +14,6 @@ import random
 app = Flask(__name__)
 api = Api(app)
 
-# Connect to mongodb mlab
-mongo_port = 27107
-db_name = 'comp4920'
-collection_name = 'exercises'
-mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
-client = MongoClient(host=mongo_host, port=mongo_port)
-db = client[db_name]
-exercises = db[collection_name]
-
-@api.route('/exercises', methods=['GET'])
 # Setup parser
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int)
