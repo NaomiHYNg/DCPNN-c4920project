@@ -13,6 +13,7 @@ def login():
     return render_template('login.html', error=error)
 
 @app.route('/', methods=['GET', 'POST'])
+
 def home():
 
     if request.method == 'POST':
@@ -54,3 +55,4 @@ def summary():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
