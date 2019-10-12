@@ -1,6 +1,6 @@
 import json
 from pymongo import MongoClient
-import requests
+#import requests
 from flask import Flask
 from flask import request
 from flask_restplus import Resource, Api
@@ -72,4 +72,4 @@ class AllCollections(Resource):
 
 if __name__ == '__main__':    
 
-    app.run(debug=True)
+    app.run(port=5001, debug=True)
