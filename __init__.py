@@ -1,4 +1,7 @@
+import ast
+
 from flask import Flask, render_template, redirect, url_for, request
+import requests
 
 app = Flask(__name__)
 
@@ -48,6 +51,10 @@ def contact():
 def summary():
 
     if request.method == 'POST':
+        response = requests.get("http://127.0.0.1:5001/exercises?energy=3")
+        print("Status Code: " + str(response))
+        content = response.content
+        print(dict(content))
         return render_template('summary.html', username=request.form['username'])
 
     return render_template('summary.html')
