@@ -59,7 +59,16 @@ def summary():
 
             content = json.loads(response.content)
 
-            return render_template('summary.html', exercise_list=content, username=request.form['username'])
+            energy = "MODERATE"
+
+            if request.form['energy'] == '3':
+                energy = "LOW"
+            elif request.form['energy'] == '6':
+                energy = "MODERATE"
+            elif request.form['energy'] == '9':
+                energy = "HIGH"
+
+            return render_template('summary.html', energy=energy, exercise_list=content, username=request.form['username'])
         except:
             error = "Error connecting to server!"
 
