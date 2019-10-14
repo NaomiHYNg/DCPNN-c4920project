@@ -26,217 +26,40 @@
         {% include 'snips/header.html' %}
         {% include 'snips/header2.html' %}
 
-        <div class="w3-cell-row">
+        <form action="{{ url_for('generate') }}" method="POST">
 
-            <div class="w3-container w3-cell w3-center">
-                <div class="w3-staatliches" style="font-size:24px">
+            <div class="w3-container w3-center">
+                <div class="w3-staatliches" style="font-size:24px;margin-bottom:50px">
                     Energy Level:
+                    <br>
                     <label>
-                        <input type="radio" name="test" value="low">
-                        <img src="/static/images/sad.png" style="height:50px; width:50px; vertical-align:middle;">
+                        <input type="radio" name="energy" value="3">
+                        <img src="/static/images/sad.png" style="height:200px; width:200px; vertical-align:middle;">
                     </label>
 
                     <label>
-                        <input type="radio" name="test" value="medium" checked>
-                        <img src="/static/images/neutral.png" style="height:50px; width:50px; vertical-align:middle;">
+                        <input type="radio" name="energy" value="6" checked>
+                        <img src="/static/images/neutral.png" style="height:200px; width:200px; vertical-align:middle;">
                     </label>
 
                     <label>
-                      <input type="radio" name="test" value="high">
-                      <img src="/static/images/happy.png" style="height:50px; width:50px; vertical-align:middle;">
+                      <input type="radio" name="energy" value="9">
+                      <img src="/static/images/happy.png" style="height:200px; width:200px; vertical-align:middle;">
                     </label>
                 </div>
             </div>
 
-            <div class="w3-container w3-cell w3-center">
-                <div class="w3-staatliches" style="font-size:24px">
-                    Time:
-                    <select>
-                        <option value="0.5 hr">30 minutes</option>
-                        <option value="1 hr" selected="selected">1 hour</option>
-                        <option value="2 hr">2 hours</option>
-                    </select>
+
+            <div class="Generate Button">
+                <div class="generate w3-container w3-center">
+
+                        <input type="hidden" name="username" value={{ username }}>
+                        <input type="image" src="/static/images/generate.png" border="0" alt="Generate" width="250" height="250" style="outline:none">
+
                 </div>
             </div>
 
-            <div class="w3-container w3-cell w3-center">
-                <div class="w3-staatliches" style="font-size:24px">
-                    Interval Time:
-                    <select>
-                        <option value="short">Short</option>
-                        <option value="normal" selected="selected">Normal</option>
-                        <option value="long">Long</option>
-                    </select>
-                </div>
-            </div>
-
-        </div>
-
-        <br>
-        <br>
-        <br>
-
-        <div class="w3-cell-row">
-
-            <div class="w3-container w3-cell w3-center">
-
-                <div class="w3-staatliches" style="font-size:24px;font-weight:bold">
-                    EQUIPMENT AVAILABILITY
-                </div>
-
-                <div class="w3-staatliches" style="font-size:14px">
-
-                    <div class="w3-cell-row">
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Barbell
-                                <input type="checkbox" name="equip" value="Barbell">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Dumbbells
-                                <input type="checkbox" name="equip" value="Dumbbells">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Hangbar
-                                <input type="checkbox" name="equip" value="Hangbar">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Medicine Ball
-                                <input type="checkbox" name="equip" value="Medicine Ball">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Exercise Ball
-                                <input type="checkbox" name="equip" value="Exercise Ball">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Sandbags
-                                <input type="checkbox" name="equip" value="Sandbags">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Elliptical
-                                <input type="checkbox" name="equip" value="Elliptical">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Treadmill
-                                <input type="checkbox" name="equip" value="Treadmill">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Stairladder
-                                <input type="checkbox" name="equip" value="Stairladder">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                    </div>
-
-            </div>
-        </div>
-
-            <div class="w3-container w3-cell w3-center">
-
-                <div class="w3-staatliches" style="font-size:24px;font-weight:bold">
-                    MUSCLE GROUPS
-                </div>
-
-                <div class="w3-staatliches" style="font-size:14px">
-
-                    <div class="w3-cell-row">
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Chest
-                                <input type="checkbox" name="muscle" value="Chest">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Triceps
-                                <input type="checkbox" name="muscle" value="Triceps">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Biceps
-                                <input type="checkbox" name="muscle" value="Biceps">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Quadriceps
-                                <input type="checkbox" name="muscle" value="Quadriceps">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Hamstrings
-                                <input type="checkbox" name="muscle" value="Hamstrings">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Calves
-                                <input type="checkbox" name="muscle" value="Calves">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                        <div class="w3-container w3-cell w3-center">
-                            <form>
-                                <label class="container">Upper Abs
-                                <input type="checkbox" name="muscle" value="Upper Abs">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Lower Abs
-                                <input type="checkbox" name="muscle" value="Lower Abs">
-                                <span class="checkmark"></span>
-                                </label>
-
-                                <label class="container">Obliques
-                                <input type="checkbox" name="muscle" value="Obliques">
-                                <span class="checkmark"></span>
-                                </label>
-                            </form>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <br>
-        <br>
-        <br>
-
-        <div class="Generate Button">
-            <div class="generate w3-container w3-center">
-                <form action="{{ url_for('summary') }}" method="POST">
-                    <input type="hidden" name="username" value={{ username }}>
-                    <input type="image" src="/static/images/generate.png" border="0" alt="Generate" width="250" height="250" style="outline:none">
-                </form>
-            </div>
-        </div>
+        </form>
 
         <br>
         <br>

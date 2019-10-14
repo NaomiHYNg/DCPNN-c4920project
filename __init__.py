@@ -1,5 +1,4 @@
 import json
-import jinja2
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
@@ -54,13 +53,21 @@ def contact():
 def summary():
 
     if request.method == 'POST':
-        response = requests.get("http://127.0.0.1:5001/exercises?energy=3")
+        response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
         print("Status Code: " + str(response))
         content = json.loads(response.content)
 
         return render_template('summary.html', exercise_list=content, username=request.form['username'])
 
     return render_template('summary.html')
+
+@app.route('/generate', methods=['GET', 'POST'])
+def generate():
+
+    if request.method == 'POST':
+        return render_template('generate.html', username=request.form['username'], energy=request.form['energy'])
+
+    return render_template('generate.html')
 
 @app.context_processor
 def utility_functions():
