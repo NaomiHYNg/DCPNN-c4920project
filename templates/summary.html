@@ -21,22 +21,39 @@
         {% include 'snips/header.html' %}
 
         <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:25%">
-            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Legs')">Legs</button>
-            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Chest')">Chest</button>
-            <button class="w3-bar-item w3-button w3-center" onclick="openWorkout('Arms')">Arms</button>
+
+            {% for exercise in exercise_list %}
+                <button class="w3-bar-item w3-button w3-center" onclick="openWorkout({{ exercise['id'] }})">{{ exercise['exercise'] }}</button>
+            {% endfor %}
+
         </div>
 
-        <div id="Legs" class="w3-container w3-theme2 w3-center workout" style="display:block">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/ljO4jkwv8wQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        {% include 'snips/header2.html' %}
+
+        <div class="w3-container w3-rest" style="margin-left:25%; font-family:Trebuchet MS, Helvetica, sans-serif">
+
+            {% set ns = namespace(ex=0) %}
+            {% for exercise in exercise_list %}
+                {% if ns.ex == 0 %}
+
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:block">
+                        <p>
+                            {{ exercise['description'] }}
+                        </p>
+                        {% set ns.ex = ns.ex + 1 %}
+                    </div>
+                {% else %}
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:none">
+                        <p>
+                            {{ exercise['description'] }}
+                        </p>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+
         </div>
 
-        <div id="Chest" class="w3-container w3-theme2 w3-center workout" style="display:none">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/vcBig73ojpE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-
-        <div id="Arms" class="w3-container w3-theme2 w3-center workout" style="display:none">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/i1YgFZB6alI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
 
     </body>
 </html>
