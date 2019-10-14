@@ -53,13 +53,17 @@ def contact():
 def summary():
 
     if request.method == 'POST':
-        response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
-        print("Status Code: " + str(response))
-        content = json.loads(response.content)
+        try:
+            response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
+            print("Status Code: " + str(response))
 
-        return render_template('summary.html', exercise_list=content, username=request.form['username'])
+            content = json.loads(response.content)
 
-    return render_template('summary.html')
+            return render_template('summary.html', exercise_list=content, username=request.form['username'])
+        except:
+            error = "Error connecting to server!"
+
+    return render_template('home.html', error=error)
 
 @app.route('/generate', methods=['GET', 'POST'])
 def generate():

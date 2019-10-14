@@ -42,7 +42,7 @@
             {% for exercise in exercise_list %}
                 {% if ns.ex == 0 %}
                     <div class="workout" id="{{ exercise['id'] }}" style="display:block">
-                        {% set ns.ex = ns.ex + 1 %}
+                    {% set ns.ex = ns.ex + 1 %}
                 {% else %}
                     <div class="workout" id="{{ exercise['id'] }}" style="display:none">
                 {% endif %}
