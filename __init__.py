@@ -68,7 +68,7 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
-            return render_template('summary.html', energy=energy, exercise_list=content, username=request.form['username'])
+            return render_template('summary.html', energy=energy, exercise_list=content, muscle=request.form['muscle'], username=request.form['username'])
         except Exception as e:
             print(e)
             error = "Error connecting to server!"
@@ -79,7 +79,7 @@ def summary():
 def generate():
 
     if request.method == 'POST':
-        return render_template('generate.html', username=request.form['username'], energy=request.form['energy'])
+        return render_template('generate.html', username=request.form['username'], energy=request.form['energy'], muscle=request.form['muscle'])
 
     return render_template('generate.html')
 
