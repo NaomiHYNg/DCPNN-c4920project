@@ -9,11 +9,11 @@
 
     <script>
         function hover(element) {
-          element.setAttribute('src', '/static/images/generateHover.png');
+          element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
         }
 
         function unhover(element) {
-          element.setAttribute('src', '/static/images/generate.png');
+          element.setAttribute('src', '/static/images/' + element.name + '.png');
         }
     </script>
 
@@ -28,21 +28,22 @@
 
             <div class="w3-container w3-center">
                 <div class="w3-staatliches" style="font-size:40px;margin-bottom:50px">
-                    Energy Level:
+                    Energy Level
+                    <br>
                     <br>
                     <label style="margin-right:25px">
                         <input type="radio" name="energy" value="3">
-                        <img src="/static/images/sad.png" style="height:200px; width:200px; vertical-align:middle;">
+                        <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 60%;">
                     </label>
 
                     <label>
                         <input type="radio" name="energy" value="6" checked>
-                        <img src="/static/images/neutral.png" style="height:200px; width:200px; vertical-align:middle;">
+                        <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 60%;">
                     </label>
 
                     <label style="margin-left:25px">
                       <input type="radio" name="energy" value="9">
-                      <img src="/static/images/happy.png" style="height:200px; width:200px; vertical-align:middle;">
+                      <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 60%;">
                     </label>
                 </div>
             </div>
@@ -51,7 +52,7 @@
                 <div class="generate w3-container w3-center">
 
                         <input type="hidden" name="username" value={{ username }}>
-                        <input type="image" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="width:250px;height:250px;outline:none">
+                        <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="width:250px;height:250px;outline:none">
 
                 </div>
             </div>
