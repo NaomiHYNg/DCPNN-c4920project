@@ -8,6 +8,6 @@
           cursor: pointer;
         }
         [type=radio]:checked + img {
-          box-shadow: 0 0 10pt 5pt white;
+          box-shadow: 0 0 10pt 5pt white, inset 0 0 10pt 7pt white;
         }
 }
