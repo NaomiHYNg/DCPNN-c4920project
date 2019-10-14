@@ -35,20 +35,20 @@
             {% set ns = namespace(ex=0) %}
             {% for exercise in exercise_list %}
                 {% if ns.ex == 0 %}
-
                     <div class="workout" id="{{ exercise['id'] }}" style="display:block">
-                        <p>
-                            {{ exercise['description'] }}
-                        </p>
                         {% set ns.ex = ns.ex + 1 %}
-                    </div>
                 {% else %}
                     <div class="workout" id="{{ exercise['id'] }}" style="display:none">
+                {% endif %}
+
+                        <h3 class="w3-staatliches" style="font-size: 30px">
+                            {{ exercise['exercise'] }}
+                        </h3>
                         <p>
                             {{ exercise['description'] }}
                         </p>
+
                     </div>
-                {% endif %}
 
             {% endfor %}
 
