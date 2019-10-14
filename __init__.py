@@ -69,7 +69,8 @@ def summary():
                 energy = "HIGH"
 
             return render_template('summary.html', energy=energy, exercise_list=content, username=request.form['username'])
-        except:
+        except Exception as e:
+            print(e)
             error = "Error connecting to server!"
 
     return render_template('home.html', error=error)
