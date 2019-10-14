@@ -1,7 +1,9 @@
 import json
+import jinja2
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
+
 
 app = Flask(__name__)
 
@@ -55,10 +57,18 @@ def summary():
         response = requests.get("http://127.0.0.1:5001/exercises?energy=3")
         print("Status Code: " + str(response))
         content = json.loads(response.content)
-        print(content)
-        return render_template('summary.html', username=request.form['username'])
+
+        return render_template('summary.html', exercise_list=content, username=request.form['username'])
 
     return render_template('summary.html')
+
+@app.context_processor
+def utility_functions():
+    def print_in_console(message):
+        print(str(message))
+
+    return dict(mdebug=print_in_console)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
