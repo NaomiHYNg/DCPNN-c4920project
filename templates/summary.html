@@ -10,11 +10,12 @@
           var i;
           var x = document.getElementsByClassName("workout");
           for (i = 0; i < x.length; i++) {
+
             x[i].style.display = "none";
           }
           document.getElementById(workoutName).style.display = "block";
-
         }
+
     </script>
 
     <body style="background-color:#ff9e0f">
@@ -23,7 +24,10 @@
         <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:25%">
 
             {% for exercise in exercise_list %}
-                <button class="w3-bar-item w3-button w3-center" onclick="openWorkout({{ exercise['id'] }})">{{ exercise['exercise'] }}</button>
+
+            <button class="w3-bar-item w3-button w3-center w3-animate-opacity" onclick="openWorkout({{ exercise['id'] }})">
+                {{ exercise['exercise'] }}
+            </button>
             {% endfor %}
 
             <br>
@@ -32,7 +36,7 @@
 
         {% include 'snips/header2.html' %}
 
-        <div class="w3-container w3-rest" style="margin-left:25%; font-family:Trebuchet MS, Helvetica, sans-serif">
+        <div class="w3-container w3-animate-opacity" style="margin-left:25%; font-family:Trebuchet MS, Helvetica, sans-serif">
 
             {% set ns = namespace(ex=0) %}
             {% for exercise in exercise_list %}
@@ -55,7 +59,6 @@
             {% endfor %}
 
         </div>
-
 
     </body>
 </html>

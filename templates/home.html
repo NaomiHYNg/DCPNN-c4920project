@@ -4,22 +4,20 @@
         <title>Fitness Tailor</title>
         <link rel="stylesheet" href="/static/css/check.css">
         <link rel="stylesheet" href="/static/css/w3.css">
+        <link rel="stylesheet" href="/static/css/main.css">
     </head>
 
-    <style>
-        [type=radio] {
-          position: absolute;
-          opacity: 0;
-          width: 0;
-          height: 0;
+    <script>
+        function hover(element) {
+          element.setAttribute('src', '/static/images/generateHover.png');
         }
-        [type=radio] + img {
-          cursor: pointer;
+
+        function unhover(element) {
+          element.setAttribute('src', '/static/images/generate.png');
         }
-        [type=radio]:checked + img {
-          outline: 4px solid #37474f;
-        }
-    </style>
+    </script>
+
+
 
     <body style="background-color:#ff9e0f">
 
@@ -29,7 +27,7 @@
         <form action="{{ url_for('generate') }}" method="POST">
 
             <div class="w3-container w3-center">
-                <div class="w3-staatliches" style="font-size:24px;margin-bottom:50px">
+                <div class="w3-staatliches" style="font-size:40px;margin-bottom:50px">
                     Energy Level:
                     <br>
                     <label>
@@ -54,7 +52,7 @@
                 <div class="generate w3-container w3-center">
 
                         <input type="hidden" name="username" value={{ username }}>
-                        <input type="image" src="/static/images/generate.png" border="0" alt="Generate" width="250" height="250" style="outline:none">
+                        <input type="image" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="width:250px;height:250px;outline:none">
 
                 </div>
             </div>
