@@ -15,6 +15,29 @@
         function unhover(element) {
           element.setAttribute('src', '/static/images/' + element.name + '.png');
         }
+
+
+        function nextOption(id) {
+          var i;
+          var x = document.getElementsByClassName("option");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+            x[i].setAttribute('src', '/static/images/arrow.png')
+          }
+          document.getElementById(id).style.display = "block";
+
+          document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
+          document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
+
+
+          if (id == "muscle") {
+            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png')
+          } else if (id == "energy") {
+            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png')
+          }
+
+        }
+
     </script>
 
 
@@ -27,7 +50,7 @@
         <form action="{{ url_for('generate') }}" method="POST">
 
             <div class="w3-container w3-center">
-                <div class="w3-staatliches" style="font-size:40px;margin-bottom:50px">
+                <div class="option w3-staatliches" id="energy" style="font-size:40px;margin-bottom:50px">
                     Energy Level
                     <br>
                     <br>
@@ -46,14 +69,36 @@
                       <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                     </label>
                 </div>
+
+                <div class="option w3-staatliches" id="muscle" style="font-size:40px;margin-bottom:50px;display:none">
+                    Muscle Group
+                    <br>
+                    <br>
+                    <label style="margin-right:25px;pointer-events:none">
+                        <input type="radio" name="muscle" value="lower">
+                        <img name="lower" src="/static/images/lowerBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;filter: grayscale(100%)">
+                    </label>
+
+                    <label style="pointer-events:none">
+                      <input type="radio" name="muscle" value="upper">
+                      <img name="upper" src="/static/images/upperBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;filter: grayscale(100%)">
+                    </label>
+
+                    <label style="margin-left:25px">
+                        <input type="radio" name="muscle" value="full" checked>
+                        <img name="full" src="/static/images/fullBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                    </label>
+
+                </div>
+
             </div>
 
-            <div class="Generate Button">
+            <div class="Menu">
                 <div class="generate w3-container w3-center">
-
                         <input type="hidden" name="username" value={{ username }}>
-                        <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="width:250px;height:250px;outline:none">
-
+                        <a href="#" onclick="nextOption('energy')"><img id="prev" src="/static/images/arrow.png" style="transform: scaleX(-1);width:125px;height:75px;margin-right:30px"></a>
+                        <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:250px;height:250px;outline:none;border-radius: 80%;">
+                        <a href="#" onclick="nextOption('muscle')"><img id="next" src="/static/images/arrow.png" style="width:125px;height:75px;margin-left:30px"></a>
                 </div>
             </div>
 
