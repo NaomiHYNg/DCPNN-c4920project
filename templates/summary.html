@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Fitness Tailor</title>
+        <link rel="stylesheet" href="/static/css/w3.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+    </head>
+
+    <script>
+        function openWorkout(workoutName) {
+          var i;
+          var x = document.getElementsByClassName("workout");
+          for (i = 0; i < x.length; i++) {
+
+            x[i].style.display = "none";
+          }
+          document.getElementById(workoutName).style.display = "block";
+        }
+
+    </script>
+
+    <body style="background-color:#ff9e0f">
+        {% include 'snips/header.html' %}
+
+        <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:25%;margin-bottom:100px;height:90%">
+
+            <div class="w3-container w3-center" style="border-bottom:3px solid black;">
+                <p class="w3-text-theme">Workout Summary</p>
+                <p>Energy Level: {{ energy }}</p>
+                <p>Muscle Group: {{ muscle }}</p>
+            </div>
+
+            <p class="w3-text-theme w3-center">Exercises</p>
+
+            {% for exercise in exercise_list %}
+                <button class="w3-bar-item w3-button w3-center w3-animate-opacity" onclick="openWorkout({{ exercise['id'] }})">
+                    {{ exercise['exercise'] }}
+                </button>
+            {% endfor %}
+
+            <br>
+
+        </div>
+
+        {% include 'snips/header2.html' %}
+
+        <div class="w3-container w3-animate-opacity" style="margin-left:25%; font-family:Trebuchet MS, Helvetica, sans-serif">
+
+            {% set ns = namespace(ex=0) %}
+            {% for exercise in exercise_list %}
+                {% if ns.ex == 0 %}
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:block">
+                    {% set ns.ex = ns.ex + 1 %}
+                {% else %}
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:none">
+                {% endif %}
+
+                        <h3 class="w3-staatliches" style="font-size: 30px">
+                            {{ exercise['exercise'] }}
+                        </h3>
+                        <p>
+                            {{ exercise['description'] }}
+                        </p>
+
+                    </div>
+
+            {% endfor %}
+
+        </div>
+
+    </body>
+</html>

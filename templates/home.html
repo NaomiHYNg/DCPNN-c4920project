@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Fitness Tailor</title>
+        <link rel="stylesheet" href="/static/css/check.css">
+        <link rel="stylesheet" href="/static/css/w3.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+    </head>
+
+    <script>
+        function hover(element) {
+          element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
+        }
+
+        function unhover(element) {
+          element.setAttribute('src', '/static/images/' + element.name + '.png');
+        }
+
+
+        function nextOption(id) {
+          var i;
+          var x = document.getElementsByClassName("option");
+          for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+            x[i].setAttribute('src', '/static/images/arrow.png')
+          }
+          document.getElementById(id).style.display = "block";
+
+          document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
+          document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
+
+
+          if (id == "muscle") {
+            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png')
+          } else if (id == "energy") {
+            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png')
+          }
+
+        }
+
+    </script>
+
+
+
+    <body style="background-color:#ff9e0f">
+
+        {% include 'snips/header.html' %}
+        {% include 'snips/header2.html' %}
+
+        <form action="{{ url_for('generate') }}" method="POST">
+
+            <div class="w3-container w3-center">
+                <div class="option w3-staatliches" id="energy" style="font-size:40px;margin-bottom:50px">
+                    Energy Level
+                    <br>
+                    <br>
+                    <label style="margin-right:25px">
+                        <input type="radio" name="energy" value="3">
+                        <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                    </label>
+
+                    <label>
+                        <input type="radio" name="energy" value="6" checked>
+                        <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                    </label>
+
+                    <label style="margin-left:25px">
+                      <input type="radio" name="energy" value="9">
+                      <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                    </label>
+                </div>
+
+                <div class="option w3-staatliches" id="muscle" style="font-size:40px;margin-bottom:50px;display:none">
+                    Muscle Group
+                    <br>
+                    <br>
+                    <label style="margin-right:25px;pointer-events:none">
+                        <input type="radio" name="muscle" value="LowerBody">
+                        <img name="lower" src="/static/images/lowerBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;filter: grayscale(100%)">
+                    </label>
+
+                    <label style="pointer-events:none">
+                      <input type="radio" name="muscle" value="UpperBody">
+                      <img name="upper" src="/static/images/upperBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;filter: grayscale(100%)">
+                    </label>
+
+                    <label style="margin-left:25px">
+                        <input type="radio" name="muscle" value="FullBody" checked>
+                        <img name="full" src="/static/images/fullBody.jpg" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                    </label>
+
+                </div>
+
+            </div>
+
+            <div class="Menu">
+                <div class="generate w3-container w3-center">
+                        <input type="hidden" name="username" value={{ username }}>
+                        <a href="#" onclick="nextOption('energy')"><img id="prev" src="/static/images/arrowDisabled.png" style="transform: scaleX(-1);width:125px;height:75px;margin-right:30px"></a>
+                        <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:250px;height:250px;outline:none;border-radius: 80%;">
+                        <a href="#" onclick="nextOption('muscle')"><img id="next" src="/static/images/arrow.png" style="width:125px;height:75px;margin-left:30px"></a>
+                </div>
+            </div>
+
+            {% if error %}
+                <p class="w3-container w3-center"><font color="red">{{ error }}</font></p>
+            {% endif %}
+
+        </form>
+
+        <br>
+        <br>
+        <br>
+
+        {% include 'snips/footer.html' %}
+
+    </body>
+
+</html>

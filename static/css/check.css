@@ -1,0 +1,13 @@
+[type=radio] {
+          position: absolute;
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+        [type=radio] + img {
+          cursor: pointer;
+        }
+        [type=radio]:checked + img {
+          box-shadow: 0 0 10pt 5pt white, inset 0 0 10pt 7pt white;
+        }
+}
