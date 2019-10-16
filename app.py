@@ -61,6 +61,7 @@ class AllCollections(Resource):
                 "exercise": exercise_name,
                 "description": description,
                 "photo": photo,
+                "muscle": muscle,
                 "compound": "false"
             }
             output_list.append(output_dict)

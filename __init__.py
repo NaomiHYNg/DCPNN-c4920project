@@ -68,7 +68,7 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
-            return render_template('summary.html', energy=energy, exercise_list=content, muscle=request.form['muscle'], username=request.form['username'])
+            return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], muscle=request.form['muscle'], username=request.form['username'])
         except Exception as e:
             print(e)
             error = "Error connecting to server!"
@@ -82,6 +82,11 @@ def generate():
         return render_template('generate.html', username=request.form['username'], energy=request.form['energy'], muscle=request.form['muscle'])
 
     return render_template('generate.html')
+
+@app.route('/complete', methods=['GET', 'POST'])
+def complete():
+
+    return render_template('complete.html')
 
 @app.context_processor
 def utility_functions():
