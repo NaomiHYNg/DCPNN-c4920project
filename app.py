@@ -18,7 +18,7 @@ api = Api(app)
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int)
 
-
+# chest/arm + leg + 
 # GET http://127.0.0.1:5000/exercises?energy=LOW where LOW is a constant LOW=3 and HIGH=6
 
 @api.route('/exercises')
@@ -54,10 +54,14 @@ class AllCollections(Resource):
             exercise_id = record['id']
             exercise_name = record['exercise']
             description = record['description']
+            muscle = record['muscle']
+            photo = record['photo']
             output_dict = {
                 "id": exercise_id,
                 "exercise": exercise_name,
-                "description": description
+                "description": description,
+                "photo": photo,
+                "compound": "false"
             }
             output_list.append(output_dict)
         # print(output_list)
