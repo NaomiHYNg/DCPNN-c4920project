@@ -95,7 +95,6 @@ def utility_functions():
 
     return dict(mdebug=print_in_console)
 
-
 if __name__ == "__main__":
     app.run(debug=True)
 
