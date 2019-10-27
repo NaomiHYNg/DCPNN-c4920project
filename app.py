@@ -17,14 +17,23 @@ api = Api(app)
 def updateEntry(record, collection, query):
     collection.update(query, record)
 
+def intersection(lst1, lst2):
+    output_list = []
+    for i1 in lst1:
+        for i2 in lst2:
+            #print(i1)
+            #print(i2)
+            if i1.lower() == i2.lower():
+                output_list.append(i1)
+    #print(output_list)            
+    return output_list            
+
 # Setup parser
 parser = reqparse.RequestParser()
-parser.add_argument('energy', type=int)
-
-# chest/arm + leg + 
-# GET http://127.0.0.1:5000/exercises?energy=LOW where LOW is a constant LOW=3 and HIGH=6
-
-# http://127.0.0.1:5000/muscles/arm --> extract all 'arm' exercises (tricep/bicep)
+parser.add_argument('energy', type=int, required=True)
+parser.add_argument('muscle', action='split')
+ 
+# GET http://127.0.0.1:5000/exercises?energy=3
 
 @api.route('/exercises')
 class AllCollections(Resource):
@@ -33,7 +42,9 @@ class AllCollections(Resource):
 
         # Obtain energy entry
         args = parser.parse_args()
-        energy = args['energy']
+        energy = args['energy'] # returns an integer
+        usr_muscle_list = args['muscle'] # returns a list of muscles
+        #print(usr_muscle_list)        
 
         # Connect to mongodb mlab
         mongo_port = 27107
@@ -47,36 +58,158 @@ class AllCollections(Resource):
         # Obtain collection
         collection = db.exercises.find()
 
-        output_list = []
-
         # Abort if collection not found
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        # For testing, print out all records
-        for record in collection:
-            # print(record)
-            exercise_id = record['id']
+        output_list = []
+        output_id_list = [] # list of exercise ids only        
+
+        # If the user has muscle preferences
+        if usr_muscle_list: 
+            single_id_dict = {} # each muscle is a key of the dictionary
+            compound_id_list = [] # list of dictionaries {id: len(intersection)}
+            # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
+            for record in collection:
+                muscle_list = record['muscle']
+                exercise_id = record['id']
+                #print(muscle_list)
+                inter_list = intersection(usr_muscle_list , muscle_list)
+                if len(inter_list) > 0: # if there are entries in the list
+                    #print(record['id'])
+                    #print(inter_list)
+
+                    # if the exercise's associated muscle/s only matches one of the user's muscle preferences
+                    if len(inter_list) == 1:
+                        #print(record['exercise'])
+                        if inter_list[0] in single_id_dict: 
+                            single_id_dict[inter_list[0]].append(exercise_id)
+                        else:
+                            single_id_dict[inter_list[0]] = []
+                            single_id_dict[inter_list[0]].append(exercise_id)
+
+                    # if the exercise has more than one matching muscle   
+                    if len(inter_list) > 1:
+                        #print("not completed")
+                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list)}
+                        compound_id_list.append(temp_dict)
+                        #print(record['exercise'])
+
+            compound_id_list = sorted(compound_id_list, key = lambda i: i['intersection_len'], reverse=True)
+            print("Compound List")
+            print(compound_id_list)
+            print("Single List")
+            print(single_id_dict)
+
+            counter = energy
+
+            # if there are more user required exercises than the compound list
+            # take all exercises from the compound list
+            if energy > len(compound_id_list):
+                for i in compound_id_list:
+                    output_id_list.append(i['id'])
+                    counter = counter - 1
+
+                # choose remaining exercises from the dictionary of single exercises 
+
+                total_single = 0
+                total = len(output_id_list)
+
+                # count the number of exercises in the single list
+                for key, value in single_id_dict.items():
+                    #print(value)
+                    total_single = total_single + len(value)
+
+                # count the number of exercises in both single and compound list
+                total = total + total_single
+                #print(total)
+                #print(counter)
+                
+                # if there are less exercises available than requested, take all single exercises
+                if total <= counter:
+                    for key, value in single_id_dict.items():
+                        output_id_list.extend(value)
+                else:
+                    while counter > 0:
+                        #print(counter)
+                        for key, value in single_id_dict.items():
+                            #print(key)
+                            #print(value)
+                            random.shuffle(value)
+                            temp_id = single_id_dict[key][0]
+                            if temp_id in output_id_list:
+                                continue
+                            else:
+                                output_id_list.append(temp_id)
+                                counter = counter - 1
+                                if counter == 0:
+                                    break   
+
+            # if there are less user required exercises than the compound list
+            # randomly select the required number of exercises
+            else:
+                random.shuffle(compound_id_list)
+                temp_list = compound_id_list[:energy]
+                for i in temp_list:
+                    output_id_list.append(i['id'])
+
+            print("Output Id List")
+            print(output_id_list)        
+
+        # if there are no user muscle preferences, set default value
+        #else:
+        #   print("no muscles")
+        
+        # Muscle groups are not in consistent format
+        # Temporary solution - randomly select any requested number of exercises if no muscle groups selected
+
+        if not output_id_list:            
+
+            # For testing, print out all records
+            for record in collection:
+                # print(record)
+                exercise_id = record['id']
+                exercise_name = record['exercise']
+                description = record['description']
+                muscle = record['muscle']
+                if len(muscle) > 1:
+                    compound = True
+                else:
+                    compound = False
+                photo = record['photo']
+                output_dict = {
+                    "id": exercise_id,
+                    "exercise": exercise_name,
+                    "description": description,
+                    "photo": photo,
+                    "muscle": muscle,
+                    "compound": compound
+                }
+                output_list.append(output_dict)
+                random.shuffle(output_list)
+                output_list = output_list[:energy]
+        else:
+          for record_id in output_id_list:
+            db.exercises.find_one({"id": record_id})
             exercise_name = record['exercise']
             description = record['description']
             muscle = record['muscle']
             photo = record['photo']
+            if len(muscle) > 1:
+                compound = True
+            else:
+                compound = False    
             output_dict = {
-                "id": exercise_id,
+                "id": record_id,
                 "exercise": exercise_name,
                 "description": description,
                 "photo": photo,
                 "muscle": muscle,
-                "compound": "false"
+                "compound": compound
             }
             output_list.append(output_dict)
-        # print(output_list)
-
-        if energy:
-            random.shuffle(output_list)
-            return output_list[:energy], 200
-        else:
-            return output_list, 200
+        
+        return output_list, 200
 
 #http://127.0.0.1:5000/exercises/1
 @api.route('/exercises/<int:exercise_id>')
