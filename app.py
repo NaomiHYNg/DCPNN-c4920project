@@ -33,7 +33,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
  
-# GET http://127.0.0.1:5000/exercises?energy=3
+# GET http://127.0.0.1:5001/exercises?energy=3
 
 @api.route('/exercises')
 class AllCollections(Resource):
@@ -49,14 +49,14 @@ class AllCollections(Resource):
         # Connect to mongodb mlab
         mongo_port = 27107
         db_name = 'comp4920'
-        collection_name = 'exercises'
+        collection_name = 'test'
         mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
         client = MongoClient(host=mongo_host, port=mongo_port)
         db = client[db_name]
-        exercises = db[collection_name]
+        test = db[collection_name]
 
         # Obtain collection
-        collection = db.exercises.find()
+        collection = db.test.find()
 
         # Abort if collection not found
         if not collection:
@@ -72,6 +72,7 @@ class AllCollections(Resource):
             # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
             for record in collection:
                 muscle_list = record['muscle']
+                #print(record['exercise'])
                 exercise_id = record['id']
                 #print(muscle_list)
                 inter_list = intersection(usr_muscle_list , muscle_list)
@@ -148,7 +149,7 @@ class AllCollections(Resource):
             # if there are less user required exercises than the compound list
             # randomly select the required number of exercises
             else:
-                random.shuffle(compound_id_list)
+                #random.shuffle(compound_id_list)
                 temp_list = compound_id_list[:energy]
                 for i in temp_list:
                     output_id_list.append(i['id'])
@@ -172,6 +173,7 @@ class AllCollections(Resource):
                 exercise_name = record['exercise']
                 description = record['description']
                 muscle = record['muscle']
+                equipment = record['equipment']
                 if len(muscle) > 1:
                     compound = True
                 else:
@@ -183,6 +185,7 @@ class AllCollections(Resource):
                     "description": description,
                     "photo": photo,
                     "muscle": muscle,
+                    "equipment": equipment,
                     "compound": compound
                 }
                 output_list.append(output_dict)
@@ -190,11 +193,13 @@ class AllCollections(Resource):
                 output_list = output_list[:energy]
         else:
           for record_id in output_id_list:
-            db.exercises.find_one({"id": record_id})
-            exercise_name = record['exercise']
-            description = record['description']
-            muscle = record['muscle']
-            photo = record['photo']
+            #print("here")
+            entry = db.test.find_one({"id": record_id})
+            exercise_name = entry['exercise']
+            description = entry['description']
+            muscle = entry['muscle']
+            photo = entry['photo']
+            equipment = entry["equipment"]
             if len(muscle) > 1:
                 compound = True
             else:
@@ -205,6 +210,7 @@ class AllCollections(Resource):
                 "description": description,
                 "photo": photo,
                 "muscle": muscle,
+                "equipment": equipment,
                 "compound": compound
             }
             output_list.append(output_dict)
