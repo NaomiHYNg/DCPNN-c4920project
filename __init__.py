@@ -2,19 +2,31 @@ import json
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
-
+from config import Config
+from forms import Login
+from app import load_user, User
+from flask_login import LoginManager
+from models import User
 
 app = Flask(__name__)
+app.config.from_object(Config)
+login = LoginManager(app) # exported into models.py and
+login.login_view = 'login'
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'password':
-            error = 'Invalid username or password.'
-        else:
-            return render_template('home.html', username=request.form['username'])
-    return render_template('login.html', error=error)
+    #if request.method == 'POST':
+        #if request.form['username'] != 'admin' or request.form['password'] != 'password':
+            #error = 'Invalid username or password.'
+        #else:
+            #return render_template('home.html', username=request.form['username'])
+    #return render_template('login.html', error=error)
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = Login()
+    return render_template('login2.html', title='Sign In', form=form)
 
 @app.route('/', methods=['GET', 'POST'])
 
