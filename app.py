@@ -167,30 +167,60 @@ class AllCollections(Resource):
         if not output_id_list:            
 
             # For testing, print out all records
+            tricep_id_list = []
+            quad_id_list = []
+            ham_id_list = []
+
             for record in collection:
-                # print(record)
                 exercise_id = record['id']
-                exercise_name = record['exercise']
-                description = record['description']
                 muscle = record['muscle']
-                equipment = record['equipment']
-                if len(muscle) > 1:
-                    compound = True
-                else:
-                    compound = False
-                photo = record['photo']
-                output_dict = {
-                    "id": exercise_id,
-                    "exercise": exercise_name,
-                    "description": description,
-                    "photo": photo,
-                    "muscle": muscle,
-                    "equipment": equipment,
-                    "compound": compound
-                }
-                output_list.append(output_dict)
-                random.shuffle(output_list)
-                output_list = output_list[:energy]
+
+                if "Triceps" in muscle:
+                    tricep_id_list.append(exercise_id)
+                elif "Quadriceps" in muscle:
+                    quad_id_list.append(exercise_id)
+                elif "Hamstrings" in muscle:
+                    ham_id_list.append(exercise_id)
+
+            # assume energy level will always be divisible by 3
+            num_per_muscle = int(energy/3)
+
+            random.shuffle(tricep_id_list)
+            random.shuffle(quad_id_list)
+            random.shuffle(ham_id_list)
+            tricep_id_list = tricep_id_list[:num_per_muscle]
+            quad_id_list = quad_id_list[:num_per_muscle]
+            ham_id_list = ham_id_list[:num_per_muscle]
+
+            default_list = []
+            default_list.append(tricep_id_list)
+            default_list.append(quad_id_list)
+            default_list.append(ham_id_list)
+
+            for m_list in default_list:
+
+                for i in m_list:
+                    entry = db.test.find_one({"id":i})
+                    exercise_name = entry['exercise']
+                    description = entry['description']
+                    muscle = entry['muscle']
+                    photo = entry['photo']
+                    equipment = entry["equipment"]
+                    if len(muscle) > 1:
+                        compound = True
+                    else:
+                        compound = False
+                    output_dict = {
+                        "id": i,
+                        "exercise": exercise_name,
+                        "description": description,
+                        "photo": photo,
+                        "muscle": muscle,
+                        "equipment": equipment,
+                        "compound": compound
+                    }
+                    output_list.append(output_dict) 
+
         else:
           for record_id in output_id_list:
             #print("here")
