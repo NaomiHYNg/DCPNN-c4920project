@@ -56,7 +56,7 @@ class AllCollections(Resource):
         energy = args['energy'] # returns an integer
         usr_muscle_list = args['muscle'] # returns a list of muscles
         #print(usr_muscle_list)        
-
+        #usr_muscle_list = ["Triceps"]
         # Obtain collection
         #collection = db.exercises.find()
         collection = DB.find_all("exercises")
@@ -158,7 +158,26 @@ class AllCollections(Resource):
                     output_id_list.append(i['id'])
 
             print("Output Id List")
-            print(output_id_list)        
+            print(output_id_list)
+            for i in output_id_list:
+                entry = DB.find_one("exercises", {"id":i})
+                #print(entry)
+                exercise_name = entry['exercise']
+                description = entry['description']
+                muscle = entry['muscle']
+                photo = entry['photo']
+                equipment = entry["equipment"]
+
+                output_dict = {
+                    "id": i,
+                    "exercise": exercise_name,
+                    "description": description,
+                    "photo": photo,
+                    "muscle": muscle,
+                    "equipment": equipment
+                }
+                output_list.append(output_dict)            
+
 
         # if there are no user muscle preferences, set default value
         #else:
