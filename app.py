@@ -75,6 +75,7 @@ class AllCollections(Resource):
             # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
             for record in collection:
                 muscle_list = record['muscle']
+                #print(record['exercise'])
                 exercise_id = record['id']
                 #print(muscle_list)
                 inter_list = intersection(usr_muscle_list , muscle_list)
@@ -166,53 +167,58 @@ class AllCollections(Resource):
         # Muscle groups are not in consistent format
         # Temporary solution - randomly select any requested number of exercises if no muscle groups selected
 
-        if not output_id_list:            
+        if not output_id_list:
+            # For exercisesing, print out all records
+            tricep_id_list = []
+            quad_id_list = []
+            ham_id_list = []
 
-            # For testing, print out all records
             for record in collection:
-                # print(record)
                 exercise_id = record['id']
-                exercise_name = record['exercise']
-                description = record['description']
                 muscle = record['muscle']
-                if len(muscle) > 1:
-                    compound = True
-                else:
-                    compound = False
-                photo = record['photo']
-                output_dict = {
-                    "id": exercise_id,
-                    "exercise": exercise_name,
-                    "description": description,
-                    "photo": photo,
-                    "muscle": muscle,
-                    "compound": compound
-                }
-                output_list.append(output_dict)
-                random.shuffle(output_list)
-                output_list = output_list[:energy]
-        else:
-          for record_id in output_id_list:
-            DB.find_one("exercises", {"id": exercise_id})
-            #db.exercises.find_one({"id": record_id})
-            exercise_name = record['exercise']
-            description = record['description']
-            muscle = record['muscle']
-            photo = record['photo']
-            if len(muscle) > 1:
-                compound = True
-            else:
-                compound = False    
-            output_dict = {
-                "id": record_id,
-                "exercise": exercise_name,
-                "description": description,
-                "photo": photo,
-                "muscle": muscle,
-                "compound": compound
-            }
-            output_list.append(output_dict)
-        
+
+                if "Triceps" in muscle:
+                    tricep_id_list.append(exercise_id)
+                elif "Quadriceps" in muscle:
+                    quad_id_list.append(exercise_id)
+                elif "Hamstrings" in muscle:
+                    ham_id_list.append(exercise_id)
+
+            # assume energy level will always be divisible by 3
+            num_per_muscle = int(energy/3)
+
+            random.shuffle(tricep_id_list)
+            random.shuffle(quad_id_list)
+            random.shuffle(ham_id_list)
+            tricep_id_list = tricep_id_list[:num_per_muscle]
+            quad_id_list = quad_id_list[:num_per_muscle]
+            ham_id_list = ham_id_list[:num_per_muscle]
+
+            default_list = []
+            default_list.append(tricep_id_list)
+            default_list.append(quad_id_list)
+            default_list.append(ham_id_list)
+            #print(default_list) #working fine
+            for m_list in default_list:
+                for i in m_list:
+                    entry = DB.find_one("exercises", {"id":i})
+                    #print(entry)
+                    exercise_name = entry['exercise']
+                    description = entry['description']
+                    muscle = entry['muscle']
+                    photo = entry['photo']
+                    equipment = entry["equipment"]
+
+                    output_dict = {
+                        "id": i,
+                        "exercise": exercise_name,
+                        "description": description,
+                        "photo": photo,
+                        "muscle": muscle,
+                        "equipment": equipment
+                    }
+                    output_list.append(output_dict)            
+        #print(output_list)
         return output_list, 200
 
 #http://127.0.0.1:5000/exercises/1
@@ -250,7 +256,7 @@ class ExerciseCollection(Resource):
 
         new_entry = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "photo": photo, "description": description}
 
-        updateEntry(new_entry, exercises, {"id": exercise_id})
+        updateEntry(new_entry, "exercises", {"id": exercise_id})
 
         return new_entry, 200, None
 
