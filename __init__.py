@@ -20,7 +20,12 @@ def home():
 
     if request.method == 'POST':
 
-        return render_template('home.html', login_status="Logged in as " + request.form['username'], username=request.form['username'])
+        if request.form['username']:
+            login_status="Logged in as " + request.form['username'] + "."
+        else:
+            login_status="Not signed in."
+
+        return render_template('home.html', login_status=login_status, username=request.form['username'])
 
     return render_template('home.html', login_status="Not signed in.")
 
