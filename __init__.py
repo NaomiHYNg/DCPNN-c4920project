@@ -1,4 +1,5 @@
 import json
+import re
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
@@ -53,25 +54,27 @@ def contact():
 def summary():
 
     if request.method == 'POST':
-        try:
-            response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
-            print("Status Code: " + str(response))
 
-            content = json.loads(response.content)
+        muscles = re.sub("\'", "\"", request.form['muscles'])
 
+        muscles = json.loads(muscles)
+
+        response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
+        print("Status Code: " + str(response))
+
+        content = json.loads(response.content)
+
+        if request.form['energy'] == '3':
+            energy = "LOW"
+        elif request.form['energy'] == '6':
             energy = "MODERATE"
+        elif request.form['energy'] == '9':
+            energy = "HIGH"
 
-            if request.form['energy'] == '3':
-                energy = "LOW"
-            elif request.form['energy'] == '6':
-                energy = "MODERATE"
-            elif request.form['energy'] == '9':
-                energy = "HIGH"
+        print(request.form['muscle'])
 
-            return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], muscle=request.form['muscle'], username=request.form['username'])
-        except Exception as e:
-            print(e)
-            error = "Error connecting to server!"
+        return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], muscles=request.form['muscles'], username=request.form['username'])
+
 
     return render_template('home.html', error=error)
 
@@ -79,7 +82,13 @@ def summary():
 def generate():
 
     if request.method == 'POST':
-        return render_template('generate.html', username=request.form['username'], energy=request.form['energy'], muscle=request.form['muscle'])
+
+        muscles = []
+
+        for muscle in request.form.getlist('muscle'):
+            muscles.append(muscle)
+
+        return render_template('generate.html', muscles=request.form.getlist('muscle'), username=request.form['username'], energy=request.form['energy'])
 
     return render_template('generate.html')
 
