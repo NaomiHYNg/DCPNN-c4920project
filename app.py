@@ -49,14 +49,14 @@ class AllCollections(Resource):
         # Connect to mongodb mlab
         mongo_port = 27107
         db_name = 'comp4920'
-        collection_name = 'test'
+        collection_name = 'exercises'
         mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
         client = MongoClient(host=mongo_host, port=mongo_port)
         db = client[db_name]
-        test = db[collection_name]
+        exercises = db[collection_name]
 
         # Obtain collection
-        collection = db.test.find()
+        collection = db.exercises.find()
 
         # Abort if collection not found
         if not collection:
@@ -166,7 +166,7 @@ class AllCollections(Resource):
 
         if not output_id_list:            
 
-            # For testing, print out all records
+            # For exercisesing, print out all records
             tricep_id_list = []
             quad_id_list = []
             ham_id_list = []
@@ -200,48 +200,39 @@ class AllCollections(Resource):
             for m_list in default_list:
 
                 for i in m_list:
-                    entry = db.test.find_one({"id":i})
+                    entry = db.exercises.find_one({"id":i})
                     exercise_name = entry['exercise']
                     description = entry['description']
                     muscle = entry['muscle']
                     photo = entry['photo']
                     equipment = entry["equipment"]
-                    if len(muscle) > 1:
-                        compound = True
-                    else:
-                        compound = False
+
                     output_dict = {
                         "id": i,
                         "exercise": exercise_name,
                         "description": description,
                         "photo": photo,
                         "muscle": muscle,
-                        "equipment": equipment,
-                        "compound": compound
+                        "equipment": equipment
                     }
                     output_list.append(output_dict) 
 
         else:
           for record_id in output_id_list:
             #print("here")
-            entry = db.test.find_one({"id": record_id})
+            entry = db.exercises.find_one({"id": record_id})
             exercise_name = entry['exercise']
             description = entry['description']
             muscle = entry['muscle']
             photo = entry['photo']
             equipment = entry["equipment"]
-            if len(muscle) > 1:
-                compound = True
-            else:
-                compound = False    
             output_dict = {
                 "id": record_id,
                 "exercise": exercise_name,
                 "description": description,
                 "photo": photo,
                 "muscle": muscle,
-                "equipment": equipment,
-                "compound": compound
+                "equipment": equipment
             }
             output_list.append(output_dict)
         
