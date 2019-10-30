@@ -55,26 +55,35 @@ def summary():
 
     if request.method == 'POST':
 
-        muscles = re.sub("\'", "\"", request.form['muscles'])
+        try:
+            muscles = re.sub("\'", "\"", request.form['muscles'])
+            muscles = json.loads(muscles)
+            muscles = ",".join(muscles)
 
-        muscles = json.loads(muscles)
+            query = "http://127.0.0.1:5001/exercises?energy=" + request.form['energy']
 
-        response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
-        print("Status Code: " + str(response))
+            if muscles:
+                query = query + "&muscle=" + muscles
 
-        content = json.loads(response.content)
+            print(query)
 
-        if request.form['energy'] == '3':
-            energy = "LOW"
-        elif request.form['energy'] == '6':
-            energy = "MODERATE"
-        elif request.form['energy'] == '9':
-            energy = "HIGH"
+            response = requests.get(query)
+            print("Status Code: " + str(response))
 
-        print(request.form['muscle'])
+            content = json.loads(response.content)
 
-        return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], muscles=request.form['muscles'], username=request.form['username'])
+            if request.form['energy'] == '3':
+                energy = "LOW"
+            elif request.form['energy'] == '6':
+                energy = "MODERATE"
+            elif request.form['energy'] == '9':
+                energy = "HIGH"
 
+            return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], username=request.form['username'])
+
+        except Exception as e:
+            print(e)
+            error = "Error connecting to server!"
 
     return render_template('home.html', error=error)
 
