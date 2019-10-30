@@ -11,20 +11,18 @@ app = Flask(__name__)
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'password':
-            error = 'Invalid username or password.'
-        else:
-            return render_template('home.html', username=request.form['username'])
+        return render_template('login.html')
+
     return render_template('login.html', error=error)
 
 @app.route('/', methods=['GET', 'POST'])
-
 def home():
 
     if request.method == 'POST':
-        return render_template('home.html', username=request.form['username'])
 
-    return render_template('home.html')
+        return render_template('home.html', login_status="Logged in as " + request.form['username'], username=request.form['username'])
+
+    return render_template('home.html', login_status="Not signed in.")
 
 @app.route('/about/', methods=['GET', 'POST'])
 def about():
