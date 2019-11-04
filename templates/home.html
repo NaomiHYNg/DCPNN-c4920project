@@ -12,7 +12,9 @@
 
     <script>
 
-        window.id = 1
+        window.id = 1;
+        window.energy_levels = ['Low Energy', 'Moderate Energy', 'High Energy'];
+        window.selected_list = [];
 
         function hover(element) {
           element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
@@ -22,27 +24,59 @@
           element.setAttribute('src', '/static/images/' + element.name + '.png');
         }
 
+        function updateSelected(id, string) {
+
+            if (document.getElementById(id).checked == true) {
+
+                if (document.getElementById(id).type == "radio") {
+                    if (window.selected_list.indexOf(string) == -1) {
+                        window.selected_list.unshift(string);
+
+                        for (i = 0; i < window.energy_levels.length; i++) {
+                          if (window.energy_levels[i] == string) {
+                            continue;
+                          } else {
+                            if (window.selected_list.indexOf(window.energy_levels[i]) > -1) {
+                                window.selected_list.splice(window.selected_list.indexOf(window.energy_levels[i]), 1);
+                            }
+                          }
+                        }
+
+                        document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+                        return;
+                    } else {
+                        return;
+                    }
+                }
+
+                window.selected_list.push(string);
+                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+            } else {
+                window.selected_list.splice(window.selected_list.indexOf(string), 1);
+                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+            }
+        }
 
         function nextOption() {
 
           if (window.id == 3) {
-            return
+            return;
           }
 
           window.id = window.id + 1
 
           if (window.id == 3) {
-            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png')
+            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png');
           } else {
-            document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
-            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
+            document.getElementById('next').setAttribute('src', '/static/images/arrow.png');
+            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png');
           }
 
           var i;
           var x = document.getElementsByClassName("option");
           for (i = 0; i < x.length; i++) {
             x[i].style.display = "none";
-            x[i].setAttribute('src', '/static/images/arrow.png')
+            x[i].setAttribute('src', '/static/images/arrow.png');
           }
           document.getElementById(window.id).style.display = "block";
 
@@ -51,16 +85,16 @@
         function prevOption() {
 
           if (window.id == 1) {
-            return
+            return;
           }
 
-          window.id = window.id - 1
+          window.id = window.id - 1;
 
           if (window.id == 1) {
-            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png')
+            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png');
           } else {
-            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
-            document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
+            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png');
+            document.getElementById('next').setAttribute('src', '/static/images/arrow.png');
           }
 
           var i;
@@ -84,6 +118,16 @@
 
         <form action="{{ url_for('generate') }}" method="POST">
 
+            <div class="w3-staatliches w3-sidebar w3-bar-block" style="background-color:transparent;border:1px solid black;font-size:30px;height:70%;width:400px">
+                <span style="font-weight:bold">
+                    Selected:
+                </span>
+                <br>
+                <div class="w3-sidebar" id="selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%;width:390px">
+                Moderate Energy
+                </div>
+            </div>
+
             <div class="w3-container w3-center">
                 <div class="option w3-staatliches" id="1" style="font-size:40px;margin-bottom:50px">
                     <label class="w3-animate-opacity">
@@ -92,17 +136,17 @@
                     <br>
                     <br>
                     <label class="w3-animate-opacity" style="margin-right:25px">
-                        <input type="radio" name="energy" value="3">
+                        <input id=LowEnergyRadio type="radio" name="energy" value="3" onclick="updateSelected(id, 'Low Energy')">
                         <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                     </label>
 
                     <label class="w3-animate-opacity">
-                        <input type="radio" name="energy" value="6" checked>
+                        <input id=ModerateEnergyRadio type="radio" name="energy" value="6" checked onclick="updateSelected(id, 'Moderate Energy')">
                         <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                     </label>
 
                     <label class="w3-animate-opacity" style="margin-left:25px">
-                      <input type="radio" name="energy" value="9">
+                      <input id=HighEnergyRadio type="radio" name="energy" value="9" onclick="updateSelected(id, 'High Energy')">
                       <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                     </label>
                 </div>
@@ -116,7 +160,7 @@
 
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Chest" style="display:none">
+                            <input id="ChestCheckbox" type="checkbox" name="muscle" value="Chest" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Chest.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Chest
@@ -125,7 +169,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Forearms" style="display:none">
+                            <input id="ForearmsCheckbox" type="checkbox" name="muscle" value="Forearms" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Forearms.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Forearms
@@ -134,7 +178,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Lats" style="display:none">
+                            <input id="LatsCheckbox" type="checkbox" name="muscle" value="Lats" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Lats.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Lats
@@ -143,7 +187,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Middle Back" style="display:none">
+                            <input id="MiddleBackCheckbox" type="checkbox" name="muscle" value="Middle Back" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/MiddleBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Middle Back
@@ -152,7 +196,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Lower Back" style="display:none">
+                            <input id="LowerBackCheckbox" type="checkbox" name="muscle" value="Lower Back" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/LowerBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Lower Back
@@ -161,7 +205,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Neck" style="display:none">
+                            <input id="NeckCheckbox" type="checkbox" name="muscle" value="Neck" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Neck.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Neck
@@ -170,7 +214,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Quadriceps" style="display:none">
+                            <input id="QuadricepsCheckbox" type="checkbox" name="muscle" value="Quadriceps" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Quadriceps
@@ -181,7 +225,7 @@
                     <br>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Hamstrings" style="display:none">
+                            <input id="HamstringsCheckbox" type="checkbox" name="muscle" value="Hamstrings" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Hamstrings.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Hamstrings
@@ -190,7 +234,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Calves" style="display:none">
+                            <input id="CalvesCheckbox"type="checkbox" name="muscle" value="Calves" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Calves.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Calves
@@ -199,7 +243,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Triceps" style="display:none">
+                            <input id="TricepsCheckbox" type="checkbox" name="muscle" value="Triceps" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Triceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Triceps
@@ -208,7 +252,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Traps" style="display:none">
+                            <input id="TrapsCheckbox" type="checkbox" name="muscle" value="Traps" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Traps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Traps
@@ -217,7 +261,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Shoulders" style="display:none">
+                            <input id="ShouldersCheckbox" type="checkbox" name="muscle" value="Shoulders" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Shoulders.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Shoulders
@@ -226,7 +270,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Abdominals" style="display:none">
+                            <input id="AbdominalsCheckbox" type="checkbox" name="muscle" value="Abdominals" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Abdominals.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Abdominals
@@ -235,7 +279,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Glutes" style="display:none">
+                            <input id="GlutesCheckbox" type="checkbox" name="muscle" value="Glutes" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Glutes.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Glutes
@@ -244,7 +288,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="muscle" value="Biceps" style="display:none">
+                            <input id="BicepsCheckbox" type="checkbox" name="muscle" value="Biceps" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/muscles/Biceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Biceps
@@ -262,7 +306,7 @@
 
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="Band" style="display:none">
+                            <input id="BandCheckbox" type="checkbox" name="equipment" value="Band" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/Band.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Band
@@ -271,7 +315,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="Barbell" style="display:none">
+                            <input id="BarbellCheckbox" type="checkbox" name="equipment" value="Barbell" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/Barbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Barbell
@@ -280,7 +324,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="Cables" style="display:none">
+                            <input id="CablesCheckbox" type="checkbox" name="equipment" value="Cables" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/Cables.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Cables
@@ -289,7 +333,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="Dumbbell" style="display:none">
+                            <input id="DumbbellCheckbox" type="checkbox" name="equipment" value="Dumbbell" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/Dumbbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Dumbbell
@@ -298,7 +342,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="ExerciseBall" style="display:none">
+                            <input id="ExerciseBallCheckbox" type="checkbox" name="equipment" value="ExerciseBall" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/ExerciseBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Exercise Ball
@@ -309,7 +353,7 @@
                     <br>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="EZCurlBar" style="display:none">
+                            <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="EZCurlBar" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/EZCurlBar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 EZ Curl Bar
@@ -318,7 +362,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="FoamRoll" style="display:none">
+                            <input id="FoamRollCheckbox" type="checkbox" name="equipment" value="FoamRoll" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/FoamRoll.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Foam Roll
@@ -327,7 +371,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="KettleBell" style="display:none">
+                            <input id="KettleBellCheckbox" type="checkbox" name="equipment" value="KettleBell" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/KettleBell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Kettlebell
@@ -336,7 +380,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="Machine" style="display:none">
+                            <input id="MachineCheckbox" type="checkbox" name="equipment" value="Machine" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/Machine.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Machine
@@ -345,7 +389,7 @@
                     </label>
                     <label class="w3-animate-opacity">
                         <span class="tooltip">
-                            <input type="checkbox" name="equipment" value="MedicineBall" style="display:none">
+                            <input id="MedicineBallCheckbox" type="checkbox" name="equipment" value="MedicineBall" style="display:none" onclick="updateSelected(id, value)">
                             <img name="happy" src="/static/images/icons/equipment/MedicineBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
                             <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                 Medicine Ball
