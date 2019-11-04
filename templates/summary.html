@@ -96,13 +96,28 @@
                             {{ exercise['exercise'] }}
                         </h3>
                         <p class="w3-container" style="margin-top: 40px;">
+                            {% set primary = namespace(ex=0) %}
                             {% for muscle in exercise['muscle'] %}
-                                <span class="tooltip">
-                                    <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
-                                    <span class="tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                        {{ muscle }}
+                                {% if primary.ex == 0 %}
+                                    <span class="tooltip" style="margin-right:20px;">
+                                        <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(0,255,0,1);">
+                                        <span class="tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:10px;">
+                                            {{ muscle }}
+                                            <br>
+                                            (Primary)
+                                        </span>
                                     </span>
-                                </span>
+                                    {% set primary.ex = primary.ex + 1 %}
+                                {% else %}
+                                    <span class="tooltip" style="margin-right:20px;">
+                                        <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(255,255,0,1);">
+                                        <span class="tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:10px;">
+                                            {{ muscle }}
+                                            <br>
+                                            (Secondary)
+                                        </span>
+                                    </span>
+                                {% endif %}
                             {% endfor %}
                         </p>
                         <p class="w3-container">
