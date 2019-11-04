@@ -4,6 +4,7 @@
         <title>Fitness Tailor</title>
         <link rel="stylesheet" href="/static/css/w3.css">
         <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/tooltip.css">
     </head>
 
     <script>
@@ -94,15 +95,21 @@
                         <h3 class="w3-staatliches" style="font-size: 40px">
                             {{ exercise['exercise'] }}
                         </h3>
-                        <p>
-                            <b>Muscle trained: {{ exercise['muscle'] }}</b>
-                        </p>
-                        <p>
-                            {% for image in exercise['photo'] %}
-                                <img src="{{ image }}" alt="exercise_photo" width="auto" height="200px" style="float:left">
+                        <p class="w3-container" style="margin-top: 40px;">
+                            {% for muscle in exercise['muscle'] %}
+                                <span class="tooltip">
+                                    <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                                    <span class="tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                        {{ muscle }}
+                                    </span>
+                                </span>
                             {% endfor %}
                         </p>
-
+                        <p class="w3-container">
+                            {% for image in exercise['photo'] %}
+                                <img src="{{ image }}" alt="exercise_photo" width="auto" height="200px">
+                            {% endfor %}
+                        </p>
                         <p style="clear:left">
                         <input type="checkbox" name="{{ exercise['exercise'] }}" value="uncomplete" style="transform:scale(3);margin:10px">
                             <span style="font-size:24px">Exercise Completed</span>
