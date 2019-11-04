@@ -18,6 +18,7 @@
 
         function hover(element) {
           element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
+          element.style.transition = "box-shadow .3s ease-in-out";
         }
 
         function unhover(element) {
@@ -25,7 +26,7 @@
         }
 
         function hoverSelection(element) {
-          element.style.transition = "all .15s ease-in-out";
+          element.style.transition = "transform .15s ease-in-out, box-shadow .3s ease-in-out";
           element.style.transform = "scale(1.5)";
         }
 
@@ -150,7 +151,7 @@
 
                 <div class="w3-container w3-center" style="display:table-cell">
                     <div class="option w3-staatliches" id="1" style="font-size:40px;margin-bottom:50px">
-                        <label class="w3-animate-opacity">
+                        <label class="w3-animate-opacity" style="font-weight:bold">
                             Energy Level
                         </label>
                         <br>
@@ -172,14 +173,14 @@
                     </div>
 
                     <div class="option w3-staatliches" id="2" style="font-size:40px;margin-bottom:50px;display:none">
-                        <label class="w3-animate-opacity">
+                        <label class="w3-animate-opacity" style="font-weight:bold">
                             Muscle Group
                         </label>
                         <br>
                         <br>
 
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="ChestCheckbox" type="checkbox" name="muscle" value="Chest" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Chest.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -188,7 +189,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="ForearmsCheckbox" type="checkbox" name="muscle" value="Forearms" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Forearms.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -197,7 +198,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="LatsCheckbox" type="checkbox" name="muscle" value="Lats" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Lats.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -206,7 +207,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="MiddleBackCheckbox" type="checkbox" name="muscle" value="Middle Back" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Middle Back.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -215,7 +216,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="LowerBackCheckbox" type="checkbox" name="muscle" value="Lower Back" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Lower Back.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -224,7 +225,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="NeckCheckbox" type="checkbox" name="muscle" value="Neck" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Neck.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -233,7 +234,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="QuadricepsCheckbox" type="checkbox" name="muscle" value="Quadriceps" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -244,7 +245,7 @@
                         <br>
                         <br>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="HamstringsCheckbox" type="checkbox" name="muscle" value="Hamstrings" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Hamstrings.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -253,7 +254,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="CalvesCheckbox"type="checkbox" name="muscle" value="Calves" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Calves.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -262,7 +263,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="TricepsCheckbox" type="checkbox" name="muscle" value="Triceps" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Triceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -271,7 +272,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="TrapsCheckbox" type="checkbox" name="muscle" value="Traps" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Traps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -280,7 +281,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="ShouldersCheckbox" type="checkbox" name="muscle" value="Shoulders" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Shoulders.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -289,7 +290,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="AbdominalsCheckbox" type="checkbox" name="muscle" value="Abdominals" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Abdominals.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -298,7 +299,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="GlutesCheckbox" type="checkbox" name="muscle" value="Glutes" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Glutes.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -307,7 +308,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="BicepsCheckbox" type="checkbox" name="muscle" value="Biceps" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/muscles/Biceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -318,14 +319,14 @@
                     </div>
 
                     <div class="option w3-staatliches" id="3" style="font-size:40px;margin-bottom:50px;display:none">
-                        <label class="w3-animate-opacity">
+                        <label class="w3-animate-opacity" style="font-weight:bold">
                             Equipment Selection
                         </label>
                         <br>
                         <br>
 
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip" style="border-radius: 80%">
                                 <input id="BandCheckbox" type="checkbox" name="equipment" value="Band" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Band.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -334,7 +335,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="BarbellCheckbox" type="checkbox" name="equipment" value="Barbell" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Barbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -343,7 +344,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="CablesCheckbox" type="checkbox" name="equipment" value="Cables" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Cables.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -352,7 +353,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="DumbbellCheckbox" type="checkbox" name="equipment" value="Dumbbell" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Dumbbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -361,7 +362,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="ExerciseBallCheckbox" type="checkbox" name="equipment" value="Exercise Ball" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/ExerciseBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -372,7 +373,7 @@
                         <br>
                         <br>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="EZ Curl Bar" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/EZCurlBar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -381,7 +382,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="FoamRollCheckbox" type="checkbox" name="equipment" value="Foam Roll" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/FoamRoll.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -390,7 +391,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="KettleBellCheckbox" type="checkbox" name="equipment" value="KettleBell" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/KettleBells.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -399,7 +400,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="MachineCheckbox" type="checkbox" name="equipment" value="Machine" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Machine.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -408,7 +409,7 @@
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
-                            <span class="tooltip">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="MedicineBallCheckbox" type="checkbox" name="equipment" value="Medicine Ball" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/MedicineBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">

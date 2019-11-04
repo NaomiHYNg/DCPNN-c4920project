@@ -75,6 +75,10 @@ def summary():
 
             content = json.loads(response.content)
 
+            for exercise in content:
+                exercise['description'] = exercise['description'].rstrip('. ')
+                exercise['description'] = exercise['description'].split('. ')
+
             if request.form['energy'] == '3':
                 energy = "LOW"
             elif request.form['energy'] == '6':
