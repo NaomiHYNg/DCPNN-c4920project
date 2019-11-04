@@ -5,6 +5,7 @@
         <link rel="stylesheet" href="/static/css/check.css">
         <link rel="stylesheet" href="/static/css/w3.css">
         <link rel="stylesheet" href="/static/css/main.css">
+        <link rel="stylesheet" href="/static/css/tooltip.css">
     </head>
 
     {% set iteration = 1 | int %}
@@ -114,66 +115,141 @@
                     <br>
 
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Chest" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Chest.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Chest" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Chest.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Chest
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Forearms" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Forearms.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Forearms" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Forearms.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Forearms
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Lats" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Lats.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Lats" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Lats.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Lats
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Middle Back" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/MiddleBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Middle Back" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/MiddleBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Middle Back
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Lower Back" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/LowerBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Lower Back" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/LowerBack.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Lower Back
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Neck" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Neck.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Neck" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Neck.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Neck
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Quadriceps" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Quadriceps" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Quadriceps
+                            </span>
+                        </span>
                     </label>
                     <br>
                     <br>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Hamstrings" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Hamstrings.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Hamstrings" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Hamstrings.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Hamstrings
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Calves" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Calves.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Calves" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Calves.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Calves
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Triceps" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Triceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Triceps" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Triceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Triceps
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Traps" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Traps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Traps" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Traps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Traps
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Shoulders" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Shoulders.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Shoulders" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Shoulders.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Shoulders
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Abdominals" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Abdominals.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Abdominals" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Abdominals.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Abdominals
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Glutes" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Glutes.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Glutes" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Glutes.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Glutes
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="muscle" value="Biceps" style="display:none">
-                        <img name="happy" src="/static/images/icons/muscles/Biceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="muscle" value="Biceps" style="display:none">
+                            <img name="happy" src="/static/images/icons/muscles/Biceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Biceps
+                            </span>
+                        </span>
                     </label>
                 </div>
 
@@ -185,46 +261,96 @@
                     <br>
 
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="Band" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/Band.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="Band" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/Band.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Band
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="Barbell" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/Barbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="Barbell" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/Barbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Barbell
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="Cables" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/Cables.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="Cables" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/Cables.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Cables
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="Dumbbell" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/Dumbbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="Dumbbell" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/Dumbbell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Dumbbell
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="ExerciseBall" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/ExerciseBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="ExerciseBall" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/ExerciseBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Exercise Ball
+                            </span>
+                        </span>
                     </label>
                     <br>
                     <br>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="EZCurlBar" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/EZCurlBar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="EZCurlBar" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/EZCurlBar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                EZ Curl Bar
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="FoamRoll" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/FoamRoll.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="FoamRoll" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/FoamRoll.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Foam Roll
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="KettleBell" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/KettleBell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="KettleBell" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/KettleBell.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Kettlebell
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="Machine" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/Machine.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="Machine" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/Machine.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Machine
+                            </span>
+                        </span>
                     </label>
                     <label class="w3-animate-opacity">
-                        <input type="checkbox" name="equipment" value="MedicineBall" style="display:none">
-                        <img name="happy" src="/static/images/icons/equipment/MedicineBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                        <span class="tooltip">
+                            <input type="checkbox" name="equipment" value="MedicineBall" style="display:none">
+                            <img name="happy" src="/static/images/icons/equipment/MedicineBall.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                Medicine Ball
+                            </span>
+                        </span>
                     </label>
 
                 </div>
