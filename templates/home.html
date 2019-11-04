@@ -29,6 +29,14 @@
           }
 
           window.id = window.id + 1
+
+          if (window.id == 3) {
+            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png')
+          } else {
+            document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
+            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
+          }
+
           var i;
           var x = document.getElementsByClassName("option");
           for (i = 0; i < x.length; i++) {
@@ -36,9 +44,6 @@
             x[i].setAttribute('src', '/static/images/arrow.png')
           }
           document.getElementById(window.id).style.display = "block";
-
-          document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
-          document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
 
         }
 
@@ -49,6 +54,14 @@
           }
 
           window.id = window.id - 1
+
+          if (window.id == 1) {
+            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png')
+          } else {
+            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
+            document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
+          }
+
           var i;
           var x = document.getElementsByClassName("option");
           for (i = 0; i < x.length; i++) {
@@ -56,9 +69,6 @@
             x[i].setAttribute('src', '/static/images/arrow.png')
           }
           document.getElementById(window.id).style.display = "block";
-
-          document.getElementById('next').setAttribute('src', '/static/images/arrow.png')
-          document.getElementById('prev').setAttribute('src', '/static/images/arrow.png')
 
         }
 
@@ -218,7 +228,7 @@
             <div class="Menu">
                 <div class="generate w3-container w3-center">
                         <input type="hidden" name="username" value={{ username }}>
-                        <a href="#" onclick="prevOption()"><img id="prev" src="/static/images/arrow.png" style="transform: scaleX(-1);width:125px;height:75px;margin-right:30px"></a>
+                        <a href="#" onclick="prevOption()"><img id="prev" src="/static/images/arrowDisabled.png" style="transform: scaleX(-1);width:125px;height:75px;margin-right:30px"></a>
                         <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:250px;height:250px;outline:none;border-radius: 80%;">
                         <a href="#" onclick="nextOption()"><img id="next" src="/static/images/arrow.png" style="width:125px;height:75px;margin-left:30px"></a>
                 </div>
