@@ -18,7 +18,6 @@ api = Api(app)
 def updateEntry(record, collection, query):
     collection.update(query, record)
 
-
 def intersection(lst1, lst2):
     output_list = []
     for i1 in lst1:
@@ -30,12 +29,10 @@ def intersection(lst1, lst2):
     # print(output_list)
     return output_list
 
-
 # Setup parser
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
-
 
 # GET http://127.0.0.1:5001/exercises?energy=3
 
@@ -101,6 +98,7 @@ class AllCollections(Resource):
                         # print(record['exercise'])
 
             compound_id_list = sorted(compound_id_list, key=lambda i: i['intersection_len'], reverse=True)
+
             print("Compound List")
             print(compound_id_list)
             print("Single List")
@@ -123,7 +121,6 @@ class AllCollections(Resource):
                 # count the number of exercises in the single list
                 for key, value in single_id_dict.items():
                     # print(value)
-                    total_single = total_single + len(value)
 
                 # count the number of exercises in both single and compound list
                 total = total + total_single
@@ -140,6 +137,7 @@ class AllCollections(Resource):
                         for key, value in single_id_dict.items():
                             # print(key)
                             # print(value)
+
                             random.shuffle(value)
                             temp_id = single_id_dict[key][0]
                             if temp_id in output_id_list:
@@ -247,6 +245,7 @@ class AllCollections(Resource):
 @api.route('/exercises/<int:exercise_id>')
 class ExerciseCollection(Resource):
     def get(self, exercise_id):
+
         # Connect to mongodb mlab
         mongo_port = 27107
         db_name = 'comp4920'
