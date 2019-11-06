@@ -59,7 +59,7 @@ class AllCollections(Resource):
         #usr_muscle_list = ["Triceps"]
         # Obtain collection
         #collection = db.exercises.find()
-        collection = DB.find_all("exercises")
+        collection = DB.find_all("test")
 
         # Abort if collection not found
         if not collection:
@@ -160,7 +160,7 @@ class AllCollections(Resource):
             print("Output Id List")
             print(output_id_list)
             for i in output_id_list:
-                entry = DB.find_one("exercises", {"id":i})
+                entry = DB.find_one("test", {"id":i})
                 #print(entry)
                 exercise_name = entry['exercise']
                 description = entry['description']
@@ -220,7 +220,7 @@ class AllCollections(Resource):
             #print(default_list) #working fine
             for m_list in default_list:
                 for i in m_list:
-                    entry = DB.find_one("exercises", {"id":i})
+                    entry = DB.find_one("test", {"id":i})
                     #print(entry)
                     exercise_name = entry['exercise']
                     description = entry['description']
@@ -246,7 +246,7 @@ class ExerciseCollection(Resource):
     def get(self, exercise_id):
 
         # Connect to mongodb mlab
-        collection = DB.find_one("exercises", {"id": exercise_id})
+        collection = DB.find_one("test", {"id": exercise_id})
         
         if not collection:
             api.abort(404, "Collection id {} not found".format(exercise_id))
@@ -265,7 +265,7 @@ class ExerciseCollection(Resource):
         payload = request.form
 
         # Connect to mongodb mlab
-        collection = DB.find_one("exercises", {"id": exercise_id})
+        collection = DB.find_one("test", {"id": exercise_id})
 
         exercise = payload['exercise']
         muscle = payload['muscle']
