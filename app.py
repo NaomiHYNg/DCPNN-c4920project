@@ -2,17 +2,25 @@ import json
 from pymongo import MongoClient
 # import requests
 from flask import Flask
-from flask import request
+from flask import request, jsonify
 from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_restplus import inputs
 from flask_restplus import reqparse
+from flask_login import LoginManager
+from werkzeug.security import generate_password_hash, check_password_hash
+
 import re
 import random
+from database import DB
 
 # Helper Functions
 app = Flask(__name__)
 api = Api(app)
+DB.init()
+login = LoginManager()  # exported into models.py and
+login.init_app(app)
+login.login_view = 'login'
 
 
 def updateEntry(record, collection, query):
@@ -46,18 +54,10 @@ class AllCollections(Resource):
         energy = args['energy']  # returns an integer
         usr_muscle_list = args['muscle']  # returns a list of muscles
         # print(usr_muscle_list)
-
-        # Connect to mongodb mlab
-        mongo_port = 27107
-        db_name = 'comp4920'
-        collection_name = 'exercises'
-        mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
-        client = MongoClient(host=mongo_host, port=mongo_port)
-        db = client[db_name]
-        exercises = db[collection_name]
-
+        # usr_muscle_list = ["Triceps"]
         # Obtain collection
-        collection = db.exercises.find()
+        # collection = db.exercises.find()
+        collection = DB.find_all("test")
 
         # Abort if collection not found
         if not collection:
@@ -151,15 +151,33 @@ class AllCollections(Resource):
                                     # if there are less user required exercises than the compound list
             # randomly select the required number of exercises
             else:
-                # random.shuffle(compound_id_list)
+                random.shuffle(compound_id_list)
                 temp_list = compound_id_list[:energy]
                 for i in temp_list:
                     output_id_list.append(i['id'])
 
             print("Output Id List")
             print(output_id_list)
+            for i in output_id_list:
+                entry = DB.find_one("test", {"id": i})
+                # print(entry)
+                exercise_name = entry['exercise']
+                description = entry['description']
+                muscle = entry['muscle']
+                photo = entry['photo']
+                equipment = entry["equipment"]
 
-            # if there are no user muscle preferences, set default value
+                output_dict = {
+                    "id": i,
+                    "exercise": exercise_name,
+                    "description": description,
+                    "photo": photo,
+                    "muscle": muscle,
+                    "equipment": equipment
+                }
+                output_list.append(output_dict)
+
+                # if there are no user muscle preferences, set default value
         # else:
         #   print("no muscles")
 
@@ -167,7 +185,6 @@ class AllCollections(Resource):
         # Temporary solution - randomly select any requested number of exercises if no muscle groups selected
 
         if not output_id_list:
-
             # For exercisesing, print out all records
             tricep_id_list = []
             quad_id_list = []
@@ -198,11 +215,11 @@ class AllCollections(Resource):
             default_list.append(tricep_id_list)
             default_list.append(quad_id_list)
             default_list.append(ham_id_list)
-
+            # print(default_list) #working fine
             for m_list in default_list:
-
                 for i in m_list:
-                    entry = db.exercises.find_one({"id": i})
+                    entry = DB.find_one("test", {"id": i})
+                    # print(entry)
                     exercise_name = entry['exercise']
                     description = entry['description']
                     muscle = entry['muscle']
@@ -218,26 +235,7 @@ class AllCollections(Resource):
                         "equipment": equipment
                     }
                     output_list.append(output_dict)
-
-        else:
-            for record_id in output_id_list:
-                # print("here")
-                entry = db.exercises.find_one({"id": record_id})
-                exercise_name = entry['exercise']
-                description = entry['description']
-                muscle = entry['muscle']
-                photo = entry['photo']
-                equipment = entry["equipment"]
-                output_dict = {
-                    "id": record_id,
-                    "exercise": exercise_name,
-                    "description": description,
-                    "photo": photo,
-                    "muscle": muscle,
-                    "equipment": equipment
-                }
-                output_list.append(output_dict)
-
+                    # print(output_list)
         return output_list, 200
 
 
@@ -247,15 +245,7 @@ class ExerciseCollection(Resource):
     def get(self, exercise_id):
 
         # Connect to mongodb mlab
-        mongo_port = 27107
-        db_name = 'comp4920'
-        collection_name = 'exercises'
-        mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
-        client = MongoClient(host=mongo_host, port=mongo_port)
-        db = client[db_name]
-        exercises = db[collection_name]
-
-        collection = db.exercises.find_one({"id": exercise_id})
+        collection = DB.find_one("test", {"id": exercise_id})
 
         if not collection:
             api.abort(404, "Collection id {} not found".format(exercise_id))
@@ -275,15 +265,7 @@ class ExerciseCollection(Resource):
         payload = request.form
 
         # Connect to mongodb mlab
-        mongo_port = 27107
-        db_name = 'comp4920'
-        collection_name = 'exercises'
-        mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
-        client = MongoClient(host=mongo_host, port=mongo_port)
-        db = client[db_name]
-        exercises = db[collection_name]
-
-        collection = db.timeslots.find_one({"id": exercise_id})
+        collection = DB.find_one("test", {"id": exercise_id})
 
         exercise = payload['exercise']
         muscle = payload['muscle']
@@ -294,9 +276,77 @@ class ExerciseCollection(Resource):
         new_entry = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "photo": photo,
                      "description": description}
 
-        updateEntry(new_entry, exercises, {"id": exercise_id})
+        updateEntry(new_entry, "exercises", {"id": exercise_id})
 
         return new_entry, 200, None
+
+
+# returns list of all users
+@api.route('/users')
+class AllUsers(Resource):
+    # @api.expect(parser)
+    def get(self):
+
+        collection = DB.find_all("users")
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        output_list = []
+        for record in collection:
+            output_dict = {
+                "username": record['username'],
+                "password": record['password']
+            }
+            output_list.append(output_dict)
+        return output_list, 200
+
+    def put(self):
+        payload = request.form
+        user = {
+            "username": payload['username'],
+            "password": generate_password_hash(payload['password'])
+        }
+        user_id = DB.insert("users", user)
+        return user_id
+
+
+@api.route('/users/<username>')
+class Users(Resource):
+    # @api.expect(parser)
+    def get(self, username):
+        # Obtain collection
+        collection = DB.find_one("users", {"username": username})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        output_list = []
+        output_dict = {
+            "username": collection['username'],
+            "password": collection['password']
+        }
+        output_list.append(output_dict)
+        return output_list, 200
+
+        # update user password
+    # pass in username and new password
+
+
+@api.route('/update', methods=['PUT'])
+class UpdateUser(Resource):
+    def put(self, username):
+        payload = request.form
+        if request.method == 'PUT':
+            user = {
+                "username": payload['username'],
+                "password": generate_password_hash(payload['password'])
+            }
+        user_id = DB.update("users", {"username": username}, user)
+        resp = jsonify('User updated successfully!')
+        resp.status_code = 200
+        return resp
 
 
 # Method used by developers only. Exercises will not be generated by the user
