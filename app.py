@@ -121,8 +121,8 @@ class AllCollections(Resource):
                 # count the number of exercises in the single list
                 for key, value in single_id_dict.items():
                     # print(value)
-
-                # count the number of exercises in both single and compound list
+                    total_single = total_single + len(value)
+	                # count the number of exercises in both single and compound list
                 total = total + total_single
                 # print(total)
                 # print(counter)
