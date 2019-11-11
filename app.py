@@ -61,6 +61,7 @@ def checkMissingMuscle(muscle_checklist):
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
+parser.add_argument('equipment', action='split')
 
 # GET http://127.0.0.1:5001/exercises?energy=3
 
@@ -73,6 +74,7 @@ class AllCollections(Resource):
         args = parser.parse_args()
         energy = args['energy']  # returns an integer
         usr_muscle_list = args['muscle']  # returns a list of muscles
+        equip_usr_list = args['equipment']
         collection = DB.find_all("test")
 
         # Abort if collection not found
@@ -114,6 +116,28 @@ class AllCollections(Resource):
                         # print(record['exercise'])
 
             compound_id_list = sorted(compound_id_list, key=lambda i: i['intersection_len'], reverse=True)
+
+            # remove all items in list that do not match user's equipment selections
+
+            temp_list_a = []
+            temp_list_b = []
+
+            if equip_usr_list:
+                for cl in compound_id_list:
+                    record = DB.find_one("test", {"id": cl['id']})
+                    equipment = record['equipment']
+                    if equipment in equip_usr_list:
+                        temp_list_a.append(cl)
+                compound_id_list = temp_list_a
+
+                for key, value in single_id_dict.items():
+                    temp_list_b = []
+                    for sl in value:
+                        record = DB.find_one("test", {"id": sl})
+                        equipment = record['equipment']
+                        if equipment in equip_usr_list:
+                            temp_list_b.append(sl)
+                    single_id_dict[key] = temp_list_b
 
             print("Compound List")
             print(compound_id_list)
