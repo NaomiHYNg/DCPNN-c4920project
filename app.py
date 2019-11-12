@@ -62,6 +62,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
 parser.add_argument('equipment', action='split')
+parser.add_argument('fitness_level')
 
 # GET http://127.0.0.1:5001/exercises?energy=3
 
@@ -75,6 +76,7 @@ class AllCollections(Resource):
         energy = args['energy']  # returns an integer
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
+        usr_fitness_level = args['fitness_level']
         collection = DB.find_all("test")
 
         # Abort if collection not found
@@ -119,13 +121,67 @@ class AllCollections(Resource):
 
             # remove all items in list that do not match user's equipment selections
 
+            temp_list_a = []
+
             if equip_usr_list:
                 for cl in compound_id_list:
                     record = DB.find_one("test", {"id": cl['id']})
                     equipment = record['equipment']
                     if equipment in equip_usr_list:
                         temp_list.append(cl)
-                compound_id_list = temp_list
+                compound_id_list = temp_list_a
+
+                temp_list_a = []
+
+                for key, value in single_id_dict.items():
+                    temp_list_a = []
+                    for sl in value:
+                        record = DB.find_one("test", {"id": sl})
+                        equipment = record['equipment']
+                        if equipment in equip_usr_list:
+                            temp_list_a.append(sl)
+                    single_id_dict[key] = temp_list_a
+
+            # remove all items in list that do not match user's fitness_level selections
+
+            temp_list = []
+
+            if usr_fitness_level:
+                if usr_fitness_level == "Easy":
+                    for cl in compound_id_list:
+                        record = DB.find_one("test", {"id": cl['id']})
+                        fitness_level = record['fitness_level']
+                        if fitness_level.lower() == "easy":
+                            temp_list.append(cl)
+                    compound_id_list = temp_list
+
+                    temp_list = []
+
+                    for key, value in single_id_dict.items():
+                        temp_list = []
+                        for sl in value:
+                            record = DB.find_one("test", {"id": sl})
+                            fitness_level = record['fitness_level']
+                            if fitness_level.lower() == "easy":
+                                temp_list.append(sl)
+                        single_id_dict[key] = temp_list
+                
+                elif usr_fitness_level == "Medium":
+                    for cl in compound_id_list:
+                        record = DB.find_one("test", {"id": cl['id']})
+                        fitness_level = record['fitness_level']
+                        if fitness_level.lower() == "easy" or fitness_level.lower() == "medium":
+                            temp_list.append(cl)
+                    compound_id_list = temp_list
+
+                    for key, value in single_id_dict.items():
+                        temp_list = []
+                        for sl in value:
+                            record = DB.find_one("test", {"id": sl})
+                            fitness_level = record['fitness_level']
+                            if fitness_level.lower() == "easy":
+                                temp_list.append(sl)
+                        single_id_dict[key] = temp_list
 
                 temp_list = []
 
@@ -133,8 +189,8 @@ class AllCollections(Resource):
                     temp_list = []
                     for sl in value:
                         record = DB.find_one("test", {"id": sl})
-                        equipment = record['equipment']
-                        if equipment in equip_usr_list:
+                        fitness_level = record['fitness_level']
+                        if fitness_level.lower() == "easy" or fitness_level.lower() == "medium":
                             temp_list.append(sl)
                     single_id_dict[key] = temp_list
 
@@ -166,7 +222,7 @@ class AllCollections(Resource):
                 for key, value in single_id_dict.items():
                     # print(value)
                     total_single = total_single + len(value)
-	                # count the number of exercises in both single and compound list
+                    # count the number of exercises in both single and compound list
                 total = total + total_single
                 # print(total)
                 # print(counter)
@@ -309,7 +365,8 @@ class AllCollections(Resource):
                     }
                     output_list.append(output_dict)
                     # print(output_list)
-        print(muscle_checklist)
+
+        
         return output_list, 200
 
 
