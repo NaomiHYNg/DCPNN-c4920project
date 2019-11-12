@@ -119,11 +119,13 @@ class AllCollections(Resource):
 
             compound_id_list = sorted(compound_id_list, key=lambda i: i['intersection_len'], reverse=True)
 
+            # EQUIPMENT SELECTION
             # remove all items in list that do not match user's equipment selections
 
             temp_list_a = []
 
             if equip_usr_list:
+                equip_usr_list.append("Body Only")
                 for cl in compound_id_list:
                     record = DB.find_one("test", {"id": cl['id']})
                     equipment = record['equipment']
@@ -142,6 +144,7 @@ class AllCollections(Resource):
                             temp_list_a.append(sl)
                     single_id_dict[key] = temp_list_a
 
+            # FITNESS LEVEL SELECTION
             # remove all items in list that do not match user's fitness_level selections
 
             temp_list = []
@@ -314,41 +317,44 @@ class AllCollections(Resource):
                 output_list.append(output_dict)
 
         if not output_id_list:
-            # For exercisesing, print out all records
-            tricep_id_list = []
-            quad_id_list = []
-            ham_id_list = []
 
-            for record in collection:
-                exercise_id = record['id']
-                muscle = record['muscle']
+            if equip_usr_list:
+                equip_usr_list.append("Body Only")
+                equip_checklist = {}
+                # initialise the equipment checklist
+                for e in equip_usr_list:
+                    equip_checklist[e] = []
 
-                if "Triceps" in muscle:
-                    tricep_id_list.append(exercise_id)
-                elif "Quadriceps" in muscle:
-                    quad_id_list.append(exercise_id)
-                elif "Hamstrings" in muscle:
-                    ham_id_list.append(exercise_id)
+                # need to input fitness level checks here
 
-            # assume energy level will always be divisible by 3
-            num_per_muscle = int(energy / 3)
+                for record in collection:
+                    equipment = record['equipment']
+                    if equipment in equip_usr_list:
+                        #print(equipment)
+                        exercise_id = record['id']
+                        #print(exercise_id)
+                        #print(equip_checklist[equipment])
+                        equip_checklist[equipment].append(exercise_id)
 
-            random.shuffle(tricep_id_list)
-            random.shuffle(quad_id_list)
-            random.shuffle(ham_id_list)
-            tricep_id_list = tricep_id_list[:num_per_muscle]
-            quad_id_list = quad_id_list[:num_per_muscle]
-            ham_id_list = ham_id_list[:num_per_muscle]
+                print("Equipment checklist")
+                print(equip_checklist)
 
-            default_list = []
-            default_list.append(tricep_id_list)
-            default_list.append(quad_id_list)
-            default_list.append(ham_id_list)
-            # print(default_list) #working fine
-            for m_list in default_list:
-                for i in m_list:
+                counter = energy
+
+                while counter > 0:
+                    for key, value in equip_checklist.items():
+                        random.shuffle(value)
+                        if value[0] not in output_id_list:
+                            output_id_list.append(value[0])
+                            counter = counter - 1
+                            if counter == 0:
+                                break
+
+                print("Output Id List")
+                print(output_id_list)
+
+                for i in output_id_list:
                     entry = DB.find_one("test", {"id": i})
-                    # print(entry)
                     exercise_name = entry['exercise']
                     description = entry['description']
                     muscle = entry['muscle']
@@ -364,7 +370,61 @@ class AllCollections(Resource):
                         "equipment": equipment
                     }
                     output_list.append(output_dict)
-                    # print(output_list)
+
+            else:
+                # For exercisesing, print out all records
+                tricep_id_list = []
+                quad_id_list = []
+                ham_id_list = []
+
+                # need to input fitness level here
+
+                for record in collection:
+                    exercise_id = record['id']
+                    muscle = record['muscle']
+
+                    if "Triceps" in muscle:
+                        tricep_id_list.append(exercise_id)
+                    elif "Quadriceps" in muscle:
+                        quad_id_list.append(exercise_id)
+                    elif "Hamstrings" in muscle:
+                        ham_id_list.append(exercise_id)
+
+                # assume energy level will always be divisible by 3
+                num_per_muscle = int(energy / 3)
+
+                random.shuffle(tricep_id_list)
+                random.shuffle(quad_id_list)
+                random.shuffle(ham_id_list)
+                tricep_id_list = tricep_id_list[:num_per_muscle]
+                quad_id_list = quad_id_list[:num_per_muscle]
+                ham_id_list = ham_id_list[:num_per_muscle]
+
+                default_list = []
+                default_list.append(tricep_id_list)
+                default_list.append(quad_id_list)
+                default_list.append(ham_id_list)
+                # print(default_list) #working fine
+                for m_list in default_list:
+                    for i in m_list:
+                        entry = DB.find_one("test", {"id": i})
+                        # print(entry)
+                        exercise_name = entry['exercise']
+                        description = entry['description']
+                        muscle = entry['muscle']
+                        photo = entry['photo']
+                        equipment = entry["equipment"]
+
+                        output_dict = {
+                            "id": i,
+                            "exercise": exercise_name,
+                            "description": description,
+                            "photo": photo,
+                            "muscle": muscle,
+                            "equipment": equipment
+                        }
+                        output_list.append(output_dict)
+                        # print(output_list)
 
         
         return output_list, 200
