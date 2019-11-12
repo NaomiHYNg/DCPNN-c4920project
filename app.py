@@ -119,25 +119,24 @@ class AllCollections(Resource):
 
             # remove all items in list that do not match user's equipment selections
 
-            temp_list_a = []
-            temp_list_b = []
-
             if equip_usr_list:
                 for cl in compound_id_list:
                     record = DB.find_one("test", {"id": cl['id']})
                     equipment = record['equipment']
                     if equipment in equip_usr_list:
-                        temp_list_a.append(cl)
-                compound_id_list = temp_list_a
+                        temp_list.append(cl)
+                compound_id_list = temp_list
+
+                temp_list = []
 
                 for key, value in single_id_dict.items():
-                    temp_list_b = []
+                    temp_list = []
                     for sl in value:
                         record = DB.find_one("test", {"id": sl})
                         equipment = record['equipment']
                         if equipment in equip_usr_list:
-                            temp_list_b.append(sl)
-                    single_id_dict[key] = temp_list_b
+                            temp_list.append(sl)
+                    single_id_dict[key] = temp_list
 
             print("Compound List")
             print(compound_id_list)
