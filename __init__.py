@@ -15,7 +15,7 @@ def login():
 
     return render_template('login.html', error=error)
 
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def home():
 
     if request.method == 'POST':
@@ -29,7 +29,7 @@ def home():
 
     return render_template('home.html', login_status="Not signed in.")
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
 
     return render_template('signup.html', login_status="Not signed in.")
