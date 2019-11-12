@@ -68,6 +68,13 @@ def summary():
             if muscles:
                 query = query + "&muscle=" + muscles
 
+            equipment = re.sub("\'", "\"", request.form['equipments'])
+            equipment = json.loads(equipment)
+            equipment = ",".join(equipment)
+
+            if equipment:
+                query = query + "&equipment=" + equipment
+
             print(query)
 
             response = requests.get(query)
@@ -96,11 +103,15 @@ def generate():
     if request.method == 'POST':
 
         muscles = []
+        equipments = []
 
         for muscle in request.form.getlist('muscle'):
             muscles.append(muscle)
 
-        return render_template('generate.html', muscles=request.form.getlist('muscle'), username=request.form['username'], energy=request.form['energy'])
+        for equipment in request.form.getlist('equipment'):
+            equipments.append(equipment)
+
+        return render_template('generate.html', muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
 
     return render_template('generate.html')
 
