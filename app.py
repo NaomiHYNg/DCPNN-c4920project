@@ -15,15 +15,12 @@ import re
 import random
 from database import DB
 
-
-
 # Helper Functions
 app = Flask(__name__)
 api = Api(app)
 DB.init()
-login = LoginManager() # exported into models.py and
-login.init_app(app) 
-login.login_view = 'login'
+
+
 
 def updateEntry(record, collection, query):
     collection.update(query, record)

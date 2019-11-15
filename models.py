@@ -1,9 +1,9 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+# user management
 from flask_login import UserMixin
-from pymongo import MongoClient
-from flask_restplus import Resource
-from app import login # from __init__
+from werkzeug.security import generate_password_hash, check_password_hash
+from database import DB
 from app import api
+from application import login
 
 class User(UserMixin):
     def __init__(self, username):
@@ -33,18 +33,10 @@ class User(UserMixin):
 
 @login.user_loader
 def load_user(username):
-    #u = mongo.db.Users.find_one({"Name": username})
-    # Connect to mongodb mlab
-    mongo_port = 27107
-    db_name = 'comp4920'
-    collection_name = 'users'
-    mongo_host = "mongodb://admin:admin123@ds331558.mlab.com:31558/comp4920"
-    client = MongoClient(host=mongo_host, port=mongo_port)
-    db = client[db_name]
-    users = db[collection_name]
-
-    collection = db.users.find_one({"username": username})
+    collection = DB.find_one("users", {"username":username})
 
     if not collection:
         api.abort(404, "User {} not found".format(username))
     return User(username=collection['username'])
+
+

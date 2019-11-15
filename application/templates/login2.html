@@ -17,20 +17,23 @@
                 {{ form.hidden_tag() }}
                 <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
                     <tr>
-                        <td><input type="text" placeholder="Email" name="username" value="{{ form.username() }}"></td>
+                        <td><p>Username</p>{{ form.username() }}</td>
                     </tr>
                     <tr>
-                        <td><input type="password" placeholder="Password" name="password" value="{{ form.password() }}"></td>
+                        <td><p>Password</p>{{ form.password() }}</td>
                     </tr>
                     <tr>
-                        <td><input type="checkbox" checked="checked" name="remember" value="{{ form.remember_me() }}"></td>
+                        <td><p>Remember me</p>{{ form.remember_me() }}</td>
+                    </tr>
+                    <tr>
+                        <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
                     </tr>
                 </table>
                 <br>
                 {% if error %}
                     <p class="error"><font color="red">{{ error }}</font></p>
                 {% endif %}
-                <p><input class="w3-btn w3-theme" type="submit" value="{{ form.submit() }}"></p>
+                <p>{{ form.submit() }}</p>
             </form>
             <br>
         </div>
