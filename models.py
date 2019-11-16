@@ -30,6 +30,13 @@ class User(UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
+    
+    def add(self):
+        user = {
+            "username": self.username, 
+            "password": self.password_hash
+            }
+        DB.insert("users", user)
 
 @login.user_loader
 def load_user(username):

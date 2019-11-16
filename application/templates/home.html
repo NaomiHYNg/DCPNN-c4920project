@@ -45,6 +45,7 @@
     <body style="background-color:#ff9e0f">
 
         {% include 'snips/header.html' %}
+        {% include 'snips/navbar.html' %}
         {% include 'snips/header2.html' %}
 
         <form action="{{ url_for('generate') }}" method="POST">
@@ -100,6 +101,10 @@
                         <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:250px;height:250px;outline:none;border-radius: 80%;">
                         <a href="#" onclick="nextOption('muscle')"><img id="next" src="/static/images/arrow.png" style="width:125px;height:75px;margin-left:30px"></a>
                 </div>
+            </div>
+
+            <div class="Menu">
+
             </div>
 
             {% if error %}

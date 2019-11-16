@@ -6,6 +6,7 @@ import requests
 # user management
 from flask_login import LoginManager
 from flask_login import login_required
+from flask_login import current_user, login_user, logout_user, login_required
 
 
 
@@ -31,10 +32,6 @@ def login():
         else:
             return render_template('home.html', username=request.form['username'])
     #return render_template('login.html', error=error)
-    #if current_user.is_authenticated:
-        #return redirect(url_for('index'))
-    #form = Login()
-    #return render_template('login2.html', title='Sign In', form=form)
 '''
 
 
@@ -42,7 +39,6 @@ def login():
 @app.route('/home', methods=['GET', 'POST'])
 @login_required
 def home():
-
     if request.method == 'POST':
         return render_template('home.html', username=request.form['username'])
 
@@ -105,7 +101,7 @@ def generate():
         return render_template('generate.html', username=request.form['username'], energy=request.form['energy'], muscle=request.form['muscle'])
 
     return render_template('generate.html')
-
+    
 @app.context_processor
 def utility_functions():
     def print_in_console(message):
