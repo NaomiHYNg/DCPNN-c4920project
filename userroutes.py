@@ -32,6 +32,7 @@ def register():
         user = User(username=form.username.data)
         # hash is generated and stored
         user.set_password(form.password.data)
+        user.set_email(form.email.data)
         #db.add(user)
         user.add()
         #user can now log in
@@ -52,14 +53,14 @@ def logout():
 @login_required
 def user(username):
     # Obtain collection
-    collection = DB.find_one("users", {"username":username})
-    
+    collection = DB.find_one("users", {"username" : username})
     # Abort if collection not found
     if not collection:
         api.abort(404, "There are no collections in the database")
+    
+    user = User(username=collection['username'])
 
-
-    #return render_template('user.html', user=user, posts=posts)
+    return render_template('profile.html', user=user)
 
     
 
