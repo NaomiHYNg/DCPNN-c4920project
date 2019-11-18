@@ -136,11 +136,11 @@ class AllCollections(Resource):
                     # if the exercise has more than one matching muscle
                     if len(inter_list) > 1:
                         # print("not completed")
-                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list}
+                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list, "level": level}
                         compound_id_list.append(temp_dict)
                         # print(record['exercise name'])
 
-            compound_id_list = sorted(compound_id_list, key=lambda i: i['intersection_len'], reverse=True)
+            compound_id_list = sorted(compound_id_list, key=lambda i: (i['intersection_len'], i['level']), reverse=True)
 
             # EQUIPMENT SELECTION
             # remove all items in list that do not match user's equipment selections
@@ -164,7 +164,7 @@ class AllCollections(Resource):
                     temp_list_a = []
                     for sl in value:
                         record = DB.find_one("test1", {"id": sl})
-                        print(sl)
+                        #print(sl)
                         equipment = record['equipment']
                         if equipment in equip_usr_list:
                             temp_list_a.append(sl)
@@ -239,7 +239,7 @@ class AllCollections(Resource):
             # randomly select the required number of exercises
             # fitness level filtered out correctly
             else:
-                random.shuffle(compound_id_list)
+                #random.shuffle(compound_id_list)
                 counter = 0
 
                 for key, value in muscle_checklist.items():
@@ -369,13 +369,13 @@ class AllCollections(Resource):
                     exer_level = convertFitnessLevel(record['level'])
 
                     if "Triceps" in muscle:
-                        if exer_level <= usr_fitness_level:
+                        if exer_level == usr_fitness_level:
                             tricep_id_list.append(exercise_id)
                     elif "Quads" in muscle:
-                        if exer_level <= usr_fitness_level:
+                        if exer_level == usr_fitness_level:
                             quad_id_list.append(exercise_id)
                     elif "Hamstrings" in muscle:
-                        if exer_level <= usr_fitness_level:
+                        if exer_level == usr_fitness_level:
                             ham_id_list.append(exercise_id)
 
                 # assume energy level will always be divisible by 3
@@ -414,7 +414,7 @@ class AllCollections(Resource):
                             "equipment": equipment
                         }
                         output_list.append(output_dict)
-                        # print(output_list)
+                        #print(output_list)
 
         
         return output_list, 200
@@ -531,11 +531,11 @@ class UpdateUser(Resource):
 
 # get.request("http://127.0.0.1:5001/users/<user_id>/workouts")
 
-@api.route('/users/<user_id>/workouts')
+@api.route('/users/<string:username>/workouts')
 class WorkoutsPerUser(Resource):
-    def get(self, user_id):
+    def get(self, username):
         output_list = []        
-        collection = DB.find_one("workouts", {"user_id": user_id})
+        collection = DB.find_one("workouts", {"username": username})
 
         # Abort if collection not found
         if not collection:
@@ -543,7 +543,8 @@ class WorkoutsPerUser(Resource):
 
         for record in collection:
             output_dict = {
-                "user_id": record['user_id'],
+                "id": record['id'],
+                "workout_name": record['workout_name'],
                 "workout_list": record['workout_list']
             }
             output_list.append(output_dict)
@@ -552,14 +553,47 @@ class WorkoutsPerUser(Resource):
 # put.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
 # if a user does not exist, create a new entry for that user
 
-# post.request("http://127.0.0.1:5001/users/<user_id>/workouts")
+# post.request("http://127.0.0.1:5001/users/<username>/workouts")
 # create new entry in db when user is initially created
 
-    #def post(self, user_id):
-        #payload = request.json
-        #payload = json.loads(payload)
+    def post(self, username):
 
+        collection = DB.find_all("workouts")
+        max_id = 0
+        exists = 0
+        exist_id = 0
+        for record in collection:
+            entry_id = record['id']            
+            check_user = record['username']
+            if entry_id > max_id:
+                max_id = entry_id 
+            if check_user == username:
+                return {}, 200
 
+        max_id = max_id + 1
+        workout_list = []
+        new_entry = {"id": max_id, "workout_name": "untitled", "workout_list": workout_list}
+
+        DB.insert("workouts", new_entry)
+
+        return new_entry, 200
+
+    def put(self, username):
+
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_one("workouts", {"username": username})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        new_entry = {"id": collection["id"], "username": username, "workout_list": payload['workout_list']}   
+        
+        DB.update("workouts", {"username": username}, new_entry)   
+
+        return new_entry, 200 
 
 
 # Method used by developers only. Exercises will not be generated by the user
