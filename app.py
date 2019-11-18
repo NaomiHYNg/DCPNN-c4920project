@@ -413,12 +413,10 @@ class AllCollections(Resource):
         return output_list, 200
 
 
-# http://127.0.0.1:5000/exercises/1
 @api.route('/exercises/<int:exercise_id>')
 class ExerciseCollection(Resource):
     def get(self, exercise_id):
 
-        # Connect to mongodb mlab
         collection = DB.find_one("test1", {"id": exercise_id})
 
         if not collection:
@@ -454,81 +452,11 @@ class ExerciseCollection(Resource):
 
         return new_entry, 200, None
 
-
-# returns list of all users
-@api.route('/users')
-class AllUsers(Resource):
-    # @api.expect(parser)
-    def get(self):
-
-        collection = DB.find_all("users")
-        # Abort if collection not found
-        if not collection:
-            api.abort(404, "There are no collections in the database")
-
-        output_list = []
-        for record in collection:
-            output_dict = {
-                "username": record['username'],
-                "password": record['password']
-            }
-            output_list.append(output_dict)
-        return output_list, 200
-
-    def put(self):
-        payload = request.form
-        user = {
-            "username": payload['username'],
-            "password": generate_password_hash(payload['password'])
-        }
-        user_id = DB.insert("users", user)
-        return user_id
-
-
-@api.route('/users/<username>')
-class Users(Resource):
-    # @api.expect(parser)
-    def get(self, username):
-        # Obtain collection
-        collection = DB.find_one("users", {"username": username})
-
-        # Abort if collection not found
-        if not collection:
-            api.abort(404, "There are no collections in the database")
-
-        output_list = []
-        output_dict = {
-            "username": collection['username'],
-            "password": collection['password']
-        }
-        output_list.append(output_dict)
-        return output_list, 200
-
-        # update user password
-    # pass in username and new password
-
-
-@api.route('/update', methods=['PUT'])
-class UpdateUser(Resource):
-    def put(self, username):
-        payload = request.form
-        if request.method == 'PUT':
-            user = {
-                "username": payload['username'],
-                "password": generate_password_hash(payload['password'])
-            }
-        user_id = DB.update("users", {"username": username}, user)
-        resp = jsonify('User updated successfully!')
-        resp.status_code = 200
-        return resp
-
-# get.request("http://127.0.0.1:5001/users/<user_id>/workouts")
-
 @api.route('/users/<string:username>/workouts/<int:workout_id>')
 class OneWorkoutPerUser(Resource):
     def get(self, username, workout_id):
         output_list = []        
-        collection = DB.find_one("workouts", {"workout_id": workout_id})
+        collection = DB.find_one("workouts", {"workout_id": workout_id, "username": username})
 
         # Abort if collection not found
         if not collection:
@@ -536,38 +464,35 @@ class OneWorkoutPerUser(Resource):
         
         output_dict = {
             "workout_id": collection['workout_id'],
+            "username": username,
             "workout_name": collection['workout_name'],
             "workout": collection['workout']
         }
 
         return output_dict, 200
-# put.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
-# if a user does not exist, create a new entry for that user
 
-    # adds a new workout to the workout list
     def put(self, username, workout_id):
 
-        # consists of a dictionary {"workout_id": int, "workout_name:" "", "workout": []}
+        # Consists of a dictionary {"workout_id": int, "username", "workout_name:" "", "workout": []}
         payload = request.json
         payload = json.loads(payload)
 
-        collection = DB.find_one("workouts", {"workout_id": workout_id})
+        collection = DB.find_one("workouts", {"workout_id": workout_id, "username": username})
         print(collection)
 
         # Abort if collection not found
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        new_entry = {"workout_id": workout_id, "workout_name": payload['workout_name'], "workout": payload['workout']}   
+        new_entry = {"workout_id": workout_id, "username": username, "workout_name": payload['workout_name'], "workout": payload['workout']}   
         
         DB.update("workouts", {"workout_id": workout_id}, new_entry)   
 
         return new_entry, 200 
 
-# delete.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
     def delete(self, username, workout_id):
 
-        collection = DB.find_one("workouts", {"workout_id": workout_id})
+        collection = DB.find_one("workouts", {"workout_id": workout_id, "username": username})
 
         # Abort if collection not found
         if not collection:
@@ -584,7 +509,7 @@ class WorkoutsPerUser(Resource):
 
     def post(self, username):
 
-        # consists of a dictionary {"workout_name:" "", "workout": ""}
+        # consists of a dictionary {"workout_name:" "", "username": "", "workout": ""}
         payload = request.json
         payload = json.loads(payload)
 
@@ -599,15 +524,11 @@ class WorkoutsPerUser(Resource):
 
         max_id = max_id + 1
 
-        new_entry = {"workout_id": max_id, "workout_name": payload['workout_name'], "workout": payload['workout']}
+        new_entry = {"workout_id": max_id, "username":username, "workout_name": payload['workout_name'], "workout": payload['workout']}
 
         DB.insert("workouts", new_entry)
 
         return new_entry, 200
-
-
-# Method used by developers only. Exercises will not be generated by the user
-# def post(self)
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
