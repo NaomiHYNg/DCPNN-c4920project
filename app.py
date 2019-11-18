@@ -27,10 +27,6 @@ BEGINNER = 1
 INTEMEDIATE = 2
 ADVANCED = 3
 
-
-def updateEntry(record, collection, query):
-    collection.update(query, record)
-
 def intersection(lst1, lst2):
     output_list = []
     for i1 in lst1:
@@ -78,7 +74,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
 parser.add_argument('equipment', action='split')
-parser.add_argument('level')
+parser.add_argument('level', required=True)
 
 # GET http://127.0.0.1:5001/exercises?energy=3
 
@@ -99,14 +95,20 @@ class AllCollections(Resource):
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        output_list = []
-        output_id_list = []  # list of exercise ids only
+        print("GENERATING EXERCISES BASED ON:")
+        print("- ENERGY LEVEL: {}".format(energy))
+        print("- FITNESS LEVEL: {}". format(usr_fitness_level))
+        print("- MUSCLE LIST: {}".format(usr_muscle_list))
+        print("- EQUIPMENT LIST: {}".format(equip_usr_list))
 
-        # If the user has muscle preferences
+        output_list = []
+        output_id_list = []  # List of exercise ids only
+
+        # If the user has muscle groups selected
         if usr_muscle_list:
 
-            single_id_dict = {}  # each muscle is a key of the dictionary
-            compound_id_list = []  # list of dictionaries {id: len(intersection)}
+            single_id_dict = {}  # Each muscle is a key of the dictionary
+            compound_id_list = []  # List of dictionaries {id: len(intersection)}
             muscle_checklist = dict.fromkeys(usr_muscle_list, False) # Create muscle checklist
 
             # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
@@ -116,46 +118,43 @@ class AllCollections(Resource):
                 exercise_id = record['id']
                 level = convertFitnessLevel(record['level'])
 
+                # Check that the exercise is 
                 if (level > usr_fitness_level):
                     continue
 
-                # print(muscle_list)
                 inter_list = intersection(usr_muscle_list, muscle_list)
 
-                if len(inter_list) > 0:  # if there are entries in the list
+                if len(inter_list) > 0:  # If there are entries in the intersection list
 
-                    # if the exercise's associated muscle/s only matches one of the user's muscle preferences
+                    # If the exercise's associated muscle/s only matches one of the user's muscle preferences
                     if len(inter_list) == 1:
-                        # print(record['exercise name'])
                         if inter_list[0] in single_id_dict:
                             single_id_dict[inter_list[0]].append(exercise_id)
                         else:
                             single_id_dict[inter_list[0]] = []
                             single_id_dict[inter_list[0]].append(exercise_id)
 
-                    # if the exercise has more than one matching muscle
+                    # If the exercise has more than one matching muscle
                     if len(inter_list) > 1:
-                        # print("not completed")
                         temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list, "level": level}
                         compound_id_list.append(temp_dict)
-                        # print(record['exercise name'])
 
+            # Prioritise exercises that have more intersections and have the same fitness level as user's selected level
             compound_id_list = sorted(compound_id_list, key=lambda i: (i['intersection_len'], i['level']), reverse=True)
 
             # EQUIPMENT SELECTION
-            # remove all items in list that do not match user's equipment selections
+            # Remove all items in list that do not match user's equipment selections
 
             temp_list_a = []
 
             if equip_usr_list:
+
                 equip_usr_list.append("Bodyweight")
                 for cl in compound_id_list:
                     record = DB.find_one("test1", {"id": cl['id']})
-                    #print(cl['id'])
                     equipment = record['equipment']
                     if equipment in equip_usr_list:
                         temp_list_a.append(cl)
-                        #print("here")
                 compound_id_list = temp_list_a
 
                 temp_list_a = []
@@ -164,22 +163,21 @@ class AllCollections(Resource):
                     temp_list_a = []
                     for sl in value:
                         record = DB.find_one("test1", {"id": sl})
-                        #print(sl)
                         equipment = record['equipment']
                         if equipment in equip_usr_list:
                             temp_list_a.append(sl)
                     single_id_dict[key] = temp_list_a
 
-            
-            print("Compound List")
+            print("GENERATED EXERCISE LISTS ARE:")            
+            print("COMPOUND LIST")
             print(compound_id_list)
-            print("Single List")
+            print("SINGLE LIST")
             print(single_id_dict)
 
             counter = energy
 
-            # if there are more user required exercises than the compound list
-            # take all exercises from the compound list
+            # If there are more user required exercises than the compound list
+            # Take all exercises from the compound list
             if energy > len(compound_id_list):
                 for i in compound_id_list:
                     output_id_list.append(i['id'])
@@ -190,27 +188,25 @@ class AllCollections(Resource):
                 print("Muscle checklist")
                 print(muscle_checklist)                
 
-                # choose remaining exercises from the dictionary of single exercises
+                # Choose remaining exercises from the dictionary of single exercises
 
                 total_single = 0
                 total = len(output_id_list)
 
-                # count the number of exercises in the single list
+                # Count the number of exercises in the single list
                 for key, value in single_id_dict.items():
-                    # print(value)
                     total_single = total_single + len(value)
-                    # count the number of exercises in both single and compound list
+                
+                # Count the number of exercises in both single and compound list
                 total = total + total_single
-                # print(total)
-                # print(counter)
 
-                # if there are less exercises available than requested, take all single exercises
+                # If there are less exercises available than requested, take all single exercises
                 if total <= counter:
                     for key, value in single_id_dict.items():
                         output_id_list.extend(value)
                 else:
                     while counter > 0:
-                        # if a muscle is missing from the muscle checklist
+                        # If a muscle is missing from the muscle checklist
                         if checkMissingMuscle(muscle_checklist) == False:
                             for key, value in muscle_checklist.items():
                                 if value == False:
@@ -219,12 +215,12 @@ class AllCollections(Resource):
                                             random.shuffle(single_id_dict[key])
                                             output_id_list.append(single_id_dict[key][0])
                                             genMuscleListFromSing(key, muscle_checklist)
-                                            print(muscle_checklist)
                                             counter = counter - 1
                                             if counter == 0:
                                                 break
                         if counter == 0:
                             break
+
                         for key, value in single_id_dict.items():
                             if len(single_id_dict[key]) != 0:
                                 random.shuffle(value)
@@ -235,11 +231,9 @@ class AllCollections(Resource):
                                     if counter == 0:
                                         break
 
-            # if there are less user required exercises than the compound list
-            # randomly select the required number of exercises
-            # fitness level filtered out correctly
+            # If there are less user required exercises than the compound list
+            # Randomly select the required number of exercises
             else:
-                #random.shuffle(compound_id_list)
                 counter = 0
 
                 for key, value in muscle_checklist.items():
@@ -254,7 +248,7 @@ class AllCollections(Resource):
 
                 if counter < energy:
                     if checkMissingMuscle(muscle_checklist) == False:
-                        # check out single lists first if muscle is missing
+                        # Check out single lists first if muscle is missing
                         for key, value in muscle_checklist.items():
                             if value == False:
                                 if key in single_id_dict.keys():
@@ -272,7 +266,7 @@ class AllCollections(Resource):
                                 if counter == energy:
                                     break
 
-            print("Output Id List")
+            print("OUTPUT ID LIST")
             print(output_id_list)
             for i in output_id_list:
                 entry = DB.find_one("test1", {"id": i})
@@ -298,13 +292,13 @@ class AllCollections(Resource):
         if not output_id_list:
 
             if equip_usr_list:
+
                 equip_usr_list.append("Bodyweight")
                 equip_checklist = {}
-                # initialise the equipment checklist
+
+                # Initialise the equipment checklist
                 for e in equip_usr_list:
                     equip_checklist[e] = []
-
-                # need to input fitness level checks here
 
                 for record in collection:
                     equipment = record['equipment']
@@ -313,13 +307,10 @@ class AllCollections(Resource):
                     if level > usr_fitness_level:
                         continue
                     if equipment in equip_usr_list:
-                        #print(equipment)
                         exercise_id = record['id']
-                        #print(exercise_id)
-                        #print(equip_checklist[equipment])
                         equip_checklist[equipment].append(exercise_id)
 
-                print("Equipment checklist")
+                print("EQUIPMENT CHECKLIST")
                 print(equip_checklist)
 
                 counter = energy
@@ -333,7 +324,7 @@ class AllCollections(Resource):
                             if counter == 0:
                                 break
 
-                print("Output Id List")
+                print("OUTPUT ID LIST")
                 print(output_id_list)
 
                 for i in output_id_list:
@@ -357,12 +348,11 @@ class AllCollections(Resource):
                     output_list.append(output_dict)
 
             else:
-                # For exercises, print out all records
+
                 tricep_id_list = []
                 quad_id_list = []
                 ham_id_list = []
 
-                # need to input fitness level here
                 for record in collection:
                     exercise_id = record['id']
                     muscle = record['muscle']
@@ -378,7 +368,7 @@ class AllCollections(Resource):
                         if exer_level == usr_fitness_level:
                             ham_id_list.append(exercise_id)
 
-                # assume energy level will always be divisible by 3
+                # Assume energy level will always be divisible by 3
                 num_per_muscle = int(energy / 3)
 
                 random.shuffle(tricep_id_list)
@@ -392,11 +382,11 @@ class AllCollections(Resource):
                 default_list.append(tricep_id_list)
                 default_list.append(quad_id_list)
                 default_list.append(ham_id_list)
-                # print(default_list) #working fine
+
                 for m_list in default_list:
                     for i in m_list:
                         entry = DB.find_one("test1", {"id": i})
-                        #print(entry)
+
                         exercise_name = entry['exercise name']
                         description = entry['description']
                         muscle = entry['muscle']
@@ -414,8 +404,11 @@ class AllCollections(Resource):
                             "equipment": equipment
                         }
                         output_list.append(output_dict)
-                        #print(output_list)
 
+                        output_id_list.append(i)
+
+                print("OUTPUT ID LIST")
+                print(output_id_list)
         
         return output_list, 200
 
