@@ -22,6 +22,11 @@ login = LoginManager()  # exported into models.py and
 login.init_app(app)
 login.login_view = 'login'
 
+# Fitness levels in integer form
+BEGINNER = 1
+INTEMEDIATE = 2
+ADVANCED = 3
+
 
 def updateEntry(record, collection, query):
     collection.update(query, record)
@@ -62,6 +67,18 @@ def checkMissingMuscle(muscle_checklist):
     return check
 
 
+def convertFitnessLevel(str_level):
+    int_level = 0
+    if str_level.lower() == "beginner":
+        int_level = BEGINNER
+    if str_level.lower() == "intermediate":
+        int_level = INTEMEDIATE
+    if str_level.lower() == "advanced":
+        int_level = ADVANCED
+
+    return int_level
+
+
 # Setup parser
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
@@ -82,7 +99,7 @@ class AllCollections(Resource):
         energy = args['energy']  # returns an integer
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
-        usr_fitness_level = args['level']
+        usr_fitness_level = convertFitnessLevel(args['level'])
         collection = DB.find_all("test1")
 
         # Abort if collection not found
@@ -94,6 +111,7 @@ class AllCollections(Resource):
 
         # If the user has muscle preferences
         if usr_muscle_list:
+
             single_id_dict = {}  # each muscle is a key of the dictionary
             compound_id_list = []  # list of dictionaries {id: len(intersection)}
             muscle_checklist = dict.fromkeys(usr_muscle_list, False)  # Create muscle checklist
@@ -103,8 +121,14 @@ class AllCollections(Resource):
                 muscle_list = record['muscle']
                 # print(record['exercise name'])
                 exercise_id = record['id']
+                level = convertFitnessLevel(record['level'])
+
+                if (level > usr_fitness_level):
+                    continue
+
                 # print(muscle_list)
                 inter_list = intersection(usr_muscle_list, muscle_list)
+
                 if len(inter_list) > 0:  # if there are entries in the list
 
                     # if the exercise's associated muscle/s only matches one of the user's muscle preferences
@@ -152,60 +176,6 @@ class AllCollections(Resource):
                         if equipment in equip_usr_list:
                             temp_list_a.append(sl)
                     single_id_dict[key] = temp_list_a
-
-            # FITNESS LEVEL SELECTION
-            # remove all items in list that do not match user's fitness_level selections
-
-            temp_list = []
-
-            if usr_fitness_level:
-                if usr_fitness_level == "beginner":
-                    for cl in compound_id_list:
-                        record = DB.find_one("test1", {"id": cl['id']})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner":
-                            temp_list.append(cl)
-                    compound_id_list = temp_list
-
-                    temp_list = []
-
-                    for key, value in single_id_dict.items():
-                        temp_list = []
-                        for sl in value:
-                            record = DB.find_one("test1", {"id": sl})
-                            fitness_level = record['level']
-                            if fitness_level.lower() == "beginner":
-                                print(sl)
-                                temp_list.append(sl)
-                        single_id_dict[key] = temp_list
-
-                elif usr_fitness_level == "intermediate":
-                    for cl in compound_id_list:
-                        record = DB.find_one("test1", {"id": cl['id']})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner" or fitness_level.lower() == "intermediate":
-                            temp_list.append(cl)
-                    compound_id_list = temp_list
-
-                    for key, value in single_id_dict.items():
-                        temp_list = []
-                        for sl in value:
-                            record = DB.find_one("test1", {"id": sl})
-                            fitness_level = record['level']
-                            if fitness_level.lower() == "beginner":
-                                temp_list.append(sl)
-                        single_id_dict[key] = temp_list
-
-                temp_list = []
-
-                for key, value in single_id_dict.items():
-                    temp_list = []
-                    for sl in value:
-                        record = DB.find_one("test1", {"id": sl})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner" or fitness_level.lower() == "intermediate":
-                            temp_list.append(sl)
-                    single_id_dict[key] = temp_list
 
             print("Compound List")
             print(compound_id_list)
@@ -273,6 +243,7 @@ class AllCollections(Resource):
 
             # if there are less user required exercises than the compound list
             # randomly select the required number of exercises
+            # fitness level filtered out correctly
             else:
                 random.shuffle(compound_id_list)
                 counter = 0
@@ -343,6 +314,10 @@ class AllCollections(Resource):
 
                 for record in collection:
                     equipment = record['equipment']
+                    level = convertFitnessLevel(record['level'])
+
+                    if level > usr_fitness_level:
+                        continue
                     if equipment in equip_usr_list:
                         # print(equipment)
                         exercise_id = record['id']
@@ -388,23 +363,26 @@ class AllCollections(Resource):
                     output_list.append(output_dict)
 
             else:
-                # For exercisesing, print out all records
+                # For exercises, print out all records
                 tricep_id_list = []
                 quad_id_list = []
                 ham_id_list = []
 
                 # need to input fitness level here
-
                 for record in collection:
                     exercise_id = record['id']
                     muscle = record['muscle']
+                    exer_level = convertFitnessLevel(record['level'])
 
                     if "Triceps" in muscle:
-                        tricep_id_list.append(exercise_id)
+                        if exer_level <= usr_fitness_level:
+                            tricep_id_list.append(exercise_id)
                     elif "Quads" in muscle:
-                        quad_id_list.append(exercise_id)
+                        if exer_level <= usr_fitness_level:
+                            quad_id_list.append(exercise_id)
                     elif "Hamstrings" in muscle:
-                        ham_id_list.append(exercise_id)
+                        if exer_level <= usr_fitness_level:
+                            ham_id_list.append(exercise_id)
 
                 # assume energy level will always be divisible by 3
                 num_per_muscle = int(energy / 3)
