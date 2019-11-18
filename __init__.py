@@ -4,7 +4,6 @@ import re
 from flask import Flask, render_template, redirect, url_for, request
 import requests
 
-
 app = Flask(__name__)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -81,6 +80,11 @@ def summary():
             if equipment:
                 query = query + "&equipment=" + equipment
 
+            level = json.loads(re.sub("\'", "\"", request.form['fitnessLevel']))[0]
+
+            if level:
+                query = query + "&level=" + level
+
             print(query)
 
             response = requests.get(query)
@@ -117,7 +121,7 @@ def generate():
         for equipment in request.form.getlist('equipment'):
             equipments.append(equipment)
 
-        return render_template('generate.html', muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
+        return render_template('generate.html', level=request.form.getlist('fitnessLevel'), muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
 
     return render_template('generate.html')
 
@@ -135,5 +139,3 @@ def utility_functions():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
-

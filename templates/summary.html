@@ -60,7 +60,7 @@
             </div>
         </div>
 
-        <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:24%;margin-bottom:100px;height:80%;">
+        <div class="w3-sidebar w3-theme w3-bar-block w3-staatliches" style="font-size:30px;width:24%;margin-bottom:100px;">
 
             <div class="w3-container w3-center" style="border-bottom:3px solid black;">
                 <p class="w3-text-theme">Workout Summary</p>
@@ -101,20 +101,30 @@
                         <h3 class="w3-staatliches" style="font-size: 40px">
                             {{ exercise['exercise'] }}
                         </h3>
+                        <div class="w3-staatliches" style="font-size: 20px">
+                            Difficulty: {{ exercise['level'] }}
+                        </div>
                         <p class="w3-container">
-                            <span class="w3-staatliches" style="font-size: 20px">
-                                Equipment required
-                            </span>
-                            <br>
-                            <br>
-                            <span class="tooltip" style="margin-right:20px;">
-                                <img src="/static/images/icons/equipment/{{ exercise['equipment'] }}.jpg" alt="{{ exercise['equipment'] }}" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
-                                <span class="tooltiptext w3-animate-opacity w3-theme" style="font-size:10px;">
-                                        {{ exercise['equipment'] }}
-                                </span>
-                            </span>
+                            {% if 'youtube' in exercise['video'] %}
+                                <iframe width="420" height="315" src="{{ exercise['video'] }}" frameBorder="0">
+                                </iframe>
+                            {% else %}
+                                <video src="http://{{ exercise['video'] }}" width="420" height="315" controls style="outline:0">
+                                </video>
+                            {% endif %}
                         </p>
-                        <p class="w3-container" style="margin-top: 40px;">
+                        <span class="w3-staatliches" style="font-size: 20px">
+                            Equipment required
+                        </span>
+                        <br>
+                        <br>
+                        <span class="tooltip" style="margin-right:20px;">
+                            <img src="/static/images/icons/equipment/{{ exercise['equipment'] }}.jpg" alt="{{ exercise['equipment'] }}" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="tooltiptext w3-animate-opacity w3-theme" style="font-size:10px;">
+                                    {{ exercise['equipment'] }}
+                            </span>
+                        </span>
+                        <span class="w3-container" >
                             <span class="w3-staatliches" style="font-size: 20px">
                                 Muscle groups affected
                             </span>
@@ -143,12 +153,8 @@
                                     </span>
                                 {% endif %}
                             {% endfor %}
-                        </p>
-                        <p class="w3-container">
-                            {% for image in exercise['photo'] %}
-                                <img src="{{ image }}" alt="exercise_photo" width="auto" height="200px">
-                            {% endfor %}
-                        </p>
+                        </span>
+                        <br>
                         <label>
                             <input type="checkbox" name="{{ exercise['exercise'] }}" value="uncomplete" style="transform:scale(3);margin:10px">
                             <span style="font-size:24px">Exercise Completed</span>
