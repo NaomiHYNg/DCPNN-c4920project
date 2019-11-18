@@ -22,6 +22,11 @@ login = LoginManager()  # exported into models.py and
 login.init_app(app)
 login.login_view = 'login'
 
+# Fitness levels in integer form
+BEGINNER = 1
+INTEMEDIATE = 2
+ADVANCED = 3
+
 
 def updateEntry(record, collection, query):
     collection.update(query, record)
@@ -55,7 +60,18 @@ def checkMissingMuscle(muscle_checklist):
         if value == False:
          #   print("is False")
             check = False
-    return check    
+    return check
+
+def convertFitnessLevel(str_level):
+    int_level = 0
+    if str_level.lower() == "beginner":
+        int_level = BEGINNER
+    if str_level.lower() == "intermediate":
+        int_level = INTEMEDIATE
+    if str_level.lower() == "advanced":
+        int_level = ADVANCED
+
+    return int_level
 
 # Setup parser
 parser = reqparse.RequestParser()
@@ -76,7 +92,7 @@ class AllCollections(Resource):
         energy = args['energy']  # returns an integer
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
-        usr_fitness_level = args['level']
+        usr_fitness_level = convertFitnessLevel(args['level'])
         collection = DB.find_all("test1")
 
         # Abort if collection not found
@@ -88,6 +104,7 @@ class AllCollections(Resource):
 
         # If the user has muscle preferences
         if usr_muscle_list:
+
             single_id_dict = {}  # each muscle is a key of the dictionary
             compound_id_list = []  # list of dictionaries {id: len(intersection)}
             muscle_checklist = dict.fromkeys(usr_muscle_list, False) # Create muscle checklist
@@ -97,8 +114,14 @@ class AllCollections(Resource):
                 muscle_list = record['muscle']
                 # print(record['exercise name'])
                 exercise_id = record['id']
+                level = convertFitnessLevel(record['level'])
+
+                if (level > usr_fitness_level):
+                    continue
+
                 # print(muscle_list)
                 inter_list = intersection(usr_muscle_list, muscle_list)
+
                 if len(inter_list) > 0:  # if there are entries in the list
 
                     # if the exercise's associated muscle/s only matches one of the user's muscle preferences
@@ -113,11 +136,11 @@ class AllCollections(Resource):
                     # if the exercise has more than one matching muscle
                     if len(inter_list) > 1:
                         # print("not completed")
-                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list}
+                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list, "level": level}
                         compound_id_list.append(temp_dict)
                         # print(record['exercise name'])
 
-            compound_id_list = sorted(compound_id_list, key=lambda i: i['intersection_len'], reverse=True)
+            compound_id_list = sorted(compound_id_list, key=lambda i: (i['intersection_len'], i['level']), reverse=True)
 
             # EQUIPMENT SELECTION
             # remove all items in list that do not match user's equipment selections
@@ -141,66 +164,13 @@ class AllCollections(Resource):
                     temp_list_a = []
                     for sl in value:
                         record = DB.find_one("test1", {"id": sl})
-                        print(sl)
+                        #print(sl)
                         equipment = record['equipment']
                         if equipment in equip_usr_list:
                             temp_list_a.append(sl)
                     single_id_dict[key] = temp_list_a
 
-            # FITNESS LEVEL SELECTION
-            # remove all items in list that do not match user's fitness_level selections
-
-            temp_list = []
-
-            if usr_fitness_level:
-                if usr_fitness_level == "beginner":
-                    for cl in compound_id_list:
-                        record = DB.find_one("test1", {"id": cl['id']})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner":
-                            temp_list.append(cl)
-                    compound_id_list = temp_list
-
-                    temp_list = []
-
-                    for key, value in single_id_dict.items():
-                        temp_list = []
-                        for sl in value:
-                            record = DB.find_one("test1", {"id": sl})
-                            fitness_level = record['level']
-                            if fitness_level.lower() == "beginner":
-                                print(sl)
-                                temp_list.append(sl)
-                        single_id_dict[key] = temp_list
-                
-                elif usr_fitness_level == "intermediate":
-                    for cl in compound_id_list:
-                        record = DB.find_one("test1", {"id": cl['id']})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner" or fitness_level.lower() == "intermediate":
-                            temp_list.append(cl)
-                    compound_id_list = temp_list
-
-                    for key, value in single_id_dict.items():
-                        temp_list = []
-                        for sl in value:
-                            record = DB.find_one("test1", {"id": sl})
-                            fitness_level = record['level']
-                            if fitness_level.lower() == "beginner":
-                                temp_list.append(sl)
-                        single_id_dict[key] = temp_list
-
-                temp_list = []
-
-                for key, value in single_id_dict.items():
-                    temp_list = []
-                    for sl in value:
-                        record = DB.find_one("test1", {"id": sl})
-                        fitness_level = record['level']
-                        if fitness_level.lower() == "beginner" or fitness_level.lower() == "intermediate":
-                            temp_list.append(sl)
-                    single_id_dict[key] = temp_list
-
+            
             print("Compound List")
             print(compound_id_list)
             print("Single List")
@@ -267,8 +237,9 @@ class AllCollections(Resource):
 
             # if there are less user required exercises than the compound list
             # randomly select the required number of exercises
+            # fitness level filtered out correctly
             else:
-                random.shuffle(compound_id_list)
+                #random.shuffle(compound_id_list)
                 counter = 0
 
                 for key, value in muscle_checklist.items():
@@ -337,6 +308,10 @@ class AllCollections(Resource):
 
                 for record in collection:
                     equipment = record['equipment']
+                    level = convertFitnessLevel(record['level'])
+
+                    if level > usr_fitness_level:
+                        continue
                     if equipment in equip_usr_list:
                         #print(equipment)
                         exercise_id = record['id']
@@ -382,23 +357,26 @@ class AllCollections(Resource):
                     output_list.append(output_dict)
 
             else:
-                # For exercisesing, print out all records
+                # For exercises, print out all records
                 tricep_id_list = []
                 quad_id_list = []
                 ham_id_list = []
 
                 # need to input fitness level here
-
                 for record in collection:
                     exercise_id = record['id']
                     muscle = record['muscle']
+                    exer_level = convertFitnessLevel(record['level'])
 
                     if "Triceps" in muscle:
-                        tricep_id_list.append(exercise_id)
+                        if exer_level == usr_fitness_level:
+                            tricep_id_list.append(exercise_id)
                     elif "Quads" in muscle:
-                        quad_id_list.append(exercise_id)
+                        if exer_level == usr_fitness_level:
+                            quad_id_list.append(exercise_id)
                     elif "Hamstrings" in muscle:
-                        ham_id_list.append(exercise_id)
+                        if exer_level == usr_fitness_level:
+                            ham_id_list.append(exercise_id)
 
                 # assume energy level will always be divisible by 3
                 num_per_muscle = int(energy / 3)
@@ -436,7 +414,7 @@ class AllCollections(Resource):
                             "equipment": equipment
                         }
                         output_list.append(output_dict)
-                        # print(output_list)
+                        #print(output_list)
 
         
         return output_list, 200
@@ -553,35 +531,73 @@ class UpdateUser(Resource):
 
 # get.request("http://127.0.0.1:5001/users/<user_id>/workouts")
 
-@api.route('/users/<user_id>/workouts')
-class WorkoutsPerUser(Resource):
-    def get(self, user_id):
+@api.route('/users/<string:username>/workouts/<int:workout_id>')
+class OneWorkoutPerUser(Resource):
+    def get(self, username, workout_id):
         output_list = []        
-        collection = DB.find_one("workouts", {"user_id": user_id})
+        collection = DB.find_one("workouts", {"workout_id": workout_id})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+        
+        output_dict = {
+            "workout_id": collection['workout_id'],
+            "workout_name": collection['workout_name'],
+            "workout": collection['workout']
+        }
+
+        return output_dict, 200
+# put.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
+# if a user does not exist, create a new entry for that user
+
+    # adds a new workout to the workout list
+    def put(self, username, workout_id):
+
+        # consists of a dictionary {"workout_id": int, "workout_name:" "", "workout": []}
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_one("workouts", {"workout_id": workout_id})
+        print(collection)
 
         # Abort if collection not found
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        for record in collection:
-            output_dict = {
-                "user_id": record['user_id'],
-                "workout_list": record['workout_list']
-            }
-            output_list.append(output_dict)
+        new_entry = {"workout_id": workout_id, "workout_name": payload['workout_name'], "workout": payload['workout']}   
+        
+        DB.update("workouts", {"workout_id": workout_id}, new_entry)   
 
-        return output_list, 200
-# put.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
-# if a user does not exist, create a new entry for that user
+        return new_entry, 200 
 
-# post.request("http://127.0.0.1:5001/users/<user_id>/workouts")
+@api.route('/users/<string:username>/workouts')
+class WorkoutsPerUser(Resource):
+# post.request("http://127.0.0.1:5001/users/<int:workout_id>/workouts")
 # create new entry in db when user is initially created
 
-    #def post(self, user_id):
-        #payload = request.json
-        #payload = json.loads(payload)
+    def post(self, username):
 
+        # consists of a dictionary {"workout_name:" "", "workout": ""}
+        payload = request.json
+        payload = json.loads(payload)
 
+        collection = DB.find_all("workouts")
+        max_id = 0
+        exists = 0
+        exist_id = 0
+        for record in collection:
+            entry_id = record['workout_id']            
+            if entry_id > max_id:
+                max_id = entry_id
+
+        max_id = max_id + 1
+
+        new_entry = {"workout_id": max_id, "workout_name": payload['workout_name'], "workout": payload['workout']}
+
+        DB.insert("workouts", new_entry)
+
+        return new_entry, 200
 
 
 # Method used by developers only. Exercises will not be generated by the user
