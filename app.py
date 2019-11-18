@@ -571,6 +571,19 @@ class OneWorkoutPerUser(Resource):
 
         return new_entry, 200 
 
+# delete.request("http://127.0.0.1:5001/users/<user_id>/workouts/<workout_id>")
+    def delete(self, username, workout_id):
+
+        collection = DB.find_one("workouts", {"workout_id": workout_id})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        DB.delete_one("workouts",{"workout_id": workout_id})
+
+        return {}, 200
+
 @api.route('/users/<string:username>/workouts')
 class WorkoutsPerUser(Resource):
 # post.request("http://127.0.0.1:5001/users/<int:workout_id>/workouts")
