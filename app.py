@@ -9,7 +9,6 @@ from flask_restplus import fields
 from flask_restplus import inputs
 from flask_restplus import reqparse
 
-
 import re
 import random
 from database import DB
@@ -31,6 +30,7 @@ def intersection(lst1, lst2):
             if i1.lower() == i2.lower():
                 output_list.append(i1)
     return output_list
+
 
 def genMuscleListFromComp(output_id_list, compound_id_list, muscle_checklist):
     for i in output_id_list:
@@ -413,7 +413,6 @@ class AllCollections(Resource):
 @api.route('/exercises/<int:exercise_id>')
 class ExerciseCollection(Resource):
     def get(self, exercise_id):
-
         collection = DB.find_one("exercises", {"id": exercise_id})
 
         if not collection:
