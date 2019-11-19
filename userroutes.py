@@ -56,7 +56,7 @@ def register():
 
 @app.route('/logout')
 def logout():
-    logout_user()
+    logout_user() #loginManager function
     return redirect(url_for('login'))
 
 @app.route('/user/<username>')

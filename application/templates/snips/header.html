@@ -10,6 +10,18 @@
 <div class="header">
 
     <div class="w3-container w3-theme" style="border-bottom: 3px solid black">
+
+        <header class="w3-container w3-theme w3-left w3-text-theme">
+            <h1 style="font-size:30px; text-align:center">
+                <div class="w3-staatliches">
+                    <form action="{{ url_for('login') }}" method="POST" style="display:inline">
+                        {{ login_status }}
+                        <br>
+                    </form>
+                </div>
+            </h1>
+        </header>
+
         <header class="w3-container w3-theme w3-right w3-text-theme">
             <h1 style="font-size:30px; text-align:center">
                 <div class="w3-staatliches">
