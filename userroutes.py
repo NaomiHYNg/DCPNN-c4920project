@@ -14,8 +14,9 @@ def login():
     form = Login()
     if form.validate_on_submit():
         user = DB.find_one("users", {"username": form.username.data})
+        user.pop('_id', None) # dont need this when creating User object
         if user and User.check_password(user['password'], form.password.data):
-            user_obj = User(username=user['username'])
+            user_obj = User(user)#User(username=user['username'])
             login_user(user_obj, remember=form.remember_me.data)
             return redirect(request.args.get("next") or url_for("home"))
         else:
@@ -29,19 +30,29 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data)
+        # create dictionary to pass to User constructor
+        info = {
+            "firstname": form.firstname.data, 
+            "lastname": form.lastname.data, 
+            "username": form.username.data, 
+            "email": form.email.data, 
+            "fitness" : form.fitness.data,
+            "weight" : form.weight.data,
+            "goalweight" : form.goalweight.data
+            }
+        user = User(info)
         # hash is generated and stored
         user.set_password(form.password.data)
-        user.set_email(form.email.data)
-        #db.add(user)
+        user.set_goal(form.goal.data)
+        # add user to db
         user.add()
         #user can now log in
-        return redirect(url_for('login'))
-        '''
+        #return redirect(url_for('login'))
+        
         # or log user in and go to home
         login_user(user)
         return redirect(request.args.get("next") or url_for("home"))
-        '''
+        
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/logout')
@@ -57,9 +68,10 @@ def user(username):
     # Abort if collection not found
     if not collection:
         api.abort(404, "There are no collections in the database")
-    
-    user = User(username=collection['username'])
+    collection.pop('_id', None)
+    user = User(collection)#User(username=collection['username'])
 
+    #return user.__dict__
     return render_template('profile.html', user=user)
 
     

@@ -1,5 +1,5 @@
 import json
-
+import os
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
@@ -7,7 +7,7 @@ import requests
 from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user, login_user, logout_user, login_required
-import os
+
 
 
 
@@ -22,18 +22,6 @@ app.config.update(
 # login
 login = LoginManager(app) # exported into models.py
 login.login_view = 'login'
-
-'''
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'password':
-            error = 'Invalid username or password.'
-        else:
-            return render_template('home.html', username=request.form['username'])
-    #return render_template('login.html', error=error)
-'''
 
 
 @app.route('/', methods=['GET', 'POST'])

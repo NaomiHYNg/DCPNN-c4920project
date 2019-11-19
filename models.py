@@ -1,15 +1,22 @@
+# Api 
+from flask_restplus import Resource
 # user management
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+# other files
 from database import DB
 from app import api
 from application import login
+from bson.decimal128 import Decimal128
 
 from hashlib import md5
+from datetime import datetime
 
 class User(UserMixin):
-    def __init__(self, username):
-        self.username = username
+    def __init__(self, dictionary):
+        #self.username = username
+        for key in dictionary:
+            setattr(self, key, dictionary[key])
 
     @staticmethod
     def is_authenticated():
@@ -38,12 +45,41 @@ class User(UserMixin):
     
     def set_email(self, email):
         self.email = email
+        DB.update("users", {"username": self.username}, {"$set" : {"email" : email}})
+
+
+    def set_goal(self, goal):
+        self.goal = goal
+        
+
+    def add_workout(self, id):
+        user = DB.find_one("users", {"username": self.username})
+        if not user:
+            api.abort(404, "User {} not found".format(self.username))
+        # update workout history
+        hist = user['history'].append(id)
+        # update entry in DB
+        DB.update("users", {"username": self.username}, {"$set" : {"history" : hist}})
+
+    def get_history(self):
+        user = DB.find_one("users", {"username": self.username})
+        if not user:
+            api.abort(404, "User {} not found".format(self.username))
+        return user['history']
+        
     
     def add(self):
         user = {
+            "firstname": self.firstname, 
+            "lastname": self.lastname, 
             "username": self.username, 
             "email": self.email, 
-            "password": self.password_hash
+            "password": self.password_hash,
+            "fitness" : self.fitness,
+            "weight" : Decimal128(self.weight),
+            "goalweight" : Decimal128(self.goalweight),
+            "goal" : self.goal,
+            "history" : []
             }
         DB.insert("users", user)
     
@@ -51,13 +87,38 @@ class User(UserMixin):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
+'''
+JUST WANT ID
+    obj = Workout({"id" : 1}) 
+
+ALL WORKOUT INFO for populating profile page (list of past workout with details)
+    collection = DB.find_one("workouts", {"id":1}) <-- this is a dict
+    collection.pop('_id', None) <-- remove mongo _id
+    obj = Workout(collection) <-- workout object with fields to populate front end
+'''
+
+class Workout() :
+    # create workout object from dict 
+    def __init__(self, dictionary):
+        for key in dictionary:
+            setattr(self, key, dictionary[key])
+
+    def get_id(self):
+        return self.id
+
+class Post() :
+    def __init__(self, user, content):
+        self.content = content
+        self.user = user
+
 
 @login.user_loader
 def load_user(username):
     collection = DB.find_one("users", {"username":username})
-
     if not collection:
         api.abort(404, "User {} not found".format(username))
-    return User(username=collection['username'])
+    return User({ "username" : collection['username']})
+
+
 
 
