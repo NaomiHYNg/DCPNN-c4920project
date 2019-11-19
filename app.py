@@ -42,7 +42,6 @@ def genMuscleListFromComp(output_id_list, compound_id_list, muscle_checklist):
                 for k in j['inter_list']:
                     muscle_checklist[k] = True
 
-    #print(muscle_checklist)
     return muscle_checklist
 
 def genMuscleListFromSing(muscle, muscle_checklist):
@@ -120,6 +119,10 @@ class AllCollections(Resource):
 
                 # Check that the exercise is 
                 if (level > usr_fitness_level):
+                    continue
+
+                # Check if the primary muscle in the exercise is in the user's muscle selection
+                if (muscle_list[0] not in usr_muscle_list):
                     continue
 
                 inter_list = intersection(usr_muscle_list, muscle_list)
@@ -348,7 +351,6 @@ class AllCollections(Resource):
                     output_list.append(output_dict)
 
             else:
-
                 tricep_id_list = []
                 quad_id_list = []
                 ham_id_list = []
