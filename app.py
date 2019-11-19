@@ -413,45 +413,6 @@ class AllCollections(Resource):
         return output_list, 200
 
 
-@api.route('/exercises/<int:exercise_id>')
-class ExerciseCollection(Resource):
-    def get(self, exercise_id):
-
-        collection = DB.find_one("exercises", {"id": exercise_id})
-
-        if not collection:
-            api.abort(404, "Collection id {} not found".format(exercise_id))
-
-        exercise = collection['exercise name']
-        muscle = collection['muscle']
-        equipment = collection['equipment']
-        video = collection['video']
-        description = collection['description']
-
-        output = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "video": video,
-                  "description": description}
-
-        return output, 200
-
-    def put(self, exercise_id):
-        payload = request.form
-
-        # Connect to mongodb mlab
-        collection = DB.find_one("exercises", {"id": exercise_id})
-
-        exercise = payload['exercise name']
-        muscle = payload['muscle']
-        equipment = payload['equipment']
-        video = payload['video']
-        description = payload['description']
-
-        new_entry = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "video": video,
-                     "description": description}
-
-        updateEntry(new_entry, "exercises", {"id": exercise_id})
-
-        return new_entry, 200, None
-
 @api.route('/users/<string:username>/workouts/<int:workout_id>')
 class OneWorkoutPerUser(Resource):
     def get(self, username, workout_id):
