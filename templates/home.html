@@ -14,6 +14,7 @@
 
         window.id = 1;
         window.energy_levels = ['Low Energy', 'Moderate Energy', 'High Energy'];
+        window.fitness_levels = ['Beginner', 'Intermediate', 'Advanced'];
         window.selected_list = ['Moderate Energy'];
 
         function hover(element) {
@@ -42,6 +43,7 @@
             if (document.getElementById(id).checked == true) {
 
                 if (document.getElementById(id).type == "radio") {
+
                     if (window.selected_list.indexOf(string) == -1) {
                         window.selected_list.unshift(string);
 
@@ -78,13 +80,13 @@
 
         function nextOption() {
 
-          if (window.id == 3) {
+          if (window.id == 4) {
             return;
           }
 
           window.id = window.id + 1
 
-          if (window.id == 3) {
+          if (window.id == 4) {
             document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png');
           } else {
             document.getElementById('next').setAttribute('src', '/static/images/arrow.png');
@@ -152,6 +154,28 @@
                 <div class="w3-container w3-center" style="display:table-cell">
                     <div class="option w3-staatliches" id="1" style="font-size:40px;margin-bottom:50px">
                         <label class="w3-animate-opacity" style="font-weight:bold">
+                            Fitness Level
+                        </label>
+                        <br>
+                        <br>
+                        <label class="w3-animate-opacity" style="margin-right:25px">
+                            <input id=LowFitnessRadio type="radio" name="fitnessLevel" value="easy" onclick="updateSelected(id, 'Beginner')">
+                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                        </label>
+
+                        <label class="w3-animate-opacity">
+                            <input id=MediumFitnessRadio type="radio" name="fitnessLevel" value="medium" checked onclick="updateSelected(id, 'Intermediate')">
+                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                        </label>
+
+                        <label class="w3-animate-opacity" style="margin-left:25px">
+                          <input id=HighFitnessRadio type="radio" name="fitnessLevel" value="hard" onclick="updateSelected(id, 'Advanced')">
+                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                        </label>
+                    </div>
+
+                    <div class="option w3-staatliches" id="2" style="font-size:40px;margin-bottom:50px;display:none">
+                        <label class="w3-animate-opacity" style="font-weight:bold">
                             Energy Level
                         </label>
                         <br>
@@ -172,7 +196,7 @@
                         </label>
                     </div>
 
-                    <div class="option w3-staatliches" id="2" style="font-size:40px;margin-bottom:50px;display:none">
+                    <div class="option w3-staatliches" id="3" style="font-size:40px;margin-bottom:50px;display:none">
                         <label class="w3-animate-opacity" style="font-weight:bold">
                             Muscle Group
                         </label>
@@ -318,7 +342,7 @@
                         </label>
                     </div>
 
-                    <div class="option w3-staatliches" id="3" style="font-size:40px;margin-bottom:50px;display:none">
+                    <div class="option w3-staatliches" id="4" style="font-size:40px;margin-bottom:50px;display:none">
                         <label class="w3-animate-opacity" style="font-weight:bold">
                             Equipment Selection
                         </label>
@@ -372,7 +396,7 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="BodyOnluCheckbox" type="checkbox" name="equipment" value="BodyOnly" style="display:none" onclick="updateSelected(id, value)">
+                                <input id="BodyOnluCheckbox" type="checkbox" name="equipment" value="Body Only" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Body Only.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                     Body Only
@@ -383,10 +407,10 @@
                         <br>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="EZ Curl Bar" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/EZ Curl Bar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="E-Z Curl Bar" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/E-Z Curl Bar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    EZ Curl Bar
+                                    E-Z Curl Bar
                                 </span>
                             </span>
                         </label>
