@@ -17,14 +17,6 @@
                     <form action="{{ url_for('login') }}" method="POST" style="display:inline">
                         {{ login_status }}
                         <br>
-                        {% if login_status == 'Not signed in.' %}
-                            <input type="submit" value="Sign in">
-                        {% else %}
-                            {% if request.path != "/login" and request.path != "/generate" %}
-                                <input type="submit" value="Sign out">
-                            {% endif %}
-                        {% endif %}
-
                     </form>
                 </div>
             </h1>
