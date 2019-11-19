@@ -46,9 +46,8 @@ def register():
         user.set_goal(form.goal.data)
         # add user to db
         user.add()
-        #user can now log in
+        # user can now log in
         #return redirect(url_for('login'))
-        
         # or log user in and go to home
         login_user(user)
         return redirect(request.args.get("next") or url_for("home"))

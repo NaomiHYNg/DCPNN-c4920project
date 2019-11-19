@@ -61,13 +61,35 @@ def contact():
 def summary():
 
     if request.method == 'POST':
+
         try:
-            response = requests.get("http://127.0.0.1:5001/exercises?energy=" + request.form['energy'])
+            muscles = re.sub("\'", "\"", request.form['muscles'])
+            muscles = json.loads(muscles)
+            muscles = ",".join(muscles)
+
+            query = "http://127.0.0.1:5001/exercises?energy=" + request.form['energy']
+
+            if muscles:
+                query = query + "&muscle=" + muscles
+
+            equipment = re.sub("\'", "\"", request.form['equipments'])
+            equipment = json.loads(equipment)
+            equipment = ",".join(equipment)
+
+            if equipment:
+                query = query + "&equipment=" + equipment
+
+            level = json.loads(re.sub("\'", "\"", request.form['fitnessLevel']))[0]
+
+            if level:
+                query = query + "&level=" + level
+
+            print(query)
+
+            response = requests.get(query)
             print("Status Code: " + str(response))
 
             content = json.loads(response.content)
-
-            energy = "MODERATE"
 
             if request.form['energy'] == '3':
                 energy = "LOW"
@@ -76,7 +98,8 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
-            return render_template('summary.html', energy=energy, exercise_list=content, muscle=request.form['muscle'], username=request.form['username'])
+            return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], username=request.form['username'])
+
         except Exception as e:
             print(e)
             error = "Error connecting to server!"
@@ -87,9 +110,25 @@ def summary():
 def generate():
 
     if request.method == 'POST':
-        return render_template('generate.html', username=request.form['username'], energy=request.form['energy'], muscle=request.form['muscle'])
+
+        muscles = []
+        equipments = []
+
+        for muscle in request.form.getlist('muscle'):
+            muscles.append(muscle)
+
+        for equipment in request.form.getlist('equipment'):
+            equipments.append(equipment)
+
+        return render_template('generate.html', level=request.form.getlist('fitnessLevel'), muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
 
     return render_template('generate.html')
+
+@app.route('/complete', methods=['GET', 'POST'])
+def complete():
+
+    return render_template('complete.html')
+
     
 @app.context_processor
 def utility_functions():

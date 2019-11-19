@@ -86,7 +86,7 @@ class AllCollections(Resource):
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
         usr_fitness_level = convertFitnessLevel(args['level'])
-        collection = DB.find_all("test1")
+        collection = DB.find_all("exercises")
 
         # Abort if collection not found
         if not collection:
@@ -148,7 +148,7 @@ class AllCollections(Resource):
 
                 equip_usr_list.append("Bodyweight")
                 for cl in compound_id_list:
-                    record = DB.find_one("test1", {"id": cl['id']})
+                    record = DB.find_one("exercises", {"id": cl['id']})
                     equipment = record['equipment']
                     if equipment in equip_usr_list:
                         temp_list_a.append(cl)
@@ -159,7 +159,7 @@ class AllCollections(Resource):
                 for key, value in single_id_dict.items():
                     temp_list_a = []
                     for sl in value:
-                        record = DB.find_one("test1", {"id": sl})
+                        record = DB.find_one("exercises", {"id": sl})
                         equipment = record['equipment']
                         if equipment in equip_usr_list:
                             temp_list_a.append(sl)
@@ -266,7 +266,7 @@ class AllCollections(Resource):
             print("OUTPUT ID LIST")
             print(output_id_list)
             for i in output_id_list:
-                entry = DB.find_one("test1", {"id": i})
+                entry = DB.find_one("exercises", {"id": i})
                 # print(entry)
                 exercise_name = entry['exercise name']
                 description = entry['description']
@@ -325,7 +325,7 @@ class AllCollections(Resource):
                 print(output_id_list)
 
                 for i in output_id_list:
-                    entry = DB.find_one("test1", {"id": i})
+                    entry = DB.find_one("exercises", {"id": i})
                     exercise_name = entry['exercise name']
                     description = entry['description']
                     muscle = entry['muscle']
@@ -382,7 +382,7 @@ class AllCollections(Resource):
 
                 for m_list in default_list:
                     for i in m_list:
-                        entry = DB.find_one("test1", {"id": i})
+                        entry = DB.find_one("exercises", {"id": i})
 
                         exercise_name = entry['exercise name']
                         description = entry['description']
@@ -414,7 +414,7 @@ class AllCollections(Resource):
 class ExerciseCollection(Resource):
     def get(self, exercise_id):
 
-        collection = DB.find_one("test1", {"id": exercise_id})
+        collection = DB.find_one("exercises", {"id": exercise_id})
 
         if not collection:
             api.abort(404, "Collection id {} not found".format(exercise_id))
@@ -430,24 +430,6 @@ class ExerciseCollection(Resource):
 
         return output, 200
 
-    def put(self, exercise_id):
-        payload = request.form
-
-        # Connect to mongodb mlab
-        collection = DB.find_one("test1", {"id": exercise_id})
-
-        exercise = payload['exercise name']
-        muscle = payload['muscle']
-        equipment = payload['equipment']
-        video = payload['video']
-        description = payload['description']
-
-        new_entry = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "video": video,
-                     "description": description}
-
-        updateEntry(new_entry, "exercises", {"id": exercise_id})
-
-        return new_entry, 200, None
 
 @api.route('/users/<string:username>/workouts/<int:workout_id>')
 class OneWorkoutPerUser(Resource):
