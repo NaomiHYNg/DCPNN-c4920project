@@ -42,24 +42,23 @@ class User(UserMixin):
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
-    
-    def set_email(self, email):
-        self.email = email
-        DB.update("users", {"username": self.username}, {"$set" : {"email" : email}})
 
 
     def set_goal(self, goal):
         self.goal = goal
         
-
-    def add_workout(self, id):
+    # user.log_workout(workout_dict)
+    def log_workout(self, workout_dict):
         user = DB.find_one("users", {"username": self.username})
         if not user:
             api.abort(404, "User {} not found".format(self.username))
         # update workout history
-        hist = user['history'].append(id)
+        hist = user['history'].append(workout_dict['id'])
         # update entry in DB
         DB.update("users", {"username": self.username}, {"$set" : {"history" : hist}})
+        DB.insert("workouts", workout_dict)
+        self.history = hist
+
 
     def get_history(self):
         user = DB.find_one("users", {"username": self.username})
