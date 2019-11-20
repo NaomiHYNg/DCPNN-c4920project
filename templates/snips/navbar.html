@@ -1,0 +1,36 @@
+<!--
+<div class="Login Information">
+    <div class="w3-container w3-black w3-right">
+        <h3 style="font-size:16px">Logged in as {{ username }}.</h3>
+        <a class="w3-button w3-white" href="/login">Sign out</a>
+    </div>
+</div>
+-->
+
+<div class="Navigation bar">
+    <div class="w3-container w3-black">
+        <div class="w3-bar w3-black">
+
+            <form action="{{ url_for('home') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="username" value={{ username }}>
+                <input class="w3-btn w3-black" type="submit" value="Home">
+            </form>
+
+            <form action="{{ url_for('history') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="username" value={{ username }}>
+                <input class="w3-btn w3-black" type="submit" value="History">
+            </form>
+
+            <form action="{{ url_for('about') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="username" value={{ username }}>
+                <input class="w3-btn w3-black" type="submit" value="About">
+            </form>
+
+            <form action="{{ url_for('contact') }}" method="POST" style="display:inline;">
+                <input type="hidden" name="username" value={{ username }}>
+                <input class="w3-btn w3-black" type="submit" value="Contact">
+            </form>
+
+        </div>
+    </div>
+</div>

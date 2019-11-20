@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import json
 import re
 
@@ -141,4 +139,3 @@ def utility_functions():
 
 if __name__ == "__main__":
     app.run(debug=True)
->>>>>>> Darren
