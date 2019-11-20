@@ -14,6 +14,7 @@
         <div class="w3-container w3-white w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
             <br><br><br><br><br>
             <form action="" method="POST" novalidate>
+                {{ form.csrf_token }}
                 {{ form.hidden_tag() }}
                 <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
                     <tr>
