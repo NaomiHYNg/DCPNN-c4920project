@@ -134,7 +134,11 @@
                             {% for muscle in exercise['muscle'] %}
                                 {% if primary.ex == 0 %}
                                     <span class="tooltip" style="margin-right:20px;">
+                                        {% if muscle == 'Quads' %}
+                                        <img src="/static/images/icons/muscles/Legs.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(0,255,0,1);">
+                                        {% else %}
                                         <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(0,255,0,1);">
+                                        {% endif %}
                                         <span class="tooltiptext w3-theme w3-animate-opacity" style="font-size:10px;">
                                             {{ muscle }}
                                             <br>
@@ -144,7 +148,11 @@
                                     {% set primary.ex = primary.ex + 1 %}
                                 {% else %}
                                     <span class="tooltip" style="margin-right:20px;">
+                                        {% if muscle == 'Quads' %}
+                                        <img src="/static/images/icons/muscles/Legs.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(255,255,0,1);">
+                                        {% else %}
                                         <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(255,255,0,1);">
+                                        {% endif %}
                                         <span class="tooltiptext w3-theme w3-animate-opacity" style="background-color:transparent;font-size:10px;">
                                             {{ muscle }}
                                             <br>
