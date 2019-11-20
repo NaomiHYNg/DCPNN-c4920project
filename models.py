@@ -115,7 +115,7 @@ class Post() :
 def load_user(username):
     collection = DB.find_one("users", {"username":username})
     if not collection:
-        api.abort(404, "User {} not found".format(username))
+        return None
     return User({ "username" : collection['username']})
 
 
