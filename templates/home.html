@@ -15,7 +15,7 @@
         window.id = 1;
         window.energy_levels = ['Low Energy', 'Moderate Energy', 'High Energy'];
         window.fitness_levels = ['Beginner', 'Intermediate', 'Advanced'];
-        window.selected_list = ['Moderate Energy'];
+        window.selected_list = ['Beginner', 'Moderate Energy'];
 
         function hover(element) {
           element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
@@ -44,23 +44,47 @@
 
                 if (document.getElementById(id).type == "radio") {
 
-                    if (window.selected_list.indexOf(string) == -1) {
-                        window.selected_list.unshift(string);
+                    if (window.fitness_levels.indexOf(string) != -1) {
 
-                        for (i = 0; i < window.energy_levels.length; i++) {
-                          if (window.energy_levels[i] == string) {
-                            continue;
-                          } else {
-                            if (window.selected_list.indexOf(window.energy_levels[i]) > -1) {
-                                window.selected_list.splice(window.selected_list.indexOf(window.energy_levels[i]), 1);
+                        if (window.selected_list.indexOf(string) == -1) {
+                            window.selected_list.unshift(string);
+
+                            for (i = 0; i < window.fitness_levels.length; i++) {
+                              if (window.fitness_levels[i] == string) {
+                                continue;
+                              } else {
+                                if (window.selected_list.indexOf(window.fitness_levels[i]) > -1) {
+                                    window.selected_list.splice(window.selected_list.indexOf(window.fitness_levels[i]), 1);
+                                }
+                              }
                             }
-                          }
+
+                            document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+                            return;
+                        } else {
+                            return;
                         }
 
-                        document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
-                        return;
                     } else {
-                        return;
+
+                        if (window.selected_list.indexOf(string) == -1) {
+                            window.selected_list.splice(1, 0, string);
+
+                            for (i = 0; i < window.energy_levels.length; i++) {
+                              if (window.energy_levels[i] == string) {
+                                continue;
+                              } else {
+                                if (window.selected_list.indexOf(window.energy_levels[i]) > -1) {
+                                    window.selected_list.splice(window.selected_list.indexOf(window.energy_levels[i]), 1);
+                                }
+                              }
+                            }
+
+                            document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+                            return;
+                        } else {
+                            return;
+                        }
                     }
                 }
 
@@ -146,9 +170,11 @@
                     </span>
                     <br>
                     <div id="selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                        Beginner
+                        <br>
                         Moderate Energy
                     </div>
-                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached (16).</div>
+                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached (17).</div>
                 </div>
 
                 <div class="w3-container w3-center" style="display:table-cell">
@@ -160,17 +186,17 @@
                         <br>
                         <label class="w3-animate-opacity" style="margin-right:25px">
                             <input id=LowFitnessRadio type="radio" name="fitnessLevel" value="Beginner" checked onclick="updateSelected(id, 'Beginner')">
-                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                            <img name="Beginner" src="static/images/Beginner.jpg" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity">
                             <input id=MediumFitnessRadio type="radio" name="fitnessLevel" value="Intermediate" onclick="updateSelected(id, 'Intermediate')">
-                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                            <img name="Intermediate" src="static/images/Intermediate.jpg" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity" style="margin-left:25px">
                           <input id=HighFitnessRadio type="radio" name="fitnessLevel" value="Advanced" onclick="updateSelected(id, 'Advanced')">
-                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                          <img name="Advanced" src="static/images/Advanced.jpg" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
                     </div>
 
@@ -259,10 +285,10 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="QuadricepsCheckbox" type="checkbox" name="muscle" value="Quadriceps" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="QuadsCheckbox" type="checkbox" name="muscle" value="Quads" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/muscles/Quads.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Quadriceps
+                                    Quads
                                 </span>
                             </span>
                         </label>
