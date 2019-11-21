@@ -1,38 +1,38 @@
 import json
+import os
 import re
 
 from flask import Flask, render_template, redirect, url_for, request
 import requests
+# user management
+from flask_login import LoginManager
+from flask_login import login_required
+from flask_login import current_user, login_user, logout_user, login_required
+
+
+
 
 app = Flask(__name__)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    error = None
-    if request.method == 'POST':
-        return render_template('login.html')
+# config
+app.config.update(
+    DEBUG = True,
+    SECRET_KEY = 'secret_xxx'
+)
 
-    return render_template('login.html', error=error)
+# login
+login = LoginManager(app) # exported into models.py
+login.login_view = 'login'
+
 
 @app.route('/', methods=['GET', 'POST'])
+@app.route('/home', methods=['GET', 'POST'])
+@login_required
 def home():
-
     if request.method == 'POST':
+        return render_template('home.html', username=request.form['username'])
 
-        if request.form['username']:
-            login_status="Logged in as " + request.form['username'] + "."
-        else:
-            login_status="Not signed in."
-
-        return render_template('home.html', login_status=login_status, username=request.form['username'])
-
-    return render_template('home.html', login_status="Not signed in.")
-
-@app.route('/signup', methods=['GET', 'POST'])
-def signup():
-
-    return render_template('signup.html', login_status="Not signed in.")
-
+    return render_template('home.html')
 
 @app.route('/about/', methods=['GET', 'POST'])
 def about():
@@ -99,7 +99,7 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
-            return render_template('summary.html', energy=energy, exercise_list=content, energy_value=request.form['energy'], username=request.form['username'])
+            return render_template('summary.html', level=level, energy=energy, exercise_list=content, energy_value=request.form['energy'], username=request.form['username'])
 
         except Exception as e:
             print(e)
@@ -130,6 +130,7 @@ def complete():
 
     return render_template('complete.html')
 
+    
 @app.context_processor
 def utility_functions():
     def print_in_console(message):
@@ -137,5 +138,6 @@ def utility_functions():
 
     return dict(mdebug=print_in_console)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
+
+
