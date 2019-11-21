@@ -109,9 +109,23 @@ class AllCollections(Resource):
             muscle_checklist = dict.fromkeys(usr_muscle_list, False) # Create muscle checklist
 
             # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
+
+            '''
+            old_collection = []
+            new_collection = []
+
+            for record in collection:
+                old_collection.append(record)
+                if record['muscle'][0] in usr_muscle_list:
+                    new_collection.append(record)
+
+
+            if not new_collection or len(new_collection) < energy:
+                new_collection = old_collection
+            '''
+
             for record in collection:
                 muscle_list = record['muscle']
-                # print(record['exercise name'])
                 exercise_id = record['id']
                 level = convertFitnessLevel(record['level'])
 
