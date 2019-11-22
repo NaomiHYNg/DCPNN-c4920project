@@ -117,4 +117,5 @@ def load_user(username):
     collection = DB.find_one("users", {"username": username})
     if not collection:
         return None
+    collection.pop('_id')
     return User(collection)
