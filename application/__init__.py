@@ -9,9 +9,6 @@ from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user, login_user, logout_user, login_required
 
-
-
-
 app = Flask(__name__)
 
 # config
