@@ -1,4 +1,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Staatliches">
+<link rel="stylesheet" href="/static/css/scrollbar.css">
+
+<script src="/static/js/header.js"></script>
 
 <style>
     .w3-theme {color:#fff !important; background-color:#37474f !important}
@@ -15,14 +18,93 @@
             <h1 style="font-size:30px; text-align:center">
                 <div class="w3-staatliches">
                         <div class="w3-container">
-                            <span>Logged in as {{ current_user.username }}.</span>
+                            <span>Welcome</span>
+                            <span style="color:yellow;">{{ current_user.firstname }}</span>.
                         </div>
-                        <div class="w3-container">
-                            <a href="/logout">Sign out</a>
+                        <div>
+
+                                <a href="/logout" style="text-decoration:none">
+                                <div class="w3-container w3-red" style="display:inline-block">
+                                    Sign out
+                                </div>
+                            </a>
+                            <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
+                                <div class="w3-container w3-teal" style="display:inline-block">
+                                    My Workouts
+                                </div>
+                            </a>
+
                         </div>
+
                 </div>
             </h1>
         </header>
+
+        <div id="my_workouts" class="w3-modal">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
+              <div class="w3-container w3-center">
+                  <br>
+                  <span>My Workouts</span>
+              </div>
+              <br>
+              <br>
+              <div class="w3-container w3-center" style="position:absolute;width:24%;height:60%;overflow:auto">
+                  {% for workout in workouts %}
+                  <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedWorkout({{ workout['workout_id'] + 12345 }})" style="text-align:center">
+                  <br>
+                  <br>
+                  {% endfor %}
+              </div>
+
+              <form id="delete_saved_workout" action="{{ url_for('home') }}" method="POST">
+
+                  <input type="hidden" name="action" value="delete saved workout">
+                  <input type="hidden" name="username" value={{ current_user.username }}>
+
+              </form>
+
+              <div class="w3-container w3-text-white w3-animate-opacity" style="margin-left:25%">
+
+                    {% set ns = namespace(ex=0) %}
+                    {% for workout in workouts %}
+
+                        {% if ns.ex == 0 %}
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="display:block;overflow:auto;position:absolute;height:60%;">
+                            {% set ns.ex = ns.ex + 1 %}
+                        {% else %}
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="display:none;overflow:auto;position:absolute;height:60%;">
+                        {% endif %}
+
+                                <div class="w3-staalitches">{{ workout['workout_name'] }}</div>
+                                <div id="demo"></div>
+                                <button class="w3-button w3-staalitches w3-red" style="font-size:14px" onclick="deleteWorkout({{ workout['workout_id'] }})">Delete</button>
+                                <br><br>
+                                <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px">
+                                    {% for exercise in workout['workout'] %}
+
+                                        {% if exercise['muscle'][0] == 'Quads' %}
+                                        <img src="/static/images/icons/muscles/Legs.jpg" width="5%" height="5%" style="border-radius:80%">
+                                        {% else %}
+                                        <img src="/static/images/icons/muscles/{{ exercise['muscle'][0] }}.jpg" width="5%" height="5%" style="border-radius:80%">
+                                        {% endif %}
+                                        {{ exercise['exercise'] }}
+                                        <br>
+                                        <br>
+
+                                    {% endfor %}
+                                </div>
+
+                            </div>
+
+                    {% endfor %}
+
+                  <br>
+                  <br>
+                <span onclick="document.getElementById('my_workouts').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+              </div>
+            </div>
+
+        </div>
 
         <header class="w3-container w3-theme w3-right w3-text-theme">
             <h1 style="font-size:30px; text-align:center">

@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html style="height:100%;">
     <head>
         <title>Fitness Tailor</title>
         <link rel="stylesheet" href="/static/css/check.css">
         <link rel="stylesheet" href="/static/css/w3.css">
-        <link rel="stylesheet" href="/static/css/main.css">
         <link rel="stylesheet" href="/static/css/tooltip.css">
         <script src="/static/js/home.js"></script>
     </head>
@@ -13,7 +12,7 @@
 
 
 
-    <body style="background-color:#ff9e0f">
+    <body style="height:100%;background: #ff9e0f;background: -webkit-linear-gradient(#ffb84d, #ff9e0f);background: -o-linear-gradient(#ffb84d, #ff9e0f);background: -moz-linear-gradient(#ffb84d, #ff9e0f);background: linear-gradient(#ffb84d, #ff9e0f);">
 
         {% include 'snips/header.html' %}
         {% include 'snips/header2.html' %}
@@ -431,7 +430,7 @@
                         <br>
                         Goal weight at {{ current_user.goalweight }} kilos
                         <br>
-                        {{ current_user.firstname }}'s goal is to:
+                        {{ current_user.firstname }}'s goal:
                         <br>
                         {{ current_user.goal }}
                         <br>

@@ -505,5 +505,21 @@ class WorkoutsPerUser(Resource):
         return new_entry, 200
 
 
+    def get(self, username):
+        output_list = []
+        collection = DB.find_all("workouts")
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        workouts = []
+
+        for record in collection:
+            record['_id'] = str(record['_id'])
+            workouts.append(record)
+
+        return workouts, 200
+
 if __name__ == '__main__':
     app.run(port=5001, debug=True)

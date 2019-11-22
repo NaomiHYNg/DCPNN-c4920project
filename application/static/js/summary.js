@@ -26,3 +26,18 @@
                 }
             }
         }
+
+        function deleteExercise(id) {
+
+            var input = document.createElement("input");
+
+            input.setAttribute("type", "hidden");
+
+            input.setAttribute("name", "delete_id");
+
+            input.setAttribute("value", id);
+
+            document.getElementById("delete_workout").appendChild(input);
+            document.getElementById('delete_workout').submit();
+
+        }

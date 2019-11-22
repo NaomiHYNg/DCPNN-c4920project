@@ -3,13 +3,13 @@
     <head>
         <title>Fitness Tailor</title>
         <link rel="stylesheet" href="/static/css/w3.css">
-        <link rel="stylesheet" href="/static/css/main.css">
         <link rel="stylesheet" href="/static/css/tooltip.css">
         <link rel="stylesheet" href="/static/css/scrollbar.css">
+        <link rel="stylesheet" href="/static/css/delete.css">
         <script src="/static/js/summary.js"></script>
     </head>
 
-    <body style="background-color:#ff9e0f">
+    <body style="background-color: #ff9e0f;">
         {% include 'snips/header.html' %}
 
         <div style="display:table;width:100%">
@@ -29,20 +29,59 @@
 
             <p class="w3-text-theme w3-center">Exercises</p>
 
-            {% for exercise in exercise_list %}
-                <button class="w3-bar-item w3-button w3-center w3-animate-opacity" onclick="openWorkout({{ exercise['id'] }})">
+            <form id="delete_workout" action="{{ url_for('summary') }}" method="POST">
+
+                <input type="hidden" name="action" value="delete workout">
+                <input type="hidden" name="username" value={{ current_user.username }}>
+                <input type="hidden" name="energy" value={{ energy }}>
+                <input type="hidden" name="energy_value" value={{ energy_value }}>
+                <input type="hidden" name="fitnessLevel" value="{{ level }}">
+                <input type="hidden" name="workout" value="[{% for exercise in exercise_list %}{{ exercise }},{% endfor %}]">
+
+                {% for exercise in exercise_list %}
+                <label class="w3-bar-item w3-button w3-center w3-animate-opacity deleteLabel" style="cursor:default" onclick="openWorkout({{ exercise['id'] }})">
+                    <label class="w3-left delete" style="cursor:pointer;{{ delete_status }}" onclick="deleteExercise({{ exercise['id'] }})">
+                        &nbsp&times&nbsp
+                    </label>
                     {{ exercise['exercise'] }}
-                </button>
-            {% endfor %}
+                </label>
+                {% endfor %}
+
+
+            </form>
 
             <button class="w3-bar-item w3-button w3-center w3-animate-opacity w3-yellow" onclick="checkCompleted()">
                 FINISH WORKOUT
             </button>
-            <br>
-            <button class="w3-bar-item w3-button w3-center w3-animate-opacity w3-cyan">
-                SAVE WORKOUT
-            </button>
+            <form id="save_workout" action="{{ url_for('summary') }}" method="POST">
+                <input type="hidden" name="action" value="save workout">
+                <input type="hidden" name="username" value={{ current_user.username }}>
+                <input type="hidden" name="energy" value={{ energy }}>
+                <input type="hidden" name="energy_value" value={{ energy_value }}>
+                <input type="hidden" name="fitnessLevel" value="{{ level }}">
+                <input type="hidden" name="workout" value="[{% for exercise in exercise_list %}{{ exercise }},{% endfor %}]">
+                <input type="button" value="SAVE WORKOUT" class="w3-bar-item w3-button w3-center w3-animate-opacity w3-cyan" onclick="document.getElementById('save_name').style.display='block'" {{ save_disabled }}>
+                <div class="w3-center w3-animate-opacity">{{ save_status }}</div>
 
+                <div id="save_name" class="w3-modal">
+                    <div class="w3-modal-content w3-text-theme w3-theme w3-animate-opacity">
+                      <div class="w3-container w3-center">
+                          <br>
+                          <span style="color:cyan;-webkit-text-stroke: 2px black;">Save Workout</span>
+                          <br><br>
+                          Enter a Workout Name
+                          <br>
+                          <input type="text" name="workout_name" style="font-family:Trebuchet MS, Helvetica, sans-serif;text-align:center">
+                          <br>
+                          <br>
+                          <input type="submit" value="Confirm" class="w3-button w3-center w3-animate-opacity w3-theme2">
+                          <br>
+                          <br>
+                        <span onclick="document.getElementById('save_name').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                      </div>
+                    </div>
+                </div>
+            </form>
 
             <span class="w3-bar-item w3-center w3-animate-opacity w3-red" id="finish_workout" style="display:none;font-size:16px"></span>
 
@@ -130,7 +169,7 @@
                         <br>
                         <label>
                             <input type="checkbox" name="{{ exercise['exercise'] }}" value="uncomplete" style="transform:scale(3);margin:10px">
-                            <span style="font-size:24px">Exercise Completed</span>
+                            <span class="w3-staatliches" style="font-size:24px">Exercise Completed</span>
                         </label>
                         {% set rpe = energy_value | int %}
                         {% set rpe = 5 + rpe/3 %}
