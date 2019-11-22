@@ -38,3 +38,21 @@
 
         return
     }
+
+    function addWorkout(day_id, workout_name) {
+
+        if (workout_name == "Rest") {
+            document.getElementById(day_id).innerHTML = "Rest";
+        } else {
+            document.getElementById(day_id).innerHTML = workout_name;
+        }
+
+        document.getElementById("Add_Monday").style.display = "none";
+        document.getElementById("Add_Tuesday").style.display = "none";
+        document.getElementById("Add_Wednesday").style.display = "none";
+        document.getElementById("Add_Thursday").style.display = "none";
+        document.getElementById("Add_Friday").style.display = "none";
+        document.getElementById("Add_Saturday").style.display = "none";
+        document.getElementById("Add_Sunday").style.display = "none";
+
+    }

@@ -53,6 +53,7 @@
             <button class="w3-bar-item w3-button w3-center w3-animate-opacity w3-yellow" onclick="checkCompleted()">
                 FINISH WORKOUT
             </button>
+            <br>
             <form id="save_workout" action="{{ url_for('summary') }}" method="POST">
                 <input type="hidden" name="action" value="save workout">
                 <input type="hidden" name="username" value={{ current_user.username }}>
@@ -64,12 +65,12 @@
                 <div class="w3-center w3-animate-opacity">{{ save_status }}</div>
 
                 <div id="save_name" class="w3-modal">
-                    <div class="w3-modal-content w3-text-theme w3-theme w3-animate-opacity">
+                    <div class="w3-modal-content w3-text-theme w3-theme w3-animate-top">
                       <div class="w3-container w3-center">
                           <br>
-                          <span style="color:cyan;-webkit-text-stroke: 2px black;">Save Workout</span>
+                          <span style="background: -webkit-linear-gradient(yellow, #ff9e0f);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-size:74px;-webkit-text-stroke: 2px black;">SAVE WORKOUT</span>
                           <br><br>
-                          Enter a Workout Name
+                          Name your Workout:
                           <br>
                           <input type="text" name="workout_name" style="font-family:Trebuchet MS, Helvetica, sans-serif;text-align:center">
                           <br>

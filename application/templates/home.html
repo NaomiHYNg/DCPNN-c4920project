@@ -22,15 +22,25 @@
             <div class="w3-container" style="display:table;width:100%">
                 <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:15%;border-radius:10%;display:table-cell">
                     <span style="font-weight:bold">
-                        Selected:
+                        My Status:
                     </span>
                     <br>
-                    <div id="selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                    <div class="w3-animate-opacity" id="selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
                         Beginner
                         <br>
                         Moderate Energy
                     </div>
-                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached (17).</div>
+                    <span class="w3-animate-left" id="muscle_selected_title" style="display:none;font-weight:bold">
+                        Muscles:
+                    </span>
+                    <div id="muscle_selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                    </div>
+                    <span class="w3-animate-left" id="equipment_selected_title" style="display:none;font-weight:bold">
+                        Equipment:
+                    </span>
+                    <div id="equipment_selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                    </div>
+                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached.</div>
                 </div>
 
                 <div class="w3-container w3-center" style="display:table-cell">
@@ -42,17 +52,17 @@
                         <br>
                         <label class="w3-animate-opacity" style="margin-right:25px">
                             <input id=LowFitnessRadio type="radio" name="fitnessLevel" value="Beginner" checked onclick="updateSelected(id, 'Beginner')">
-                            <img name="Beginner" src="/static/images/icons/level/Beginner.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-right:5%;height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                            <img name="Beginner" src="/static/images/icons/level/Beginner.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-right:5%;height:200px; width:200px; vertical-align:middle;border-radius: 80%;border:1px solid black">
                         </label>
 
                         <label class="w3-animate-opacity">
                             <input id=MediumFitnessRadio type="radio" name="fitnessLevel" value="Intermediate" onclick="updateSelected(id, 'Intermediate')">
-                            <img name="Intermediate" src="/static/images/icons/level/Intermediate.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                            <img name="Intermediate" src="/static/images/icons/level/Intermediate.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;border:1px solid black">
                         </label>
 
                         <label class="w3-animate-opacity" style="margin-left:25px">
                           <input id=HighFitnessRadio type="radio" name="fitnessLevel" value="Advanced" onclick="updateSelected(id, 'Advanced')">
-                          <img name="Advanced" src="/static/images/icons/level/Advanced.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-left:5%; height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                          <img name="Advanced" src="/static/images/icons/level/Advanced.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-left:5%;height:200px; width:200px; vertical-align:middle;border-radius: 80%;border:1px solid black">
                         </label>
                     </div>
 
@@ -64,17 +74,17 @@
                         <br>
                         <label class="w3-animate-opacity" style="margin-right:25px">
                             <input id=LowEnergyRadio type="radio" name="energy" value="3" onclick="updateSelected(id, 'Low Energy')">
-                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity">
                             <input id=ModerateEnergyRadio type="radio" name="energy" value="6" checked onclick="updateSelected(id, 'Moderate Energy')">
-                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity" style="margin-left:25px">
                           <input id=HighEnergyRadio type="radio" name="energy" value="9" onclick="updateSelected(id, 'High Energy')">
-                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
+                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
                         </label>
                     </div>
 
@@ -421,14 +431,21 @@
 
                 <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:15%;border-radius:10%;display:table-cell">
                     <span style="font-weight:bold">
-                        {{ current_user.firstname }} {{ current_user.lastname }}'s
-                        <br>Stats:
+                        {{ current_user.firstname }} {{ current_user.lastname }}
                     </span>
                     <div id="stats" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
                         <br>
-                        Weighing at {{ current_user.weight }} kilos
+                        Weighing at {{ current_user.weight }} kilos,
                         <br>
-                        Goal weight at {{ current_user.goalweight }} kilos
+                        {% set difference = current_user.weight | string | int - current_user.goalweight | string | int %}
+                        {% if difference < 0 %}
+                            {% set difference = difference * -1 %}
+                            {% set phrase = "away from" %}
+                        {% else %}
+                            {% set phrase = "higher than" %}
+                        {% endif %}
+                        {{ difference }} kilos {{ phrase }} your Goal weight of {{ current_user.goalweight }} kilos
+                        <br>
                         <br>
                         {{ current_user.firstname }}'s goal:
                         <br>
