@@ -1,136 +1,18 @@
 <!DOCTYPE html>
-<html>
+<html style="height:100%;">
     <head>
         <title>Fitness Tailor</title>
         <link rel="stylesheet" href="/static/css/check.css">
         <link rel="stylesheet" href="/static/css/w3.css">
-        <link rel="stylesheet" href="/static/css/main.css">
         <link rel="stylesheet" href="/static/css/tooltip.css">
+        <script src="/static/js/home.js"></script>
     </head>
 
     {% set iteration = 1 | int %}
 
-    <script>
-
-        window.id = 1;
-        window.energy_levels = ['Low Energy', 'Moderate Energy', 'High Energy'];
-        window.selected_list = ['Moderate Energy'];
-
-        function hover(element) {
-          element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
-          element.style.transition = "box-shadow .3s ease-in-out";
-        }
-
-        function unhover(element) {
-          element.setAttribute('src', '/static/images/' + element.name + '.png');
-        }
-
-        function hoverSelection(element) {
-          element.style.transition = "transform .15s ease-in-out, box-shadow .3s ease-in-out";
-          element.style.transform = "scale(1.5)";
-        }
-
-        function unhoverSelection(element) {
-          element.style.transform = "scale(1)";
-        }
 
 
-        function updateSelected(id, string) {
-
-            document.getElementById("error_selected").style.display = "none";
-
-            if (document.getElementById(id).checked == true) {
-
-                if (document.getElementById(id).type == "radio") {
-                    if (window.selected_list.indexOf(string) == -1) {
-                        window.selected_list.unshift(string);
-
-                        for (i = 0; i < window.energy_levels.length; i++) {
-                          if (window.energy_levels[i] == string) {
-                            continue;
-                          } else {
-                            if (window.selected_list.indexOf(window.energy_levels[i]) > -1) {
-                                window.selected_list.splice(window.selected_list.indexOf(window.energy_levels[i]), 1);
-                            }
-                          }
-                        }
-
-                        document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
-                        return;
-                    } else {
-                        return;
-                    }
-                }
-
-                if (window.selected_list.length >= 17) {
-                    document.getElementById("error_selected").style.display = "block";
-                    document.getElementById(id).checked = false;
-                    return;
-                }
-
-                window.selected_list.push(string);
-                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
-            } else {
-                window.selected_list.splice(window.selected_list.indexOf(string), 1);
-                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
-            }
-        }
-
-        function nextOption() {
-
-          if (window.id == 3) {
-            return;
-          }
-
-          window.id = window.id + 1
-
-          if (window.id == 3) {
-            document.getElementById('next').setAttribute('src', '/static/images/arrowDisabled.png');
-          } else {
-            document.getElementById('next').setAttribute('src', '/static/images/arrow.png');
-            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png');
-          }
-
-          var i;
-          var x = document.getElementsByClassName("option");
-          for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-            x[i].setAttribute('src', '/static/images/arrow.png');
-          }
-          document.getElementById(window.id).style.display = "block";
-
-        }
-
-        function prevOption() {
-
-          if (window.id == 1) {
-            return;
-          }
-
-          window.id = window.id - 1;
-
-          if (window.id == 1) {
-            document.getElementById('prev').setAttribute('src', '/static/images/arrowDisabled.png');
-          } else {
-            document.getElementById('prev').setAttribute('src', '/static/images/arrow.png');
-            document.getElementById('next').setAttribute('src', '/static/images/arrow.png');
-          }
-
-          var i;
-          var x = document.getElementsByClassName("option");
-          for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-            x[i].setAttribute('src', '/static/images/arrow.png')
-          }
-          document.getElementById(window.id).style.display = "block";
-
-        }
-
-    </script>
-
-
-
-    <body style="background-color:#ff9e0f">
+    <body style="height:100%;background: #ff9e0f;background: -webkit-linear-gradient(#ffb84d, #ff9e0f);background: -o-linear-gradient(#ffb84d, #ff9e0f);background: -moz-linear-gradient(#ffb84d, #ff9e0f);background: linear-gradient(#ffb84d, #ff9e0f);">
 
         {% include 'snips/header.html' %}
         {% include 'snips/header2.html' %}
@@ -138,19 +20,43 @@
         <form action="{{ url_for('generate') }}" method="POST">
 
             <div class="w3-container" style="display:table;width:100%">
-                <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:25%;border-radius:10%;display:table-cell">
+                <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:15%;border-radius:10%;display:table-cell">
                     <span style="font-weight:bold">
                         Selected:
                     </span>
                     <br>
                     <div id="selected" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                        Beginner
+                        <br>
                         Moderate Energy
                     </div>
-                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached (16).</div>
+                    <div class="w3-animate_opacity" id="error_selected" style="color:red;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;display:none;">Maximum criteria reached (17).</div>
                 </div>
 
                 <div class="w3-container w3-center" style="display:table-cell">
                     <div class="option w3-staatliches" id="1" style="font-size:40px;margin-bottom:50px">
+                        <label class="w3-animate-opacity" style="font-weight:bold">
+                            Fitness Level
+                        </label>
+                        <br>
+                        <br>
+                        <label class="w3-animate-opacity" style="margin-right:25px">
+                            <input id=LowFitnessRadio type="radio" name="fitnessLevel" value="Beginner" checked onclick="updateSelected(id, 'Beginner')">
+                            <img name="Beginner" src="/static/images/icons/level/Beginner.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-right:5%;height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                        </label>
+
+                        <label class="w3-animate-opacity">
+                            <input id=MediumFitnessRadio type="radio" name="fitnessLevel" value="Intermediate" onclick="updateSelected(id, 'Intermediate')">
+                            <img name="Intermediate" src="/static/images/icons/level/Intermediate.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                        </label>
+
+                        <label class="w3-animate-opacity" style="margin-left:25px">
+                          <input id=HighFitnessRadio type="radio" name="fitnessLevel" value="Advanced" onclick="updateSelected(id, 'Advanced')">
+                          <img name="Advanced" src="/static/images/icons/level/Advanced.jpg" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)" style="margin-left:5%; height:15%; width:15%; vertical-align:middle;border-radius: 80%;border:1px solid black">
+                        </label>
+                    </div>
+
+                    <div class="option w3-staatliches" id="2" style="font-size:40px;margin-bottom:50px;display:none">
                         <label class="w3-animate-opacity" style="font-weight:bold">
                             Energy Level
                         </label>
@@ -158,21 +64,21 @@
                         <br>
                         <label class="w3-animate-opacity" style="margin-right:25px">
                             <input id=LowEnergyRadio type="radio" name="energy" value="3" onclick="updateSelected(id, 'Low Energy')">
-                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                            <img name="sad" src="/static/images/sad.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity">
                             <input id=ModerateEnergyRadio type="radio" name="energy" value="6" checked onclick="updateSelected(id, 'Moderate Energy')">
-                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                            <img name="neutral" src="/static/images/neutral.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
 
                         <label class="w3-animate-opacity" style="margin-left:25px">
                           <input id=HighEnergyRadio type="radio" name="energy" value="9" onclick="updateSelected(id, 'High Energy')">
-                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:200px; width:200px; vertical-align:middle;border-radius: 80%;">
+                          <img name="happy" src="/static/images/happy.png" onmouseover="hover(this);" onmouseout="unhover(this);" style="height:15%; width:15%; vertical-align:middle;border-radius: 80%;">
                         </label>
                     </div>
 
-                    <div class="option w3-staatliches" id="2" style="font-size:40px;margin-bottom:50px;display:none">
+                    <div class="option w3-staatliches" id="3" style="font-size:40px;margin-bottom:50px;display:none">
                         <label class="w3-animate-opacity" style="font-weight:bold">
                             Muscle Group
                         </label>
@@ -208,10 +114,10 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="MiddleBackCheckbox" type="checkbox" name="muscle" value="Middle Back" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/muscles/Middle Back.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="UpperBackCheckbox" type="checkbox" name="muscle" value="Upper Back" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/muscles/Upper Back.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Middle Back
+                                    Upper Back
                                 </span>
                             </span>
                         </label>
@@ -235,10 +141,10 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="QuadricepsCheckbox" type="checkbox" name="muscle" value="Quadriceps" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/muscles/Quadriceps.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="QuadsCheckbox" type="checkbox" name="muscle" value="Quads" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/muscles/Legs.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Quadriceps
+                                    Quads
                                 </span>
                             </span>
                         </label>
@@ -291,10 +197,10 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="AbdominalsCheckbox" type="checkbox" name="muscle" value="Abdominals" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/muscles/Abdominals.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="AbdominalsCheckbox" type="checkbox" name="muscle" value="Abs" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/muscles/Abs.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Abdominals
+                                    Abs
                                 </span>
                             </span>
                         </label>
@@ -318,7 +224,7 @@
                         </label>
                     </div>
 
-                    <div class="option w3-staatliches" id="3" style="font-size:40px;margin-bottom:50px;display:none">
+                    <div class="option w3-staatliches" id="4" style="font-size:40px;margin-bottom:50px;display:none">
                         <label class="w3-animate-opacity" style="font-weight:bold">
                             Equipment Selection
                         </label>
@@ -327,8 +233,8 @@
 
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip" style="border-radius: 80%">
-                                <input id="BandCheckbox" type="checkbox" name="equipment" value="Band" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/Band.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="BandCheckbox" type="checkbox" name="equipment" value="Bands" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Bands.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                     Band
                                 </span>
@@ -345,10 +251,10 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="CablesCheckbox" type="checkbox" name="equipment" value="Cables" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/Cables.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="CableCheckbox" type="checkbox" name="equipment" value="Cable" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Cable.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Cables
+                                    Cable
                                 </span>
                             </span>
                         </label>
@@ -370,30 +276,28 @@
                                 </span>
                             </span>
                         </label>
-                        <br>
-                        <br>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="EZ Curl Bar" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/EZ Curl Bar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="BodyOnluCheckbox" type="checkbox" name="equipment" value="Bodyweight" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Bodyweight.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    EZ Curl Bar
+                                    Body Only
                                 </span>
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="FoamRollCheckbox" type="checkbox" name="equipment" value="Foam Roll" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/Foam Roll.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="EZCurlBarCheckbox" type="checkbox" name="equipment" value="EZ Bar" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/EZ Bar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
-                                    Foam Roll
+                                    EZ Bar
                                 </span>
                             </span>
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
-                                <input id="KettleBellCheckbox" type="checkbox" name="equipment" value="KettleBell" style="display:none" onclick="updateSelected(id, value)">
-                                <img name="happy" src="/static/images/icons/equipment/KettleBells.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <input id="KettleBellCheckbox" type="checkbox" name="equipment" value="Kettle Bells" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Kettle Bells.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
                                     Kettlebell
                                 </span>
@@ -410,6 +314,17 @@
                         </label>
                         <label class="w3-animate-opacity" style="margin:10px;">
                             <span class="tooltip"style="border-radius: 80%">
+                                <input id="OtherCheckbox" type="checkbox" name="equipment" value="Other" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Other.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Other
+                                </span>
+                            </span>
+                        </label>
+                        <br>
+                        <br>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
                                 <input id="MedicineBallCheckbox" type="checkbox" name="equipment" value="Medicine Ball" style="display:none" onclick="updateSelected(id, value)">
                                 <img name="happy" src="/static/images/icons/equipment/Medicine Ball.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
                                 <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
@@ -417,24 +332,110 @@
                                 </span>
                             </span>
                         </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="ChainsCheckbox" type="checkbox" name="equipment" value="Chains" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Chains.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Chains
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="TrapBarCheckbox" type="checkbox" name="equipment" value="Trap Bar" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Trap Bar.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Trap Bar
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="JumpRopeCheckbox" type="checkbox" name="equipment" value="Jump Rope" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Jump Rope.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Jump Rope
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="LacrosseBallCheckbox" type="checkbox" name="equipment" value="Lacrosse Ball" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Lacrosse Ball.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Lacrosse Ball
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="RingsCheckbox" type="checkbox" name="equipment" value="Rings" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Rings.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Rings
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="RopeCheckbox" type="checkbox" name="equipment" value="Rope" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Rope.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Rope
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="SledCheckbox" type="checkbox" name="equipment" value="Sled" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Sled.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Sled
+                                </span>
+                            </span>
+                        </label>
+                        <label class="w3-animate-opacity" style="margin:10px;">
+                            <span class="tooltip"style="border-radius: 80%">
+                                <input id="TigerTailCheckbox" type="checkbox" name="equipment" value="Tiger Tail" style="display:none" onclick="updateSelected(id, value)">
+                                <img name="happy" src="/static/images/icons/equipment/Tiger Tail.jpg" style="height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;" onmouseover="hoverSelection(this)" onmouseout="unhoverSelection(this)">
+                                <span class="w3-text tooltiptext w3-animate-opacity" style="background-color:transparent;font-size:20px;">
+                                    Tiger Tail
+                                </span>
+                            </span>
+                        </label>
+
 
                     </div>
 
                     <div class="Menu">
                         <div class="generate w3-container w3-center">
                                 <input type="hidden" name="username" value={{ username }}>
-                                <a href="#" onclick="prevOption()"><img id="prev" src="/static/images/arrowDisabled.png" style="transform: scaleX(-1);width:125px;height:75px;margin-right:30px"></a>
-                                <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:250px;height:250px;outline:none;border-radius: 80%;">
-                                <a href="#" onclick="nextOption()"><img id="next" src="/static/images/arrow.png" style="width:125px;height:75px;margin-left:30px"></a>
+                                <a href="#" onclick="prevOption()"><img id="prev" src="/static/images/arrowDisabled.png" style="transform: scaleX(-1);width:10%;height:10%;margin-right:30px"></a>
+                                <input type="image" name="generate" src="/static/images/generate.png" onmouseover="hover(this);" onmouseout="unhover(this);" border="0" alt="Generate" style="vertical-align:middle;width:20%;height:20%;outline:none;border-radius: 80%;">
+                                <a href="#" onclick="nextOption()"><img id="next" src="/static/images/arrow.png" style="width:10%;height:10%;margin-left:30px"></a>
                         </div>
                     </div>
 
                 </div>
 
-                <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:25%;border-radius:10%;display:table-cell">
+                <div class="w3-staatliches w3-container w3-bar-block" style="text-align:center;background-color:rgba(255, 255, 255, 0.2);font-size:30px;height:70%;width:15%;border-radius:10%;display:table-cell">
                     <span style="font-weight:bold">
-                        My Stats:
+                        {{ current_user.firstname }} {{ current_user.lastname }}'s
+                        <br>Stats:
                     </span>
+                    <div id="stats" style="background-color:transparent;font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;height:60%">
+                        <br>
+                        Weighing at {{ current_user.weight }} kilos
+                        <br>
+                        Goal weight at {{ current_user.goalweight }} kilos
+                        <br>
+                        {{ current_user.firstname }}'s goal:
+                        <br>
+                        {{ current_user.goal }}
+                        <br>
+
+                    </div>
                 </div>
 
             </div>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Fitness Tailor</title>
+        <link rel="stylesheet" href="/static/css/w3.css">
+        <link rel="stylesheet" href="/static/css/tooltip.css">
+        <link rel="stylesheet" href="/static/css/scrollbar.css">
+        <link rel="stylesheet" href="/static/css/delete.css">
+        <script src="/static/js/summary.js"></script>
+    </head>
+
+    <body style="background-color: #ff9e0f;">
+        {% include 'snips/header.html' %}
+
+        <div style="display:table;width:100%">
+            <div class="w3-container w3-theme" style="width:24%;height:50px;display:table-cell"></div>
+            <div class="w3-container" style="display:table-cell">
+                    <h2 class="w3-staatliches w3-right" style="font-size:24px">WORKOUTS CURATED JUST FOR YOU</h2>
+            </div>
+        </div>
+
+        <div class="w3-container w3-theme w3-bar-block w3-staatliches" style="position:absolute;font-size:30px;width:24%;margin-bottom:10px">
+
+            <div class="w3-container w3-center" style="border-bottom:3px solid black;">
+                <p class="w3-text-theme">{{ current_user.firstname }}'s Workout Summary</p>
+                <p>Fitness Level: {{ level }}</p>
+                <p>Energy Level: {{ energy }}</p>
+            </div>
+
+            <p class="w3-text-theme w3-center">Exercises</p>
+
+            <form id="delete_workout" action="{{ url_for('summary') }}" method="POST">
+
+                <input type="hidden" name="action" value="delete workout">
+                <input type="hidden" name="username" value={{ current_user.username }}>
+                <input type="hidden" name="energy" value={{ energy }}>
+                <input type="hidden" name="energy_value" value={{ energy_value }}>
+                <input type="hidden" name="fitnessLevel" value="{{ level }}">
+                <input type="hidden" name="workout" value="[{% for exercise in exercise_list %}{{ exercise }},{% endfor %}]">
+
+                {% for exercise in exercise_list %}
+                <label class="w3-bar-item w3-button w3-center w3-animate-opacity deleteLabel" style="cursor:default" onclick="openWorkout({{ exercise['id'] }})">
+                    <label class="w3-left delete" style="cursor:pointer;{{ delete_status }}" onclick="deleteExercise({{ exercise['id'] }})">
+                        &nbsp&times&nbsp
+                    </label>
+                    {{ exercise['exercise'] }}
+                </label>
+                {% endfor %}
+
+
+            </form>
+
+            <button class="w3-bar-item w3-button w3-center w3-animate-opacity w3-yellow" onclick="checkCompleted()">
+                FINISH WORKOUT
+            </button>
+            <form id="save_workout" action="{{ url_for('summary') }}" method="POST">
+                <input type="hidden" name="action" value="save workout">
+                <input type="hidden" name="username" value={{ current_user.username }}>
+                <input type="hidden" name="energy" value={{ energy }}>
+                <input type="hidden" name="energy_value" value={{ energy_value }}>
+                <input type="hidden" name="fitnessLevel" value="{{ level }}">
+                <input type="hidden" name="workout" value="[{% for exercise in exercise_list %}{{ exercise }},{% endfor %}]">
+                <input type="button" value="SAVE WORKOUT" class="w3-bar-item w3-button w3-center w3-animate-opacity w3-cyan" onclick="document.getElementById('save_name').style.display='block'" {{ save_disabled }}>
+                <div class="w3-center w3-animate-opacity">{{ save_status }}</div>
+
+                <div id="save_name" class="w3-modal">
+                    <div class="w3-modal-content w3-text-theme w3-theme w3-animate-opacity">
+                      <div class="w3-container w3-center">
+                          <br>
+                          <span style="color:cyan;-webkit-text-stroke: 2px black;">Save Workout</span>
+                          <br><br>
+                          Enter a Workout Name
+                          <br>
+                          <input type="text" name="workout_name" style="font-family:Trebuchet MS, Helvetica, sans-serif;text-align:center">
+                          <br>
+                          <br>
+                          <input type="submit" value="Confirm" class="w3-button w3-center w3-animate-opacity w3-theme2">
+                          <br>
+                          <br>
+                        <span onclick="document.getElementById('save_name').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                      </div>
+                    </div>
+                </div>
+            </form>
+
+            <span class="w3-bar-item w3-center w3-animate-opacity w3-red" id="finish_workout" style="display:none;font-size:16px"></span>
+
+            <br>
+
+        </div>
+
+        <div class="w3-container w3-animate-opacity" style="margin-left:25%;font-family:Trebuchet MS, Helvetica, sans-serif;">
+
+            <form id="check_complete" action="{{ url_for('complete') }}" method="POST">
+
+            {% set ns = namespace(ex=0) %}
+            {% for exercise in exercise_list %}
+                {% if ns.ex == 0 %}
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:block">
+                    {% set ns.ex = ns.ex + 1 %}
+                {% else %}
+                    <div class="workout" id="{{ exercise['id'] }}" style="display:none">
+                {% endif %}
+
+                        <h3 class="w3-staatliches" style="font-size: 40px">
+                            {{ exercise['exercise'] }}
+                        </h3>
+                        <div class="w3-staatliches" style="font-size: 20px">
+                            Difficulty: {{ exercise['level'] }}
+                        </div>
+                        <p class="w3-container">
+                            {% if 'youtube' in exercise['video'] %}
+                                <iframe width="420" height="315" src="{{ exercise['video'] }}" frameBorder="0">
+                                </iframe>
+                            {% else %}
+                                <video src="http://{{ exercise['video'] }}" width="420" height="315" controls style="outline:0">
+                                </video>
+                            {% endif %}
+                        </p>
+                        <span class="w3-staatliches" style="font-size: 20px">
+                            Equipment required
+                        </span>
+                        <br>
+                        <br>
+                        <span class="tooltip" style="margin-right:20px;">
+                            <img src="/static/images/icons/equipment/{{ exercise['equipment'] }}.jpg" alt="{{ exercise['equipment'] }}" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;">
+                            <span class="tooltiptext w3-animate-opacity w3-theme" style="font-size:10px;">
+                                    {{ exercise['equipment'] }}
+                            </span>
+                        </span>
+                        <span class="w3-container" >
+                            <span class="w3-staatliches" style="font-size: 20px">
+                                Muscle groups affected
+                            </span>
+                            <br>
+                            <br>
+                            {% set primary = namespace(ex=0) %}
+                            {% for muscle in exercise['muscle'] %}
+                                {% if primary.ex == 0 %}
+                                    <span class="tooltip" style="margin-right:20px;">
+                                        {% if muscle == 'Quads' %}
+                                        <img src="/static/images/icons/muscles/Legs.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(0,255,0,1);">
+                                        {% else %}
+                                        <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(0,255,0,1);">
+                                        {% endif %}
+                                        <span class="tooltiptext w3-theme w3-animate-opacity" style="font-size:10px;">
+                                            {{ muscle }}
+                                            <br>
+                                            (Primary)
+                                        </span>
+                                    </span>
+                                    {% set primary.ex = primary.ex + 1 %}
+                                {% else %}
+                                    <span class="tooltip" style="margin-right:20px;">
+                                        {% if muscle == 'Quads' %}
+                                        <img src="/static/images/icons/muscles/Legs.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(255,255,0,1);">
+                                        {% else %}
+                                        <img src="/static/images/icons/muscles/{{ muscle }}.jpg" width="auto" height="200px" style="float:left;height:70px; width:70px; vertical-align:middle;border-radius: 80%;border:1px solid black;box-shadow: 0 0 10pt 3pt rgba(255,255,0,1);">
+                                        {% endif %}
+                                        <span class="tooltiptext w3-theme w3-animate-opacity" style="background-color:transparent;font-size:10px;">
+                                            {{ muscle }}
+                                            <br>
+                                            (Secondary)
+                                        </span>
+                                    </span>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        <br>
+                        <label>
+                            <input type="checkbox" name="{{ exercise['exercise'] }}" value="uncomplete" style="transform:scale(3);margin:10px">
+                            <span class="w3-staatliches" style="font-size:24px">Exercise Completed</span>
+                        </label>
+                        {% set rpe = energy_value | int %}
+                        {% set rpe = 5 + rpe/3 %}
+                        <b style="font-size:20px">
+                                <p>
+                                    Reps: 3 sets of 10
+                                    <span class="w3-tooltip">(RPE {{ rpe | int }})
+                                        <span class="w3-text w3-theme w3-tag w3-animate-opacity">
+                                            {% set reps = 10-rpe %}
+                                            Add enough weight such that you can finish your sets while still being able to do {{ reps | int }} more reps.
+                                        </span>
+                                    </span>
+                                </p>
+
+                                Instructions:
+                                <br>
+                        </b>
+                            {% set i = namespace(ex=1) %}
+                            {% for line in exercise['description'] %}
+                                {{ i.ex }}. {{ line }}
+                                <br>
+                                <br>
+                                {% set i.ex = i.ex + 1 %}
+
+                            {% endfor %}
+
+                    </div>
+
+            {% endfor %}
+
+            </form>
+
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,11 @@
+.delete {
+    font-family: "Arial", Times, serif;
+    background-color: red;
+    opacity:75%;
+    color: white;
+    visibility:hidden;
+}
+
+.deleteLabel:hover .delete {
+    visibility:visible;
+}
