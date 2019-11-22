@@ -63,6 +63,13 @@
 
               </form>
 
+              <form id="begin_saved_workout" action="{{ url_for('summary') }}" method="POST">
+
+                  <input type="hidden" name="action" value="begin saved workout">
+                  <input type="hidden" name="username" value={{ current_user.username }}>
+
+              </form>
+
               <div class="w3-container w3-text-white w3-animate-opacity" style="margin-left:25%">
 
                     {% set ns = namespace(ex=0) %}
@@ -76,8 +83,8 @@
                         {% endif %}
 
                                 <div class="w3-staalitches">{{ workout['workout_name'] }}</div>
-                                <div id="demo"></div>
-                                <button class="w3-button w3-staalitches w3-red" style="font-size:14px" onclick="deleteWorkout({{ workout['workout_id'] }})">Delete</button>
+                                <button class="w3-button w3-staalitches w3-green" style="font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
+                                <button class="w3-button w3-staalitches w3-red" style="font-size:14px" onclick="deleteWorkout({{ workout['workout_id'] }})">Delete Workout</button>
                                 <br><br>
                                 <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px">
                                     {% for exercise in workout['workout'] %}

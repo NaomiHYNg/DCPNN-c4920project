@@ -54,59 +54,67 @@ def summary():
     if request.method == 'POST':
 
 
-        try:
-            # Saving a workout
-            if request.form['action'] == "save workout":
-                #User sent a save workout request
 
-                username = request.form['username']
-                workout_name = request.form['workout_name']
+        # Saving a workout
+        if request.form['action'] == "save workout":
+            #User sent a save workout request
 
-                exercise_list=request.form['workout']
-                exercise_list=re.sub(",]", "]", exercise_list)
-                exercise_list=eval(exercise_list)
-                workout = exercise_list
+            username = request.form['username']
+            workout_name = request.form['workout_name']
 
-                # PUT Request
+            exercise_list=request.form['workout']
+            exercise_list=re.sub(",]", "]", exercise_list)
+            exercise_list=eval(exercise_list)
+            workout = exercise_list
 
-                payload = {
-                    "workout_name": workout_name,
-                    "username": username,
-                    "workout": workout
-                }
-                headers = {"Content-Type": "application/json"}
+            # PUT Request
 
-                url = "http://127.0.0.1:5001/users/" + username + "/workouts"
+            payload = {
+                "workout_name": workout_name,
+                "username": username,
+                "workout": workout
+            }
+            headers = {"Content-Type": "application/json"}
 
-                success = requests.post(url, json=json.dumps(payload), headers=headers)
+            url = "http://127.0.0.1:5001/users/" + username + "/workouts"
+
+            success = requests.post(url, json=json.dumps(payload), headers=headers)
 
 
 
-                return render_template('summary.html', workouts=workouts, level=request.form['fitnessLevel'], energy=request.form['energy'], exercise_list=exercise_list,
-                                       energy_value=request.form['energy_value'], username=request.form['username'], save_disabled="disabled", save_status="Workout Saved!")
-            # Deleting an exercise from the workout
-            elif request.form['action'] == "delete workout":
-                exercise_list = request.form['workout']
-                exercise_list = re.sub(",]", "]", exercise_list)
-                exercise_list = eval(exercise_list)
-                delete_id = request.form['delete_id']
+            return render_template('summary.html', workouts=workouts, level=request.form['fitnessLevel'], energy=request.form['energy'], exercise_list=exercise_list,
+                                   energy_value=request.form['energy_value'], username=request.form['username'], save_disabled="disabled", save_status="Workout Saved!")
+        # Deleting an exercise from the workout
+        elif request.form['action'] == "delete workout":
+            exercise_list = request.form['workout']
+            exercise_list = re.sub(",]", "]", exercise_list)
+            exercise_list = eval(exercise_list)
+            delete_id = request.form['delete_id']
 
-                for exercise in exercise_list:
-                    if str(exercise['id']) == str(delete_id):
-                        exercise_list.remove(exercise)
+            for exercise in exercise_list:
+                if str(exercise['id']) == str(delete_id):
+                    exercise_list.remove(exercise)
 
-                # Deleting is not an option if there is only one exercise in the list
-                if len(exercise_list) == 1:
-                    delete_status = "display:none;"
-                else:
-                    delete_status = ""
+            # Deleting is not an option if there is only one exercise in the list
+            if len(exercise_list) == 1:
+                delete_status = "display:none;"
+            else:
+                delete_status = ""
 
-                return render_template('summary.html', workouts=workouts, delete_status=delete_status, level=request.form['fitnessLevel'],
-                                       energy=request.form['energy'], exercise_list=exercise_list,
-                                       energy_value=request.form['energy_value'], username=request.form['username'])
+            return render_template('summary.html', workouts=workouts, delete_status=delete_status, level=request.form['fitnessLevel'],
+                                   energy=request.form['energy'], exercise_list=exercise_list,
+                                   energy_value=request.form['energy_value'], username=request.form['username'])
+        # Loading a saved workout
+        elif request.form['action'] == "begin saved workout":
 
-        except Exception as e:
-            print("Normal Generation")
+            for workout in workouts:
+                if str(workout['workout_id']) == str(request.form['workout_id']):
+                    saved_workout = workout
+
+            print(saved_workout['workout'])
+
+            return render_template('summary.html', energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
+
 
         try:
             muscles = re.sub("\'", "\"", request.form['muscles'])

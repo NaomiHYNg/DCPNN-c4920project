@@ -22,3 +22,19 @@
 
         return
     }
+
+    function beginWorkout(id) {
+
+        var input = document.createElement("input");
+
+        input.setAttribute("type", "hidden");
+
+        input.setAttribute("name", "workout_id");
+
+        input.setAttribute("value", id);
+
+        document.getElementById("begin_saved_workout").appendChild(input);
+        document.getElementById('begin_saved_workout').submit();
+
+        return
+    }
