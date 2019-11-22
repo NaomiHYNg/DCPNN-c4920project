@@ -4,7 +4,7 @@
     <title>Fitness Tailor</title>
     <link rel="stylesheet" href="/static/css/w3.css">
   </head>
-  <body style="background-color:#ff9e0f">
+  <body style="height:100%;background: #ff9e0f;background: -webkit-linear-gradient(#ffb84d, #ff9e0f);background: -o-linear-gradient(#ffb84d, #ff9e0f);background: -moz-linear-gradient(#ffb84d, #ff9e0f);background: linear-gradient(#ffb84d, #ff9e0f);">
 
     <style>
         .w3-theme {color:#fff !important; background-color:#37474f !important}
@@ -37,7 +37,13 @@
                     </tr>
                     <tr><td style="display:inline;">Remember me {{ form.remember_me() }}</td></tr>
                     <tr><td></td></tr>
-                    <tr><td style="display:inline;">New User?
+                    <tr>
+                        <td style="display:inline;">
+                            New User?
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="display:inline;">
                             <a href="{{ url_for('register') }}">Become a champion!</a>
                         </td>
                     </tr>

@@ -28,6 +28,7 @@ login.login_view = 'login'
 def home():
 
     workouts = get_workouts()
+    print(current_user.username)
 
     if request.method == 'POST':
 

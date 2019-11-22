@@ -517,7 +517,9 @@ class WorkoutsPerUser(Resource):
 
         for record in collection:
             record['_id'] = str(record['_id'])
-            workouts.append(record)
+
+            if str(record['username']) == username:
+                workouts.append(record)
 
         return workouts, 200
 
