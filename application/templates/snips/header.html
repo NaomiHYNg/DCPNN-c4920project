@@ -15,30 +15,229 @@
     <div class="w3-container w3-theme" style="border-bottom: 3px solid black">
 
         <header class="w3-container w3-theme w3-left w3-text-theme">
-            <h1 style="font-size:30px; text-align:center">
+            <h1 style="position:absolute;font-size:30px; text-align:center; top:20px;">
                 <div class="w3-staatliches">
                         <div class="w3-container">
                             <span>Welcome</span>
                             <span style="color:yellow;">{{ current_user.firstname }}</span>.
                         </div>
-                        <div>
-
-                                <a href="/logout" style="text-decoration:none">
-                                <div class="w3-container w3-red" style="display:inline-block">
-                                    Sign out
-                                </div>
-                            </a>
-                            <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
-                                <div class="w3-container w3-teal" style="display:inline-block">
-                                    My Workouts
-                                </div>
-                            </a>
-
-                        </div>
 
                 </div>
             </h1>
         </header>
+
+        <header class="w3-staatliches w3-container w3-theme w3-center w3-text-theme" style="position:absolute;top:20px;width:50%;left:0;right:0;margin: 0 auto;font-size:30px; text-align:center">
+                <a href="/logout" style="text-decoration:none">
+                    <div class="w3-container w3-button w3-red" style="display:inline-block">
+                        Sign out
+                    </div>
+                </a>
+                <a href="#" style="text-decoration:none" onclick="document.getElementById('my_profile').style.display='block'">
+                    <div class="w3-container w3-button w3-lime" style="display:inline-block">
+                        Edit Profile
+                    </div>
+                </a>
+                <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
+                    <div class="w3-container w3-button w3-teal" style="display:inline-block">
+                        My Workouts
+                    </div>
+                </a>
+                <a href="#" style="text-decoration:none" onclick="document.getElementById('my_program').style.display='block'">
+                    <div class="w3-container w3-button w3-yellow" style="display:inline-block">
+                        Create a Program
+                    </div>
+                </a>
+        </header>
+
+        <div id="my_profile" class="w3-modal">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
+                <div class="w3-container w3-center">
+                    <br>
+                    <span>My Profile</span>
+                </div>
+                <span onclick="document.getElementById('my_profile').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            </div>
+        </div>
+
+        <div id="my_program" class="w3-modal">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:500px">
+                <div class="w3-container">
+                    <br>
+                    <div class="w3-center">My Program</div>
+                    <div class="w3-container" style="color:white;font-size:14px;font-family:Trebuchet MS, Helvetica, sans-serif;position:absolute;width:30%;height:80%;overflow:auto">
+                        Create a 7-day program with your existing saved workouts.
+                        Plan ahead of your week with this training program.
+                        Save your program, name it, and use the program whenever you are in need of a good workout week.
+                        How many workouts you want to do in one week is up to you, this time, YOU tailor your workout week!
+                        <br><br>
+                        A good recommended split is Monday, Wednesday, Friday, with weekends off and a rest day in-between.
+                    </div>
+                    <table class="w3-container w3-center" style="color:white;font-size:14px;font-family:Trebuchet MS, Helvetica, sans-serif;position:absolute;margin-left:30%;width:30%;overflow:hidden">
+                        <tr>
+                            <td><input type="button" value="Monday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Monday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Monday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Tuesday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Tuesday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Tuesday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Wednesday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Wednesday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Wednesday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Thursday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Thursday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Thursday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Friday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Friday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Friday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Saturday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Saturday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Saturday" style="height:40px;width:100px;border:2px solid black">Rest</div></td>
+                        </tr>
+                        <tr>
+                            <td><input type="button" value="Sunday" class="w3-staatliches w3-button w3-center w3-animate-opacity w3-theme2" onclick="document.getElementById('Add_Sunday').style.display='block'" style="width:100px;text-align:center"></td>
+                            <td><div id="Sunday" style="height:40px;width:100px;border:2px solid black;">Rest</div></td>
+                        </tr>
+                    </table>
+                    <div class="w3-container w3-center" style="margin-top:20px;color:white;font-size:20px;position:absolute;margin-left:60%;width:30%;overflow:hidden">
+                        <a href="#" style="text-decoration:none">
+                            <div class="w3-container w3-button w3-lime" style="width:200px;display:inline-block">
+                                Save Program
+                            </div>
+                            <br><br>
+                            <div class="w3-container w3-button w3-teal" style="width:200px;display:inline-block">
+                                Load Program
+                            </div>
+                            <br><br>
+                            <div class="w3-container w3-button w3-red" style="width:200px;display:inline-block">
+                                Delete Program
+                            </div>
+                            <br><br>
+                            <div class="w3-container w3-button w3-purple" style="width:200px;display:inline-block">
+                                Randomise Program
+                            </div>
+                        </a>
+                    </div>
+
+                    <div id="Add_Monday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Monday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Monday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Monday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Tuesday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Tuesday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Tuesday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Tuesday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Wednesday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Wednesday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Wednesday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Wednesday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Thursday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Thursday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Thursday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Thursday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Friday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Friday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Friday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Friday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Saturday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Saturday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Saturday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Saturday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="Add_Sunday" class="w3-modal">
+                        <div class="w3-staatliches w3-modal-content w3-text-theme w3-right w3-theme w3-animate-right" style="font-size:30px;width:20%;height:60%">
+                            <div class="w3-center">Add which workout for <span style="color:yellow">Sunday</span>:</div>
+                            <div class="w3-center" style="overflow-y:auto;height:90%;">
+                                <input type="button" value="Rest" class="w3-button w3-center w3-animate-opacity w3-cyan" onclick="addWorkout('Sunday', 'Rest')" style="width:90%;text-align:center">
+                                <br>
+                                <br>
+                                {% for workout in workouts %}
+                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Sunday', '{{ workout['workout_name'] }}')" style="width:90%;text-align:center">
+                                    <br>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <span onclick="document.getElementById('my_program').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            </div>
+        </div>
 
         <div id="my_workouts" class="w3-modal">
             <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
@@ -63,23 +262,30 @@
 
               </form>
 
+              <form id="begin_saved_workout" action="{{ url_for('summary') }}" method="POST">
+
+                  <input type="hidden" name="action" value="begin saved workout">
+                  <input type="hidden" name="username" value={{ current_user.username }}>
+
+              </form>
+
               <div class="w3-container w3-text-white w3-animate-opacity" style="margin-left:25%">
 
                     {% set ns = namespace(ex=0) %}
                     {% for workout in workouts %}
 
                         {% if ns.ex == 0 %}
-                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="display:block;overflow:auto;position:absolute;height:60%;">
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:10%;margin-right:20px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;height:60%;">
                             {% set ns.ex = ns.ex + 1 %}
                         {% else %}
-                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="display:none;overflow:auto;position:absolute;height:60%;">
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:10%;margin-right:20px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;height:60%;">
                         {% endif %}
 
-                                <div class="w3-staalitches">{{ workout['workout_name'] }}</div>
-                                <div id="demo"></div>
-                                <button class="w3-button w3-staalitches w3-red" style="font-size:14px" onclick="deleteWorkout({{ workout['workout_id'] }})">Delete</button>
+                                <div class="w3-staalitches" style="margin:20px">{{ workout['workout_name'] }}</div>
+                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
+                                <button class="w3-button w3-staalitches w3-red" style="margin-left:20px;font-size:14px" onclick="deleteWorkout({{ workout['workout_id'] }})">Delete Workout</button>
                                 <br><br>
-                                <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px">
+                                <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;margin-left:20px">
                                     {% for exercise in workout['workout'] %}
 
                                         {% if exercise['muscle'][0] == 'Quads' %}

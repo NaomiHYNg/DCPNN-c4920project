@@ -28,7 +28,6 @@ login.login_view = 'login'
 def home():
 
     workouts = get_workouts()
-    print(current_user.username)
 
     if request.method == 'POST':
 
@@ -52,7 +51,6 @@ def summary():
     workouts = get_workouts()
 
     if request.method == 'POST':
-
 
         try:
             # Saving a workout
@@ -104,9 +102,19 @@ def summary():
                 return render_template('summary.html', workouts=workouts, delete_status=delete_status, level=request.form['fitnessLevel'],
                                        energy=request.form['energy'], exercise_list=exercise_list,
                                        energy_value=request.form['energy_value'], username=request.form['username'])
+            # Loading a saved workout
+            elif request.form['action'] == "begin saved workout":
 
+                for workout in workouts:
+                    if str(workout['workout_id']) == str(request.form['workout_id']):
+                        saved_workout = workout
+
+                print(saved_workout['workout'])
+
+                return render_template('summary.html', energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
         except Exception as e:
             print("Normal Generation")
+
 
         try:
             muscles = re.sub("\'", "\"", request.form['muscles'])

@@ -3,6 +3,8 @@
         window.energy_levels = ['Low Energy', 'Moderate Energy', 'High Energy'];
         window.fitness_levels = ['Beginner', 'Intermediate', 'Advanced'];
         window.selected_list = ['Beginner', 'Moderate Energy'];
+        window.muscle_list = [];
+        window.equipment_list = [];
 
         function hover(element) {
           element.setAttribute('src', '/static/images/' + element.name + 'Hover.png');
@@ -75,17 +77,50 @@
                     }
                 }
 
-                if (window.selected_list.length >= 17) {
+                if (window.selected_list.length + window.muscle_list.length + window.equipment_list.length >= 15) {
                     document.getElementById("error_selected").style.display = "block";
                     document.getElementById(id).checked = false;
                     return;
                 }
 
-                window.selected_list.push(string);
-                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+                if (document.getElementById(id).name == "muscle") {
+
+                    window.muscle_list.push(string);
+                    document.getElementById("muscle_selected_title").style.display = "block";
+                    document.getElementById("muscle_selected").innerHTML = window.muscle_list.join("<br>");
+
+                } else {
+
+                    window.equipment_list.push(string);
+                    document.getElementById("equipment_selected_title").style.display = "block";
+                    document.getElementById("equipment_selected").innerHTML = window.equipment_list.join("<br>");
+
+                }
+
             } else {
-                window.selected_list.splice(window.selected_list.indexOf(string), 1);
-                document.getElementById("selected").innerHTML = window.selected_list.join("<br>")
+
+                 if (document.getElementById(id).name == "muscle") {
+
+                    window.muscle_list.splice(window.muscle_list.indexOf(string), 1);
+
+                    if (window.muscle_list.length == 0) {
+                        document.getElementById("muscle_selected_title").style.display = "none";
+                    }
+
+                    document.getElementById("muscle_selected").innerHTML = window.muscle_list.join("<br>");
+
+                } else {
+
+                    window.equipment_list.splice(window.equipment_list.indexOf(string), 1);
+
+                    if (window.equipment_list.length == 0) {
+                        document.getElementById("equipment_selected_title").style.display = "none";
+                    }
+
+                    document.getElementById("equipment_selected").innerHTML = window.equipment_list.join("<br>");
+
+                }
+
             }
         }
 
