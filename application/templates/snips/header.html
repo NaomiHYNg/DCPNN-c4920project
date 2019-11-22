@@ -240,14 +240,14 @@
         </div>
 
         <div id="my_workouts" class="w3-modal">
-            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;width:1500px;height:80%">
               <div class="w3-container w3-center">
                   <br>
                   <span>My Workouts</span>
               </div>
               <br>
               <br>
-              <div class="w3-container w3-center" style="position:absolute;width:24%;height:60%;overflow:auto">
+              <div class="w3-container w3-center" style="position:absolute;width:24%;height:60%;overflow-y:auto">
                   {% for workout in workouts %}
                   <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedWorkout({{ workout['workout_id'] + 12345 }})" style="text-align:center">
                   <br>
