@@ -2,7 +2,7 @@
 
 <html>
 
-<img src="static/images/logo.png" width="200">
+<img src="application/static/images/logo.png" width="200">
 
 </html>
 
