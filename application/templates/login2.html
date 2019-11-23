@@ -19,12 +19,9 @@
         <span style="background: -webkit-linear-gradient(grey, black);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-size:100px;-webkit-text-stroke: 3px black;">FITNESS TAILOR</span>
         <div class="w3-staatliches" style="font-size:24px">WORKOUTS CURATED JUST FOR YOU</div>
     </div>
-    <div class="w3-container" style="height:160px"></div>
 
     <div class="Login Details">
-        <div class="w3-container w3-theme w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
             <br><br><br>
-            <h3>Welcome. Please sign in.</h3>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
                     <p>
@@ -50,11 +47,8 @@
                     </tr>
                     <tr><td style="display:inline;">Remember me {{ form.remember_me() }}</td></tr>
                     <tr><td></td></tr>
-                    <tr>
-                        <td>{{ form.remember_me() }} Remember me</td>
-                        <td style="display:inline;">
-                            New User?
-                        </td>
+                    <tr style="display:inline;">
+                        <td>New User?</td>
                     </tr>
                     <tr>
                         <td style="display:inline;">
@@ -63,8 +57,6 @@
                     </tr>
                 </table>
                 </table>
-                <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
-                <br>
                 {% if error %}
                     <p class="error"><font color="red">{{ error }}</font></p>
                 {% endif %}
