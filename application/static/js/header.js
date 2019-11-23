@@ -43,10 +43,13 @@
 
         if (workout_name == "Rest") {
             document.getElementById(day_id).innerHTML = "Rest";
+            document.getElementById(day_id).className = "Rest";
             document.getElementById(input_id).value = "Rest"
         } else {
             document.getElementById(day_id).innerHTML = workout_name;
+            document.getElementById(day_id).className = workout;
             document.getElementById(input_id).value = workout;
+
         }
 
         document.getElementById("Add_Monday").style.display = "none";

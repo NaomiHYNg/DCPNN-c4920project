@@ -150,7 +150,7 @@
                                     {% else %}
                                         <td>{{ workout['day'] }}:</td>
                                         <td>
-                                            <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedProgramWorkout({{ workout['workout_id'] + 23456 }})" style="text-align:center">
+                                            <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedProgramWorkout({{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id'] + 23456 }})" style="text-align:center">
                                         </td>
                                     {% endif %}
 
@@ -170,13 +170,13 @@
                                         {% else %}
 
                                             {% if ns.ex == 0 %}
-                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;">
+                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id'] + 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;">
                                                 {% set ns.ex = ns.ex + 1 %}
                                             {% else %}
-                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;">
+                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id']+ 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;">
                                             {% endif %}
 
-                                                    <div class="w3-staalitches" style="margin:20px">{{ workout['day'] }}: <span style="color:yellow">{{ workout['workout_name'] }}</span></div>
+                                                    <div class="w3-staalitches" style="margin:20px"><span style="color:yellow">{{ workout['workout_name'] }}</span></div>
                                                 <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
                                                 <br><br>
                                                 <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;margin-left:20px">
@@ -270,7 +270,7 @@
                                 <br>
                                 <br>
                                 {% for workout in workouts %}
-                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Monday', 'Monday_Value', '{{ workout['workout_name'] }}', '{{ workout['workout_id'] }}')" style="width:90%;text-align:center">
+                                    <input type="button" id="{{ workout['workout_id'] + 5000 }}" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Monday', 'Monday_Value', '{{ workout['workout_name'] }}', '{{ workout['workout_id'] }}')" style="width:90%;text-align:center">
                                     <br>
                                     <br>
                                 {% endfor %}
