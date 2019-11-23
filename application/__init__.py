@@ -8,6 +8,7 @@ import requests
 from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_mail import Mail
 
 
 
@@ -17,12 +18,21 @@ app = Flask(__name__)
 # config
 app.config.update(
     DEBUG = True,
-    SECRET_KEY = 'secret_xxx'
+    SECRET_KEY = 'secret_xxx',
+
+    MAIL_SERVER = 'smtp.googlemail.com',
+    MAIL_PORT = 465,
+    MAIL_USE_TLS = False,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = 'natwai.mailservice@gmail.com',
+    MAIL_PASSWORD = 'natwai1994',
+    MAIL_DEFAULT_SENDER = 'natwai.mailservice@gmail.com'
 )
 
 # login
 login = LoginManager(app) # exported into models.py
 login.login_view = 'login'
+mail = Mail(app)
 
 
 @app.route('/', methods=['GET', 'POST'])

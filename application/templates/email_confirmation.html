@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fitness Tailor</title>
+    <link rel="stylesheet" href="/static/css/w3.css">
+  </head>
+  <body>
+
+    {% include 'snips/header.html' %}
+
+    <div class="Page Header">
+        <div class="w3-container w3-white w3-center">
+            <h3 style="font-size:20px">Registration Complete!</h3>
+            Your account on FitnessTailor was successfully created.
+            Please click the link below to confirm your email address and
+            activate your account:
+              
+            <a href="{{ confirm_url }}">{{ confirm_url }}</a>
+            
+            --
+            Questions? Comments? Email natwai.mailservice@gmail.com.
+        </div>
+    </div>
+
+  </body>
+
+</html>

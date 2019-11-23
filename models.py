@@ -41,7 +41,7 @@ class User(UserMixin):
         return check_password_hash(password_hash, password)
 
     def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+        self.password = generate_password_hash(password)
 
 
     def set_goal(self, goal):
@@ -73,19 +73,50 @@ class User(UserMixin):
             "lastname": self.lastname, 
             "username": self.username, 
             "email": self.email, 
-            "password": self.password_hash,
+            "password": self.password,
             "fitness" : self.fitness,
             "weight" : Decimal128(self.weight),
             "goalweight" : Decimal128(self.goalweight),
             "goal" : self.goal,
-            "history" : []
+            "history" : [],
+            #"email_confirmation_sent_on" : self.email_confirmation_sent_on,
+            "email_confirmed" : self.email_confirmed,
+            "email_confirmed_on" : self.email_confirmed_on
             }
         DB.insert("users", user)
+    
+    def info(self):
+        return {
+            "firstname": self.firstname, 
+            "lastname": self.lastname, 
+            "username": self.username, 
+            "email": self.email, 
+            "password": self.password,
+            "fitness" : self.fitness,
+            "weight" : Decimal128(self.weight),
+            "goalweight" : Decimal128(self.goalweight),
+            "goal" : self.goal,
+            "history" : [],
+            #"email_confirmation_sent_on" : self.email_confirmation_sent_on,
+            "email_confirmed" : self.email_confirmed,
+            "email_confirmed_on" : self.email_confirmed_on
+            }
     
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
+    
+    def email_confirmation(self, email_confirmation_sent_on=None):
+        self.email_confirmation_sent_on = email_confirmation_sent_on
+        self.email_confirmed = False
+        self.email_confirmed_on = None
+
+    def confirm_email(self, ddate):
+        self.email_confirmed = True
+        self.email_confirmed_on = ddate
+        DB.update("users", {"email" : self.email}, {"$set" : {"email_confirmed" : True, "email_confirmed_on" : ddate} })
+
 '''
 JUST WANT ID
     obj = Workout({"id" : 1}) 
