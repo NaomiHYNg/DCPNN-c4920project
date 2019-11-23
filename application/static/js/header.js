@@ -25,6 +25,7 @@
 
     function beginWorkout(id) {
 
+
         var input = document.createElement("input");
 
         input.setAttribute("type", "hidden");

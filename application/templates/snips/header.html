@@ -32,11 +32,6 @@
                         Sign out
                     </div>
                 </a>
-                <a href="#" style="text-decoration:none" onclick="document.getElementById('my_profile').style.display='block'">
-                    <div class="w3-container w3-button w3-lime" style="display:inline-block">
-                        Edit Profile
-                    </div>
-                </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
                     <div class="w3-container w3-button w3-teal" style="display:inline-block">
                         My Workouts
@@ -177,7 +172,7 @@
                                             {% endif %}
 
                                                     <div class="w3-staalitches" style="margin:20px"><span style="color:yellow">{{ workout['workout_name'] }}</span></div>
-                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
+                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="">Begin Workout</button>
                                                 <br><br>
                                                 <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;margin-left:20px">
                                                     {% for exercise in workout['workout'] %}
@@ -211,7 +206,7 @@
                     <div id="delete_programs" class="w3-modal">
                         <div class="w3-modal-content w3-text-theme w3-theme w3-animate-right w3-right" style="width:20%;height:60%">
                             <div class="w3-center"><span style="background: -webkit-linear-gradient(yellow, #ff9e0f);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-size:50px;-webkit-text-stroke: 2px black;">Delete which Program?</span></div>
-                          <div class="w3-container w3-center" style="height:80%;overflow-y:auto">
+                          <div class="w3-container w3-center" style="height:60%;overflow-y:auto">
                               <br>
                               {% for program in programs %}
                                 <input type="button" value="{{ program['program_name'] }}" class="w3-button w3-center w3-animate-opacity w3-red" onclick="deleteProgram({{ program['program_id'] }})" style="width:90%;text-align:center">

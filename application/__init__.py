@@ -183,7 +183,7 @@ def summary():
 
                 print(saved_workout['workout'])
 
-                return render_template('summary.html', programs=programs, energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
+                return render_template('summary.html', programs=programs, energy_value=6, level=current_user.fitness, energy=saved_workout['workout_name'], workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
         except Exception as e:
             pass
 
@@ -224,6 +224,8 @@ def summary():
                 energy = "MODERATE"
             elif request.form['energy'] == '9':
                 energy = "HIGH"
+
+            energy = "Energy Level: " + energy
 
             return render_template('summary.html', programs=programs, workouts=workouts, level=level, energy=energy, exercise_list=content, raw_exercise_list=response.content, energy_value=request.form['energy'], username=request.form['username'])
 
