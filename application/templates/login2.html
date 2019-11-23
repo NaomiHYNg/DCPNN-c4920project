@@ -4,15 +4,24 @@
     <title>Fitness Tailor</title>
     <link rel="stylesheet" href="/static/css/w3.css">
   </head>
-  <body style="background-color:#ff9e0f">
+  <body style="height:100%;background: #ff9e0f;background: -webkit-linear-gradient(#ffb84d, #ff9e0f);background: -o-linear-gradient(#ffb84d, #ff9e0f);background: -moz-linear-gradient(#ffb84d, #ff9e0f);background: linear-gradient(#ffb84d, #ff9e0f);">
 
-    {% include 'snips/header.html' %}
-    {% include 'snips/header2.html' %}
+    <style>
+        .w3-theme {color:#fff !important; background-color:#37474f !important}
+        .w3-theme2 {color:#fff !important; background-color:#ff9e0f !important}
+        .w3-text-theme {color:#ff9e0f !important}
+        .w3-staatliches {font-family: 'Staatliches', serif}
+    </style>
 
-    <div class="w3-container" style="height:160px"></div>
+    <div class="w3-container w3-staatliches w3-center" style="height:400px">
+        <img src="/static/images/logo.png" border="0" alt="Logo" style="width:200px; height:200px;vertical-align:middle;outline:none"/>
+        <br>
+        <span style="background: -webkit-linear-gradient(grey, black);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-size:100px;-webkit-text-stroke: 3px black;">FITNESS TAILOR</span>
+        <div class="w3-staatliches" style="font-size:24px">WORKOUTS CURATED JUST FOR YOU</div>
+    </div>
 
     <div class="Login Details">
-        <div class="w3-container w3-theme w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
+        <div class="w3-container w3-theme w3-center" style="font-family:Trebuchet MS, Helvetica, sans-serif;border-top:3px solid black;border-bottom:3px solid black">
             <br><br><br>
             <h3>Welcome. Please sign in.</h3>
             {% with messages = get_flashed_messages() %}
@@ -28,17 +37,27 @@
                 {{ form.csrf_token }}
                 {{ form.hidden_tag() }}
                 <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
+                    <tr><td class="w3-center" style="font-weight:bold">Only Champions can access the generator.</td></tr>
                     <tr>
-                        <td><p>Username</p>{{ form.username() }}</td>
+                        <td>Username{{ form.username() }}</td>
                     </tr>
                     <tr>
-                        <td><p>Password</p>{{ form.password() }}</td>
+                        <td>Password{{ form.password() }}</td>
+
+                    </tr>
+                    <tr><td style="display:inline;">Remember me {{ form.remember_me() }}</td></tr>
+                    <tr><td></td></tr>
+                    <tr>
+                        <td style="display:inline;">
+                            New User?
+                        </td>
                     </tr>
                     <tr>
-                        <td>{{ form.remember_me() }} Remember me</td>
+                        <td style="display:inline;">
+                            <a href="{{ url_for('register') }}">Become a champion!</a>
+                        </td>
                     </tr>
                 </table>
-                <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
                 <br>
                 {% if error %}
                     <p class="error"><font color="red">{{ error }}</font></p>

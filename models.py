@@ -12,9 +12,10 @@ from bson.decimal128 import Decimal128
 from hashlib import md5
 from datetime import datetime
 
+
 class User(UserMixin):
     def __init__(self, dictionary):
-        #self.username = username
+        # self.username = username
         for key in dictionary:
             setattr(self, key, dictionary[key])
 
@@ -73,8 +74,7 @@ class User(UserMixin):
         if not user:
             api.abort(404, "User {} not found".format(self.username))
         return user['history']
-        
-    
+
     def add(self):
         user = {
             "firstname": self.firstname, 
@@ -128,15 +128,15 @@ class User(UserMixin):
 '''
 JUST WANT ID
     obj = Workout({"id" : 1}) 
-
 ALL WORKOUT INFO for populating profile page (list of past workout with details)
     collection = DB.find_one("workouts", {"id":1}) <-- this is a dict
     collection.pop('_id', None) <-- remove mongo _id
     obj = Workout(collection) <-- workout object with fields to populate front end
 '''
 
-class Workout() :
-    # create workout object from dict 
+
+class Workout():
+    # create workout object from dict
     def __init__(self, dictionary):
         for key in dictionary:
             setattr(self, key, dictionary[key])
@@ -148,7 +148,8 @@ class Workout() :
     def get_id(self):
         return self.id
 
-class Post() :
+
+class Post():
     def __init__(self, user, content):
         self.content = content
         self.user = user

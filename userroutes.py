@@ -80,6 +80,7 @@ def register():
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user() #loginManager function
     return redirect(url_for('login'))

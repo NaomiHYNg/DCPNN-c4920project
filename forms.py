@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DecimalField, RadioField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DecimalField, RadioField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, optional, length
 from models import User
 from database import DB
@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     goal = TextAreaField('Your Fitness Goal', validators=[DataRequired(), length(max=200)])
-    fitness = RadioField('Fitness Level', choices=[('Low','Low'),('Medium','Medium'),('High','High')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
+    fitness = RadioField('Fitness Level', choices=[('Beginner','Beginner'),('Intermediate','Intermediate'),('Advanced','Advanced')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     goalweight = DecimalField('Goal Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     submit = SubmitField('Register')
@@ -37,6 +37,7 @@ class RegistrationForm(FlaskForm):
         user = DB.find_one("users", {"email": str(email)})
         if user is not None:
             raise ValidationError('Please use a different email address.')
+<<<<<<< HEAD
 
 class EditWeight(FlaskForm):
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
@@ -48,4 +49,11 @@ class EditPassword(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
+=======
+    
+class submitWorkout(FlaskForm):
+    id = IntegerField('First name', validators=[DataRequired()])
+    username = StringField('Username', validators=[DataRequired()])
+
+>>>>>>> master
 
