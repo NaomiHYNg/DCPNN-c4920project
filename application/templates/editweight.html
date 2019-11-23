@@ -8,42 +8,35 @@
 
     {% include 'snips/header.html' %}
     {% include 'snips/header2.html' %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          <ul>
+              {% for message in messages %}
+              <li>{{ message }}</li>
+              {% endfor %}
+          </ul>
+        {% endif %}
+    {% endwith %}
 
     <div class="w3-container" style="height:160px"></div>
 
-    <div class="Login Details">
+    <div class="Change Details">
         <div class="w3-container w3-theme w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
             <br><br><br>
-            <h3>Welcome. Please sign in.</h3>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <p>
-                    {% for message in messages %}
-                        <p class="error"><font color="red">{{ message }}</font></p>
-                    {% endfor %}
-                    </p>
-                {% endif %}
-            {% endwith %}
+            <h3>Please Enter Details.</h3>
+            
             <form action="" method="POST" novalidate>
                 {{ form.csrf_token }}
                 {{ form.hidden_tag() }}
                 <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
                     <tr>
-                        <td><p>Username</p>{{ form.username() }}</td>
-                    </tr>
-                    <tr>
-                        <td><p>Password</p>{{ form.password() }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.remember_me() }} Remember me</td>
+                        <td><p>Weight</p>{{ form.weight() }}</td>
                     </tr>
                 </table>
-                <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
                 <br>
                 {% if error %}
                     <p class="error"><font color="red">{{ error }}</font></p>
                 {% endif %}
-                
                 <p>{{ form.submit(class="w3-btn w3-staatliches w3-theme2") }}</p>
             </form>
             <br>

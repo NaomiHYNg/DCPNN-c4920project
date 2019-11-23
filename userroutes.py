@@ -70,7 +70,7 @@ def register():
         # add user to db
         user.add()
         send_confirmation_email(user.email)
-        flash('Thanks for registering!  Please check your email to confirm your email address.', 'success')
+        flash('Please check your email to confirm your email address.')
         # user can now log in
         return redirect(url_for('login2'))
         # or log user in and go to home
@@ -126,5 +126,30 @@ def user(username):
     #return user.__dict__
     return render_template('profile.html', user=user)
 
+@app.route('/editweight', methods=['GET', 'POST'])
+@login_required
+def editweight():
+    print(current_user.__dict__)
+    form = EditWeight()
+    if form.validate_on_submit():
+        current_user.update_weight(form.weight.data)
+        flash('Your changes have been saved.')
+        return redirect(request.args.get("next") or url_for('user', username=current_user.username))
+
+    return render_template('editweight.html', form=form)
+
+@app.route('/editpassword', methods=['GET', 'POST'])
+@login_required
+def editpassword():
+    form = EditPassword()
+    if form.validate_on_submit():
+        if User.check_password(current_user.password, form.old_password.data):
+            current_user.change_password(form.password.data)
+            flash('Your changes have been saved.')
+            return redirect(request.args.get("next") or url_for('user', username=current_user.username))
+        else:
+            flash("Invalid password")
+    #return user.__dict__
+    return render_template('editpassword.html', form=form)
     
 

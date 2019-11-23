@@ -37,3 +37,15 @@ class RegistrationForm(FlaskForm):
         user = DB.find_one("users", {"email": str(email)})
         if user is not None:
             raise ValidationError('Please use a different email address.')
+
+class EditWeight(FlaskForm):
+    weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class EditPassword(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Submit')
+

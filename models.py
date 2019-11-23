@@ -33,8 +33,8 @@ class User(UserMixin):
     def get_id(self):
         return self.username
     
-    def get_email(self):
-        return self.email
+    def get_weight(self):
+        return self.weight
 
     @staticmethod
     def check_password(password_hash, password):
@@ -42,10 +42,18 @@ class User(UserMixin):
 
     def set_password(self, password):
         self.password = generate_password_hash(password)
-
+    
+    def change_password(self, password):
+        self.password = generate_password_hash(password)
+        DB.update("users", {"username": self.username}, {"$set" : {"password" : self.password}})
+    
+    def update_weight(self, weight):
+        self.weight = weight
+        DB.update("users", {"username": self.username}, {"$set" : {"weight" : Decimal128(self.weight)}})
 
     def set_goal(self, goal):
         self.goal = goal
+
         
     # user.log_workout(workout_dict)
     def log_workout(self, workout_dict):
@@ -145,9 +153,10 @@ class Post() :
 @login.user_loader
 def load_user(username):
     collection = DB.find_one("users", {"username":username})
+    collection.pop('_id')
     if not collection:
         return None
-    return User({ "username" : collection['username']})
+    return User(collection)
 
 
 
