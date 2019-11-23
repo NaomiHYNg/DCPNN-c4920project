@@ -28,6 +28,7 @@ login.login_view = 'login'
 def home():
 
     workouts = get_workouts()
+    programs = get_programs()
 
     if request.method == 'POST':
 
@@ -39,16 +40,76 @@ def home():
                 query = "http://127.0.0.1:5001/users/" + current_user.username + "/workouts/" + str(request.form['delete_id'])
                 requests.delete(query)
 
+                # Also delete any programs that included that saved workout:
+                for program in programs:
+                    for workout in program['program']:
+                        if str(workout['workout_id']) == str(request.form['delete_id']):
+                            programs.remove(program)
+
+            elif request.form['action'] == "save program":
+
+                program = []
+                program.append(str(request.form['Monday Workout']))
+                program.append(str(request.form['Tuesday Workout']))
+                program.append(str(request.form['Wednesday Workout']))
+                program.append(str(request.form['Thursday Workout']))
+                program.append(str(request.form['Friday Workout']))
+                program.append(str(request.form['Saturday Workout']))
+                program.append(str(request.form['Sunday Workout']))
+
+                i = 0
+                for day in program:
+
+                    if day == "Rest":
+
+                        program[i] = {"workout_id": -1, "username": current_user.username, "workout_name": "Rest",
+                            "workout": "Rest"}
+
+                        i += 1
+                        continue
+
+                    # day is the id of the workout if not Rest Day
+                    query = "http://127.0.0.1:5001/users/" + current_user.username + "/workouts/" + day
+                    workout = json.loads(requests.get(query).content)
+
+                    program[i] = workout
+
+                    i += 1
+
+                program_name = str(request.form['program_name'])
+
+                payload = {
+                    "program_name": program_name,
+                    "username": current_user.username,
+                    "program": program
+                }
+                headers = {"Content-Type": "application/json"}
+
+                url = "http://127.0.0.1:5001/users/" + current_user.username + "/programs"
+
+                requests.post(url, json=json.dumps(payload), headers=headers)
+
+                # Programs has changed as you added a new one, update programs
+                programs = get_programs()
+            # Delete a Program
+            elif request.form['action'] == "delete program":
+                for program in programs:
+                    if str(program['program_id']) == str(request.form['delete_id']):
+                        programs.remove(program)
+                query = "http://127.0.0.1:5001/users/" + current_user.username + "/programs/" + str(request.form['delete_id'])
+                requests.delete(query)
+
         except Exception as e:
-            print("Normal Generation")
+            pass
 
-        return render_template('home.html', workouts=workouts, username=request.form['username'])
+        return render_template('home.html', programs=programs, workouts=workouts, username=request.form['username'])
 
-    return render_template('home.html', workouts=workouts)
+    return render_template('home.html', programs=programs, workouts=workouts)
 
 @app.route('/summary', methods=['GET', 'POST'])
 def summary():
     workouts = get_workouts()
+    programs = get_programs()
 
     if request.method == 'POST':
 
@@ -80,7 +141,7 @@ def summary():
 
 
 
-                return render_template('summary.html', workouts=workouts, level=request.form['fitnessLevel'], energy=request.form['energy'], exercise_list=exercise_list,
+                return render_template('summary.html', programs=programs, workouts=workouts, level=request.form['fitnessLevel'], energy=request.form['energy'], exercise_list=exercise_list,
                                        energy_value=request.form['energy_value'], username=request.form['username'], save_disabled="disabled", save_status="Workout Saved!")
             # Deleting an exercise from the workout
             elif request.form['action'] == "delete workout":
@@ -99,7 +160,7 @@ def summary():
                 else:
                     delete_status = ""
 
-                return render_template('summary.html', workouts=workouts, delete_status=delete_status, level=request.form['fitnessLevel'],
+                return render_template('summary.html', programs=programs, workouts=workouts, delete_status=delete_status, level=request.form['fitnessLevel'],
                                        energy=request.form['energy'], exercise_list=exercise_list,
                                        energy_value=request.form['energy_value'], username=request.form['username'])
             # Loading a saved workout
@@ -113,7 +174,7 @@ def summary():
 
                 return render_template('summary.html', energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
         except Exception as e:
-            print("Normal Generation")
+            pass
 
 
         try:
@@ -153,18 +214,19 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
-            return render_template('summary.html', workouts=workouts, level=level, energy=energy, exercise_list=content, raw_exercise_list=response.content, energy_value=request.form['energy'], username=request.form['username'])
+            return render_template('summary.html', programs=programs, workouts=workouts, level=level, energy=energy, exercise_list=content, raw_exercise_list=response.content, energy_value=request.form['energy'], username=request.form['username'])
 
         except Exception as e:
             print(e)
             error = "Error connecting to server!"
 
-    return render_template('home.html', workouts=workouts, error=error)
+    return render_template('home.html', programs=programs, workouts=workouts, error=error)
 
 @app.route('/generate', methods=['GET', 'POST'])
 def generate():
 
     workouts = get_workouts()
+    programs = get_programs()
 
     if request.method == 'POST':
 
@@ -177,7 +239,7 @@ def generate():
         for equipment in request.form.getlist('equipment'):
             equipments.append(equipment)
 
-        return render_template('generate.html', workouts=workouts, level=request.form.getlist('fitnessLevel'), muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
+        return render_template('generate.html', programs=programs, workouts=workouts, level=request.form.getlist('fitnessLevel'), muscles=request.form.getlist('muscle'), equipments=request.form.getlist('equipment'), username=request.form['username'], energy=request.form['energy'])
 
     return render_template('generate.html')
 
@@ -193,16 +255,38 @@ def utility_functions():
 
     return dict(mdebug=print_in_console)
 
+
 def get_workouts():
     query = "http://127.0.0.1:5001/users/" + current_user.username + "/workouts"
 
     response = requests.get(query)
-    print("Status Code: " + str(response))
+    print("Status Code for workouts: " + str(response))
 
     workouts = response.content
     workouts = json.loads(workouts)
 
     return workouts
 
+def get_programs():
+    query = "http://127.0.0.1:5001/users/" + current_user.username + "/programs"
 
+    response = requests.get(query)
+    print("Status Code for programs: " + str(response))
+
+    programs = response.content
+    programs = json.loads(programs)
+
+    # Define days of the week for programs
+    # len(programs) = 7
+
+    for program in programs:
+        program['program'][0]['day'] = 'Monday'
+        program['program'][1]['day'] = 'Tuesday'
+        program['program'][2]['day'] = 'Wednesday'
+        program['program'][3]['day'] = 'Thursday'
+        program['program'][4]['day'] = 'Friday'
+        program['program'][5]['day'] = 'Saturday'
+        program['program'][6]['day'] = 'Sunday'
+
+    return programs
 

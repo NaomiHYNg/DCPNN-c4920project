@@ -425,6 +425,7 @@ class AllCollections(Resource):
 
 @api.route('/users/<string:username>/workouts/<int:workout_id>')
 class OneWorkoutPerUser(Resource):
+
     def get(self, username, workout_id):
         output_list = []
         collection = DB.find_one("workouts", {"workout_id": workout_id, "username": username})
@@ -522,6 +523,86 @@ class WorkoutsPerUser(Resource):
                 workouts.append(record)
 
         return workouts, 200
+
+@api.route('/users/<string:username>/programs/<int:program_id>')
+class OneProgramPerUser(Resource):
+
+    def put(self, username, program_id):
+
+        # Consists of a dictionary {"workout_id": int, "username", "workout_name:" "", "workout": []}
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_one("programs", {"program_id": program_id, "username": username})
+        print(collection)
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        new_entry = {"program_id": program_id, "username": username, "program_name": payload['program_name'],
+                     "program": payload['program']}
+
+        DB.update("programs", {"program_id": program_id}, new_entry)
+
+        return new_entry, 200
+
+    def delete(self, username, program_id):
+
+        collection = DB.find_one("programs", {"program_id": program_id, "username": username})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        DB.delete_one("programs", {"program_id": program_id})
+
+        return {}, 200
+
+@api.route('/users/<string:username>/programs')
+class ProgramsPerUser(Resource):
+
+    def post(self, username):
+
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_all("programs")
+        max_id = 0
+        exists = 0
+        exist_id = 0
+        for record in collection:
+            entry_id = record['program_id']
+            if entry_id > max_id:
+                max_id = entry_id
+
+        max_id = max_id + 1
+
+        new_entry = {"program_id": max_id, "username": username, "program_name": payload['program_name'],
+                     "program": payload['program']}
+
+        DB.insert("programs", new_entry)
+
+        return new_entry, 200
+
+
+    def get(self, username):
+        output_list = []
+        collection = DB.find_all("programs")
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        programs = []
+
+        for record in collection:
+            record['_id'] = str(record['_id'])
+
+            if str(record['username']) == username:
+                programs.append(record)
+
+        return programs, 200
 
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
