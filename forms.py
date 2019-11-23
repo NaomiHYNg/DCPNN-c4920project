@@ -20,6 +20,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     goal = TextAreaField('Your Fitness Goal', validators=[DataRequired(), length(max=200)])
+    #fitness = RadioField('Fitness Level', choices=[('Low','Low'),('Medium','Medium'),('High','High')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
     fitness = RadioField('Fitness Level', choices=[('Beginner','Beginner'),('Intermediate','Intermediate'),('Advanced','Advanced')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     goalweight = DecimalField('Goal Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
@@ -37,7 +38,6 @@ class RegistrationForm(FlaskForm):
         user = DB.find_one("users", {"email": str(email)})
         if user is not None:
             raise ValidationError('Please use a different email address.')
-<<<<<<< HEAD
 
 class EditWeight(FlaskForm):
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
@@ -49,11 +49,28 @@ class EditPassword(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Submit')
-=======
-    
+
+class WorkoutForm(FlashForm):
+    name = StringField('Workout Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+    def generate_id(self, username):
+        user = DB.find_one("users", {"username": str(username)})
+        if user is not None:
+            raise ValidationError('User does not exist.')
+        id = len(user['history'])
+
+class EditWeight(FlaskForm):
+    weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class EditPassword(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Repeat Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Submit')
+
 class submitWorkout(FlaskForm):
     id = IntegerField('First name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
-
->>>>>>> master
-
