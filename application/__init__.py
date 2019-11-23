@@ -172,7 +172,7 @@ def summary():
 
                 print(saved_workout['workout'])
 
-                return render_template('summary.html', energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
+                return render_template('summary.html', programs=programs, energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
         except Exception as e:
             pass
 
