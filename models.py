@@ -141,6 +141,10 @@ class Workout() :
         for key in dictionary:
             setattr(self, key, dictionary[key])
 
+    def as_post(self):
+        content = self.workout_name
+        return Post(self.username, content)
+        
     def get_id(self):
         return self.id
 
