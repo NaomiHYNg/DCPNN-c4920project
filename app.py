@@ -9,6 +9,7 @@ from flask_restplus import fields
 from flask_restplus import inputs
 from flask_restplus import reqparse
 
+
 import re
 import random
 from database import DB
@@ -507,6 +508,17 @@ class WorkoutsPerUser(Resource):
         DB.insert("workouts", new_entry)
 
         return new_entry, 200
-
+@api.route('/users')
+class AllUsers(Resource):
+    def get(self):
+        collection = DB.find_all("users")
+        if not collection:
+            api.abort(404, "Collection not found")
+        records = []
+        for x in collection:
+            x.pop("_id")
+            records.append({i : str(x[i]) for i in x})
+        return records, 200
+    
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
