@@ -139,7 +139,8 @@ def summary():
 
                 success = requests.post(url, json=json.dumps(payload), headers=headers)
 
-
+                # Refresh
+                workouts = get_workouts()
 
                 return render_template('summary.html', programs=programs, workouts=workouts, level=request.form['fitnessLevel'], energy=request.form['energy'], exercise_list=exercise_list,
                                        energy_value=request.form['energy_value'], username=request.form['username'], save_disabled="disabled", save_status="Workout Saved!")
