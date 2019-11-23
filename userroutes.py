@@ -72,7 +72,7 @@ def register():
         send_confirmation_email(user.email)
         flash('Please check your email to confirm your email address.')
         # user can now log in
-        return redirect(url_for('login2'))
+        return redirect(url_for('login'))
         # or log user in and go to home
         #login_user(user)
         #return redirect(request.args.get("next") or url_for("home"))
