@@ -4,89 +4,131 @@
     <title>Fitness Tailor</title>
     <link rel="stylesheet" href="/static/css/w3.css">
   </head>
-  <body background="/static/images/logo.png">
+  <body style="background-color:#ff9e0f">
 
     {% include 'snips/header.html' %}
+    {% include 'snips/header2.html' %}
 
-    <div class="w3-container" style="height:220px"></div>
+
+    <div class="w3-container" style="height:50px"></div>
 
     <div class="Register">
-        <div class="w3-container w3-white w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
-            <br><br><br><br><br>
+        <div class="w3-container w3-theme w3-center" style="border-top:3px solid black;border-bottom:3px solid black">
+          <br><br>
+          <caption><h3>Please Enter Your Details.</h3></caption>
+          
             <form action="" method="POST" novalidate>
+                {{ form.csrf_token }}
                 {{ form.hidden_tag() }}
-                <p>
-                  {{ form.firstname.label }}<br>
-                  {{ form.firstname(size=32) }}<br>
-                  {% for error in form.firstname.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.lastname.label }}<br>
-                  {{ form.lastname(size=32) }}<br>
-                  {% for error in form.lastname.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.username.label }}<br>
-                  {{ form.username(size=32) }}<br>
-                  {% for error in form.username.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.email.label }}<br>
-                  {{ form.email() }}<br>
-                  {% for error in form.email.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.password.label }}<br>
-                  {{ form.password(size=32) }}<br>
-                  {% for error in form.password.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.password2.label }}<br>
-                  {{ form.password2(size=32) }}<br>
-                  {% for error in form.password2.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.goal.label }}<br>
-                  {{ form.goal(size=200) }}<br>
-                  {% for error in form.goal.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {% for subfield in form.fitness %}
-                  <tr>
-                      <td>{{ subfield }}</td>
-                      <td>{{ subfield.label }}</td>
-                  </tr>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.weight.label }}<br>
-                  {{ form.weight(size=6) }}kg<br>
-                  {% for error in form.goal.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>
-                  {{ form.goalweight.label }}<br>
-                  {{ form.goalweight(size=6) }}kg<br>
-                  {% for error in form.goal.errors %}
-                  <span style="color: red;">[{{ error }}]</span>
-                  {% endfor %}
-                </p>
-                <p>{{ form.submit() }}</p>
+                <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
+                <tr>
+                  <td>
+                    <p>
+                    {{ form.firstname.label }}<br>
+                    {{ form.firstname(size=32) }}<br>
+                    {% for error in form.firstname.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                  </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.lastname.label }}<br>
+                      {{ form.lastname(size=32) }}<br>
+                      {% for error in form.lastname.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.username.label }}<br>
+                      {{ form.username(size=32) }}<br>
+                      {% for error in form.username.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                    {{ form.email.label }}<br>
+                    {{ form.email() }}<br>
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                  </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                  <p>
+                    {{ form.password.label }}<br>
+                    {{ form.password(size=32) }}<br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                  </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.password2.label }}<br>
+                      {{ form.password2(size=32) }}<br>
+                      {% for error in form.password2.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.goal.label }}<br>
+                      {{ form.goal(size=200) }}<br>
+                      {% for error in form.goal.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                  <td>
+                    <p></p>
+                      {% for subfield in form.fitness %}
+                       {{ subfield }} {{ subfield.label }}  
+                      {% endfor %}
+                    </p>
+                </td>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.weight.label }}<br>
+                      {{ form.weight(size=6) }} kg<br>
+                      {% for error in form.goal.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>
+                      {{ form.goalweight.label }}<br>
+                      {{ form.goalweight(size=6) }} kg<br>
+                      {% for error in form.goal.errors %}
+                      <span style="color: red;">[{{ error }}]</span>
+                      {% endfor %}
+                    </p>
+                  </td>
+                </tr>
+              </table>
+              <p>{{ form.submit(class="w3-btn w3-staatliches w3-theme2") }}</p>
             </form>
             <br>
         </div>
