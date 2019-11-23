@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     goal = TextAreaField('Your Fitness Goal', validators=[DataRequired(), length(max=200)])
-    fitness = RadioField('Fitness Level', choices=[('Low','Low'),('Medium','Medium'),('High','High')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
+    fitness = RadioField('Fitness Level', choices=[('Beginner','Beginner'),('Intermediate','Intermediate'),('Advanced','Advanced')], coerce=str)#choices=['Low', 'Medium', 'High'], coerce=str)
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     goalweight = DecimalField('Goal Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     submit = SubmitField('Register')

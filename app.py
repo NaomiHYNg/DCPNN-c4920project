@@ -1,6 +1,5 @@
 import json
 from pymongo import MongoClient
-from bson.json_util import dumps
 # import requests
 from flask import Flask
 from flask import request, jsonify
@@ -8,7 +7,8 @@ from flask_restplus import Resource, Api
 from flask_restplus import fields
 from flask_restplus import inputs
 from flask_restplus import reqparse
-
+from flask_login import LoginManager
+from werkzeug.security import generate_password_hash, check_password_hash
 
 import re
 import random
@@ -18,11 +18,15 @@ from database import DB
 app = Flask(__name__)
 api = Api(app)
 DB.init()
+login = LoginManager()  # exported into models.py and
+login.init_app(app)
+login.login_view = 'login'
 
 # Fitness levels in integer form
 BEGINNER = 1
 INTEMEDIATE = 2
 ADVANCED = 3
+
 
 def intersection(lst1, lst2):
     output_list = []
@@ -40,21 +44,23 @@ def genMuscleListFromComp(output_id_list, compound_id_list, muscle_checklist):
                 for k in j['inter_list']:
                     muscle_checklist[k] = True
 
-    #print(muscle_checklist)
     return muscle_checklist
+
 
 def genMuscleListFromSing(muscle, muscle_checklist):
     muscle_checklist[muscle] = True
     return muscle_checklist
 
+
 def checkMissingMuscle(muscle_checklist):
     check = True
     for key, value in muscle_checklist.items():
-        #print(key)
+        # print(key)
         if value == False:
-         #   print("is False")
+            #   print("is False")
             check = False
     return check
+
 
 def convertFitnessLevel(str_level):
     int_level = 0
@@ -67,12 +73,14 @@ def convertFitnessLevel(str_level):
 
     return int_level
 
+
 # Setup parser
 parser = reqparse.RequestParser()
 parser.add_argument('energy', type=int, required=True)
 parser.add_argument('muscle', action='split')
 parser.add_argument('equipment', action='split')
 parser.add_argument('level', required=True)
+
 
 # GET http://127.0.0.1:5001/exercises?energy=3
 
@@ -95,7 +103,7 @@ class AllCollections(Resource):
 
         print("GENERATING EXERCISES BASED ON:")
         print("- ENERGY LEVEL: {}".format(energy))
-        print("- FITNESS LEVEL: {}". format(usr_fitness_level))
+        print("- FITNESS LEVEL: {}".format(usr_fitness_level))
         print("- MUSCLE LIST: {}".format(usr_muscle_list))
         print("- EQUIPMENT LIST: {}".format(equip_usr_list))
 
@@ -107,7 +115,7 @@ class AllCollections(Resource):
 
             single_id_dict = {}  # Each muscle is a key of the dictionary
             compound_id_list = []  # List of dictionaries {id: len(intersection)}
-            muscle_checklist = dict.fromkeys(usr_muscle_list, False) # Create muscle checklist
+            muscle_checklist = dict.fromkeys(usr_muscle_list, False)  # Create muscle checklist
 
             # For each exercise, find the intersection between the user's muscle input list and the muscle list in the exercise
             for record in collection:
@@ -116,8 +124,12 @@ class AllCollections(Resource):
                 exercise_id = record['id']
                 level = convertFitnessLevel(record['level'])
 
-                # Check that the exercise is 
+                # Check that the exercise is
                 if (level > usr_fitness_level):
+                    continue
+
+                # Check if the primary muscle in the exercise is in the user's muscle selection
+                if (muscle_list[0] not in usr_muscle_list):
                     continue
 
                 inter_list = intersection(usr_muscle_list, muscle_list)
@@ -134,7 +146,8 @@ class AllCollections(Resource):
 
                     # If the exercise has more than one matching muscle
                     if len(inter_list) > 1:
-                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list, "level": level}
+                        temp_dict = {"id": exercise_id, "intersection_len": len(inter_list), "inter_list": inter_list,
+                                     "level": level}
                         compound_id_list.append(temp_dict)
 
             # Prioritise exercises that have more intersections and have the same fitness level as user's selected level
@@ -166,7 +179,7 @@ class AllCollections(Resource):
                             temp_list_a.append(sl)
                     single_id_dict[key] = temp_list_a
 
-            print("GENERATED EXERCISE LISTS ARE:")            
+            print("GENERATED EXERCISE LISTS ARE:")
             print("COMPOUND LIST")
             print(compound_id_list)
             print("SINGLE LIST")
@@ -184,7 +197,7 @@ class AllCollections(Resource):
                 genMuscleListFromComp(output_id_list, compound_id_list, muscle_checklist)
 
                 print("Muscle checklist")
-                print(muscle_checklist)                
+                print(muscle_checklist)
 
                 # Choose remaining exercises from the dictionary of single exercises
 
@@ -194,7 +207,7 @@ class AllCollections(Resource):
                 # Count the number of exercises in the single list
                 for key, value in single_id_dict.items():
                     total_single = total_single + len(value)
-                
+
                 # Count the number of exercises in both single and compound list
                 total = total + total_single
 
@@ -346,7 +359,6 @@ class AllCollections(Resource):
                     output_list.append(output_dict)
 
             else:
-
                 tricep_id_list = []
                 quad_id_list = []
                 ham_id_list = []
@@ -398,7 +410,7 @@ class AllCollections(Resource):
                             "description": description,
                             "video": video,
                             "muscle": muscle,
-                            "level": level, 
+                            "level": level,
                             "equipment": equipment
                         }
                         output_list.append(output_dict)
@@ -407,40 +419,21 @@ class AllCollections(Resource):
 
                 print("OUTPUT ID LIST")
                 print(output_id_list)
-        
+
         return output_list, 200
-
-
-@api.route('/exercises/<int:exercise_id>')
-class ExerciseCollection(Resource):
-    def get(self, exercise_id):
-        collection = DB.find_one("exercises", {"id": exercise_id})
-
-        if not collection:
-            api.abort(404, "Collection id {} not found".format(exercise_id))
-
-        exercise = collection['exercise name']
-        muscle = collection['muscle']
-        equipment = collection['equipment']
-        video = collection['video']
-        description = collection['description']
-
-        output = {"id": exercise_id, "exercise": exercise, "muscle": muscle, "equipment": equipment, "video": video,
-                  "description": description}
-
-        return output, 200
 
 
 @api.route('/users/<string:username>/workouts/<int:workout_id>')
 class OneWorkoutPerUser(Resource):
+
     def get(self, username, workout_id):
-        output_list = []        
+        output_list = []
         collection = DB.find_one("workouts", {"workout_id": workout_id, "username": username})
 
         # Abort if collection not found
         if not collection:
             api.abort(404, "There are no collections in the database")
-        
+
         output_dict = {
             "workout_id": collection['workout_id'],
             "username": username,
@@ -463,11 +456,12 @@ class OneWorkoutPerUser(Resource):
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        new_entry = {"workout_id": workout_id, "username": username, "workout_name": payload['workout_name'], "workout": payload['workout']}   
-        
-        DB.update("workouts", {"workout_id": workout_id}, new_entry)   
+        new_entry = {"workout_id": workout_id, "username": username, "workout_name": payload['workout_name'],
+                     "workout": payload['workout']}
 
-        return new_entry, 200 
+        DB.update("workouts", {"workout_id": workout_id}, new_entry)
+
+        return new_entry, 200
 
     def delete(self, username, workout_id):
 
@@ -477,14 +471,15 @@ class OneWorkoutPerUser(Resource):
         if not collection:
             api.abort(404, "There are no collections in the database")
 
-        DB.delete_one("workouts",{"workout_id": workout_id})
+        DB.delete_one("workouts", {"workout_id": workout_id})
 
         return {}, 200
 
+
 @api.route('/users/<string:username>/workouts')
 class WorkoutsPerUser(Resource):
-# post.request("http://127.0.0.1:5001/users/<int:workout_id>/workouts")
-# create new entry in db when user is initially created
+    # post.request("http://127.0.0.1:5001/users/<int:workout_id>/workouts")
+    # create new entry in db when user is initially created
 
     def post(self, username):
 
@@ -497,28 +492,117 @@ class WorkoutsPerUser(Resource):
         exists = 0
         exist_id = 0
         for record in collection:
-            entry_id = record['workout_id']            
+            entry_id = record['workout_id']
             if entry_id > max_id:
                 max_id = entry_id
 
         max_id = max_id + 1
 
-        new_entry = {"workout_id": max_id, "username":username, "workout_name": payload['workout_name'], "workout": payload['workout']}
+        new_entry = {"workout_id": max_id, "username": username, "workout_name": payload['workout_name'],
+                     "workout": payload['workout']}
 
         DB.insert("workouts", new_entry)
 
         return new_entry, 200
-@api.route('/users')
-class AllUsers(Resource):
-    def get(self):
-        collection = DB.find_all("users")
+
+
+    def get(self, username):
+        output_list = []
+        collection = DB.find_all("workouts")
+
+        # Abort if collection not found
         if not collection:
-            api.abort(404, "Collection not found")
-        records = []
-        for x in collection:
-            x.pop("_id")
-            records.append({i : str(x[i]) for i in x})
-        return records, 200
-    
+            api.abort(404, "There are no collections in the database")
+
+        workouts = []
+
+        for record in collection:
+            record['_id'] = str(record['_id'])
+
+            if str(record['username']) == username:
+                workouts.append(record)
+
+        return workouts, 200
+
+@api.route('/users/<string:username>/programs/<int:program_id>')
+class OneProgramPerUser(Resource):
+
+    def put(self, username, program_id):
+
+        # Consists of a dictionary {"workout_id": int, "username", "workout_name:" "", "workout": []}
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_one("programs", {"program_id": program_id, "username": username})
+        print(collection)
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        new_entry = {"program_id": program_id, "username": username, "program_name": payload['program_name'],
+                     "program": payload['program']}
+
+        DB.update("programs", {"program_id": program_id}, new_entry)
+
+        return new_entry, 200
+
+    def delete(self, username, program_id):
+
+        collection = DB.find_one("programs", {"program_id": program_id, "username": username})
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        DB.delete_one("programs", {"program_id": program_id})
+
+        return {}, 200
+
+@api.route('/users/<string:username>/programs')
+class ProgramsPerUser(Resource):
+
+    def post(self, username):
+
+        payload = request.json
+        payload = json.loads(payload)
+
+        collection = DB.find_all("programs")
+        max_id = 0
+        exists = 0
+        exist_id = 0
+        for record in collection:
+            entry_id = record['program_id']
+            if entry_id > max_id:
+                max_id = entry_id
+
+        max_id = max_id + 1
+
+        new_entry = {"program_id": max_id, "username": username, "program_name": payload['program_name'],
+                     "program": payload['program']}
+
+        DB.insert("programs", new_entry)
+
+        return new_entry, 200
+
+
+    def get(self, username):
+        output_list = []
+        collection = DB.find_all("programs")
+
+        # Abort if collection not found
+        if not collection:
+            api.abort(404, "There are no collections in the database")
+
+        programs = []
+
+        for record in collection:
+            record['_id'] = str(record['_id'])
+
+            if str(record['username']) == username:
+                programs.append(record)
+
+        return programs, 200
+
 if __name__ == '__main__':
     app.run(port=5001, debug=True)
