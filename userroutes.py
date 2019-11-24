@@ -175,3 +175,14 @@ def editfitness():
 
     return render_template('editfitness.html', form=form)
 
+@app.route('/editgoal', methods=['GET', 'POST'])
+@login_required
+def editgoal():
+    print(current_user.__dict__)
+    form = EditGoal()
+    if form.validate_on_submit():
+        current_user.update_goal(form.goal.data)
+        flash('Your changes have been saved.')
+        return redirect(request.args.get("next") or url_for('home', username=current_user.username))
+
+    return render_template('editgoal.html', form=form)

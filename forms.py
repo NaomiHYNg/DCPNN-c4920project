@@ -46,6 +46,10 @@ class EditGoalWeight(FlaskForm):
     goalweight = DecimalField('Goal Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
     submit = SubmitField('Submit')
 
+class EditGoal(FlaskForm):
+    goal = TextAreaField('Your Fitness Goal', validators=[DataRequired(), length(max=200)])
+    submit = SubmitField('Submit')
+
 class EditFitness(FlaskForm):
     fitness = RadioField('Fitness Level', choices=[('Beginner','Beginner'),('Intermediate','Intermediate'),('Advanced','Advanced')], coerce=str)
     submit = SubmitField('Submit')

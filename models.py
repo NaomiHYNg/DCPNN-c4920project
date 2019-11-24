@@ -55,6 +55,10 @@ class User(UserMixin):
         self.goalweight = goalweight
         DB.update("users", {"username": self.username}, {"$set" : {"goalweight" : Decimal128(self.goalweight)}})
 
+    def update_goal(self, goal):
+        self.goal = goal
+        DB.update("users", {"username": self.username}, {"$set" : {"goal" : self.goal}})
+
     def update_fitness(self, fitness):
         self.fitness = fitness
         DB.update("users", {"username": self.username}, {"$set" : {"fitness" : self.fitness}})
