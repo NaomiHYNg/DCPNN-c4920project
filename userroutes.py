@@ -51,32 +51,34 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        # create dictionary to pass to User constructor
-        info = {
-            "firstname": form.firstname.data, 
-            "lastname": form.lastname.data, 
-            "username": form.username.data, 
-            "email": form.email.data, 
-            "fitness" : form.fitness.data,
-            "weight" : form.weight.data,
-            "goalweight" : form.goalweight.data
-            }
-        user = User(info)
-        # hash is generated and stored
-        user.set_password(form.password.data)
-        user.set_goal(form.goal.data)
-        user.email_confirmation()
-        # add user to db
-        user.add()
-        send_confirmation_email(user.email)
-        #flash('Please check your email to confirm your email address.')
-        # user can now log in
-        return redirect(url_for('login'))
-        # or log user in and go to home
-        #login_user(user)
-        #return redirect(request.args.get("next") or url_for("home"))
-        
+    #if form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
+        if form.validate_email(form.email) and form.validate_username(form.username):
+            # create dictionary to pass to User constructor
+            info = {
+                "firstname": form.firstname.data, 
+                "lastname": form.lastname.data, 
+                "username": form.username.data, 
+                "email": form.email.data, 
+                "fitness" : form.fitness.data,
+                "weight" : form.weight.data,
+                "goalweight" : form.goalweight.data
+                }
+            user = User(info)
+            # hash is generated and stored
+            user.set_password(form.password.data)
+            user.set_goal(form.goal.data)
+            user.email_confirmation()
+            # add user to db
+            user.add()
+            send_confirmation_email(user.email)
+            #flash('Please check your email to confirm your email address.')
+            # user can now log in
+            return redirect(url_for('login'))
+            # or log user in and go to home
+            #login_user(user)
+            #return redirect(request.args.get("next") or url_for("home"))
+            
     return render_template('register.html', title='Register', form=form)
 
 @app.route('/logout')
