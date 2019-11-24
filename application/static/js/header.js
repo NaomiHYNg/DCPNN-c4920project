@@ -94,3 +94,21 @@
       }
       document.getElementById(workoutName).style.display = "block";
     }
+
+    function openVideo(id, video_id) {
+        var i;
+        var x = document.getElementsByClassName("workout_video");
+        var y = document.getElementsByClassName("workout_video_content");
+
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+
+        for (i = 0; i < y.length; i++) {
+          y[i].pause();
+          y[i].load();
+        }
+
+        document.getElementById(id).style.display = "block";
+        document.getElementById(video_id).play();
+    }

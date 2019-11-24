@@ -135,7 +135,7 @@ def editweight():
     if form.validate_on_submit():
         current_user.update_weight(form.weight.data)
         flash('Your changes have been saved.')
-        return redirect(request.args.get("next") or url_for('user', username=current_user.username))
+        return redirect(request.args.get("next") or url_for('home', username=current_user.username))
 
     return render_template('editweight.html', form=form)
 
@@ -147,10 +147,33 @@ def editpassword():
         if User.check_password(current_user.password, form.old_password.data):
             current_user.change_password(form.password.data)
             flash('Your changes have been saved.')
-            return redirect(request.args.get("next") or url_for('user', username=current_user.username))
+            return redirect(request.args.get("next") or url_for('home', username=current_user.username))
         else:
             flash("Invalid password")
     #return user.__dict__
     return render_template('editpassword.html', form=form)
-    
+
+@app.route('/editgoalweight', methods=['GET', 'POST'])
+@login_required
+def editgoalweight():
+    print(current_user.__dict__)
+    form = EditGoalWeight()
+    if form.validate_on_submit():
+        current_user.update_goal_weight(form.goalweight.data)
+        flash('Your changes have been saved.')
+        return redirect(request.args.get("next") or url_for('home', username=current_user.username))
+
+    return render_template('editgoalweight.html', form=form)
+
+@app.route('/editfitness', methods=['GET', 'POST'])
+@login_required
+def editfitness():
+    print(current_user.__dict__)
+    form = EditFitness()
+    if form.validate_on_submit():
+        current_user.update_fitness(form.fitness.data)
+        flash('Your changes have been saved.')
+        return redirect(request.args.get("next") or url_for('home', username=current_user.username))
+
+    return render_template('editfitness.html', form=form)
 
