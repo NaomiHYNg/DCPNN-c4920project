@@ -264,10 +264,13 @@ def generate():
 
 @app.route('/complete', methods=['GET', 'POST'])
 def complete():
+
+    programs = get_programs()
+    workouts = get_workouts()
+
     if request.method == 'POST':
-        print(request.form.data)
-        return render_template('complete.html')
-    return render_template('complete.html')
+        return render_template('complete.html', programs=programs, workouts=workouts)
+    return render_template('complete.html', programs=programs, workouts=workouts)
 
 @app.context_processor
 def utility_functions():

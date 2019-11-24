@@ -26,32 +26,32 @@
             </h1>
         </header>
 
-        <header class="w3-staatliches w3-container w3-theme w3-center w3-text-theme" style="position:absolute;top:20px;width:50%;left:0;right:0;margin: 0 auto;font-size:30px; text-align:center">
+        <header class="w3-staatliches w3-container w3-theme w3-center w3-text-theme" style="position:absolute;top:20px;width:auto;max-width:50%;left:0;right:0;margin: 0 auto;font-size:2vw; text-align:center">
                 <a href="/logout" style="text-decoration:none">
-                    <div class="w3-container w3-button w3-red" style="width:200px;display:inline-block">
+                    <div class="w3-container w3-button w3-red" style="width:auto;display:inline-block">
                         Sign out
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_profile').style.display='block'">
-                    <div class="w3-container w3-button w3-green" style="width:200px;display:inline-block">
+                    <div class="w3-container w3-button w3-green " style="width:auto;display:inline-block">
                         Edit Profile
                         <br>
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
-                    <div class="w3-container w3-button w3-blue" style="width:200px;display:inline-block">
+                    <div class="w3-container w3-button w3-blue" style="width:auto;display:inline-block">
                         My Workouts
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_program').style.display='block'">
-                    <div class="w3-container w3-button w3-purple" style="width:200px;display:inline-block">
+                    <div class="w3-container w3-button w3-purple" style="width:auto;display:inline-block">
                         My Programs
                     </div>
                 </a>
         </header>
 
         <div id="my_profile" class="w3-modal">
-            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:auto;">
                 <div class="w3-container w3-center">
                     <br>
                     <span>Edit Profile</span>
@@ -75,12 +75,20 @@
                         </div>
                     </a>
                     <br><br>
+                    <a href="/editgoal" style="text-decoration:none">
+                        <div class="w3-container w3-button " style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background:orchid;color:black;width:300px;display:inline-block">
+                            Set a New Goal
+                        </div>
+                    </a>
+                    <br><br>
                     <a href="/editpassword" style="text-decoration:none">
                         <div class="w3-container w3-button w3-yellow" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);width:300px;display:inline-block">
                             Change Password
                         </div>
                     </a>
                 </div>
+                <br>
+                <br>
                 <span onclick="document.getElementById('my_profile').style.display='none'" class="w3-button w3-display-topright">&times;</span>
             </div>
         </div>
@@ -203,7 +211,7 @@
                                             {% endif %}
 
                                             <div class="w3-staalitches" style="margin:20px"><span style="color:yellow">{{ workout['workout_name'] }}</span></div>
-                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="">Begin Workout</button>
+                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
                                                 <br><br>
                                                 <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;margin-left:20px">
                                                     {% for exercise in workout['workout'] %}
@@ -415,7 +423,7 @@
               <br>
               <div class="w3-container w3-center" style="position:absolute;width:24%;height:60%;overflow-y:auto">
                   {% for workout in workouts %}
-                  <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedWorkout({{ workout['workout_id'] + 12345 }})" style="text-align:center">
+                  <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedWorkout({{ workout['workout_id'] + 12345 }})" style="min-width:65%;text-align:center">
                   <br>
                   <br>
                   {% endfor %}
