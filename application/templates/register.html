@@ -100,6 +100,15 @@
                   <span style="color: red;">[{{ error }}]</span>
                   {% endfor %}
                 </p>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <p>
+                    {% for message in messages %}
+                        <p class="error"><font color="red">{{ message }}</font></p>
+                    {% endfor %}
+                    </p>
+                    {% endif %}
+                {% endwith %}
                 <p>{{ form.submit() }}</p>
             </form>
             <br>
