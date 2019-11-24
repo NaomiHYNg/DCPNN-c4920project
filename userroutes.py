@@ -135,7 +135,7 @@ def editweight():
     form = EditWeight()
     if form.validate_on_submit():
         current_user.update_weight(form.weight.data)
-        #flash('Your changes have been saved.')
+        flash('Your changes have been saved.')
         return redirect(request.args.get("next") or url_for('home', username=current_user.username))
     return render_template('editweight.html', form=form)
 
@@ -146,7 +146,7 @@ def editpassword():
     if form.validate_on_submit():
         if User.check_password(current_user.password, form.old_password.data):
             current_user.change_password(form.password.data)
-            #flash('Your changes have been saved.')
+            flash('Your changes have been saved.')
             return redirect(request.args.get("next") or url_for('home', username=current_user.username))
         else:
             flash("Invalid password")
@@ -184,7 +184,7 @@ def editgoal():
     form = EditGoal()
     if form.validate_on_submit():
         current_user.update_goal(form.goal.data)
-        flash('Your changes have been saved.')
+        #flash('Your changes have been saved.')
         return redirect(request.args.get("next") or url_for('home', username=current_user.username))
 
     return render_template('editgoal.html', form=form)
