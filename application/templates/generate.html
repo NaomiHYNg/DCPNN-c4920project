@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html style="height:100%;" lang="en">
 <head>
     <title>Fitness Tailor</title>
     <link rel="stylesheet" href="/static/css/w3.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
-<body style="background-color:#ff9e0f" onload="document.generate.submit()">
+<body style="height:100%;background: #ff9e0f;background: -webkit-linear-gradient(#ffb84d, #ff9e0f);background: -o-linear-gradient(#ffb84d, #ff9e0f);background: -moz-linear-gradient(#ffb84d, #ff9e0f);background: linear-gradient(#ffb84d, #ff9e0f);" onload="document.generate.submit()">
 
     {% include 'snips/header.html' %}
     {% include 'snips/header2.html' %}
@@ -18,6 +18,7 @@
                 <input type="hidden" name="energy" value={{ energy }}>
                 <input type="hidden" name="muscles" value="{{ muscles }}">
                 <input type="hidden" name="equipments" value="{{ equipments }}">
+                <input type="hidden" name="fitnessLevel" value="{{ level }}">
             </form>
         </div>
     </div>
@@ -26,6 +27,7 @@
         <p style="font-size:50px">GENERATING</p>
         <p><i class="fa fa-spinner w3-spin" style="font-size:300px"></i></p>
         <p style="font-size:25px">Do not close the browser.</p>
+        <p style="font-size:25px">This may take a while.</p>
     </div>
 
 </body>

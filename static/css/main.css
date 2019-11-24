@@ -1,7 +1,0 @@
-.delete{
-    color: red;
-    display: none;
-}
-.title:hover .delete {
-   display: inline
-}
