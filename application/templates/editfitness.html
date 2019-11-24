@@ -20,9 +20,12 @@
                 {{ form.csrf_token }}
                 {{ form.hidden_tag() }}
                 <table class="w3-table w3-center" style="width:10%;margin: 0 auto;text-align:center">
-                    <tr>
-                        <td>{{ form.fitness() }}</td>
-                    </tr>
+                  {% for subfield in form.fitness %}
+                  <tr>
+                      <td>{{ subfield }}</td>
+                      <td>{{ subfield.label }}</td>
+                  </tr>
+                  {% endfor %}
                 </table>
                 <br>
                 {% if error %}
