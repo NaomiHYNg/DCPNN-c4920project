@@ -4,6 +4,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, op
 from models import User
 from database import DB
 import re
+from flask import flash
 
 class Login(FlaskForm):
     username = StringField('Username', validators=[DataRequired()]) # cant submit empty field
@@ -28,14 +29,14 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, username):
         user = DB.find_one("users", {"username": str(username)})
         if user is not None:
-            raise ValidationError('Please use a different username.')
+            flash('Please use a different username.')
         #if(re.search('^[\W]+$', str(username))):
             #raise ValidationError('Invalid characters. Please use alphanumeric')
 
     def validate_email(self, email):
         user = DB.find_one("users", {"email": str(email)})
         if user is not None:
-            raise ValidationError('Please use a different email address.')
+            flash('Please use a different email address.')
 
 class EditWeight(FlaskForm):
     weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])

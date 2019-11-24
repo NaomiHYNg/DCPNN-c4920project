@@ -83,7 +83,7 @@ def register():
             #login_user(user)
             #return redirect(request.args.get("next") or url_for("home"))
         else:
-            return render_template('register.html', title='Register', form=form, errors=form.errors)
+            return render_template('register.html', title='Register', form=form)
             
             
     return render_template('register.html', title='Register', form=form)
