@@ -10,6 +10,15 @@
 html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
 </style>
 <body class="w3-light-grey">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+       <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+       </ul>
+    {% endif %}
+ {% endwith %}
 
 <!-- Page Container -->
 <div class="w3-content w3-margin-top" style="max-width:1400px;">

@@ -26,35 +26,63 @@
             </h1>
         </header>
 
-        <header class="w3-staatliches w3-container w3-theme w3-center w3-text-theme" style="position:absolute;top:20px;width:50%;left:0;right:0;margin: 0 auto;font-size:30px; text-align:center">
+        <header class="w3-staatliches w3-container w3-theme w3-center w3-text-theme" style="position:absolute;top:20px;width:auto;max-width:50%;left:0;right:0;margin: 0 auto;font-size:2vw; text-align:center">
                 <a href="/logout" style="text-decoration:none">
-                    <div class="w3-container w3-button w3-red" style="display:inline-block">
+                    <div class="w3-container w3-button w3-red" style="width:auto;display:inline-block">
                         Sign out
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_profile').style.display='block'">
-                    <div class="w3-container w3-button w3-lime" style="display:inline-block">
+                    <div class="w3-container w3-button w3-green " style="width:auto;display:inline-block">
                         Edit Profile
+                        <br>
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_workouts').style.display='block'">
-                    <div class="w3-container w3-button w3-teal" style="display:inline-block">
+                    <div class="w3-container w3-button w3-blue" style="width:auto;display:inline-block">
                         My Workouts
                     </div>
                 </a>
                 <a href="#" style="text-decoration:none" onclick="document.getElementById('my_program').style.display='block'">
-                    <div class="w3-container w3-button w3-yellow" style="display:inline-block">
+                    <div class="w3-container w3-button w3-purple" style="width:auto;display:inline-block">
                         My Programs
                     </div>
                 </a>
         </header>
 
         <div id="my_profile" class="w3-modal">
-            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:60%">
+            <div class="w3-staatliches w3-modal-content w3-text-theme w3-theme w3-animate-top" style="font-size:30px;height:auto;">
                 <div class="w3-container w3-center">
                     <br>
-                    <span>My Profile</span>
+                    <span>Edit Profile</span>
+                    <br><br>
+                    <a href="/editweight" style="text-decoration:none">
+                        <div class="w3-container w3-button w3-orange" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);width:300px;display:inline-block">
+                            Edit Weight
+                        </div>
+                    </a>
+                    <br><br>
+                    <a href="/editgoalweight" style="text-decoration:none">
+                        <div class="w3-container w3-button" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background:lime;color:black;width:300px;display:inline-block">
+                            Edit Goal Weight
+                        </div>
+                    </a>
+                    <br>
+                    <br>
+                    <a href="/editfitness" style="text-decoration:none">
+                        <div class="w3-container w3-button " style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background:lightseagreen;color:black;width:300px;display:inline-block">
+                            Edit Fitness Level
+                        </div>
+                    </a>
+                    <br><br>
+                    <a href="/editpassword" style="text-decoration:none">
+                        <div class="w3-container w3-button w3-yellow" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);width:300px;display:inline-block">
+                            Change Password
+                        </div>
+                    </a>
                 </div>
+                <br>
+                <br>
                 <span onclick="document.getElementById('my_profile').style.display='none'" class="w3-button w3-display-topright">&times;</span>
             </div>
         </div>
@@ -150,7 +178,7 @@
                                     {% else %}
                                         <td>{{ workout['day'] }}:</td>
                                         <td>
-                                            <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedProgramWorkout({{ workout['workout_id'] + 23456 }})" style="text-align:center">
+                                            <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="openSavedProgramWorkout({{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id'] + 23456 }})" style="text-align:center">
                                         </td>
                                     {% endif %}
 
@@ -170,14 +198,14 @@
                                         {% else %}
 
                                             {% if ns.ex == 0 %}
-                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;">
+                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id'] + 23456 }}" style="border-radius:5%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);height:70%;margin:50px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;">
                                                 {% set ns.ex = ns.ex + 1 %}
                                             {% else %}
-                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + 23456 }}" style="height:70%;border-radius:10%;margin:50px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;">
+                                                <div class="savedProgramWorkout" id="{{ workout['workout_id'] + program['program_id'] *  program['program_id'] *  program['program_id'] + 23456 }}" style="border-radius:5%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);height:70%;margin:50px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;">
                                             {% endif %}
 
-                                                    <div class="w3-staalitches" style="margin:20px">{{ workout['day'] }}: <span style="color:yellow">{{ workout['workout_name'] }}</span></div>
-                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="beginWorkout({{ workout['workout_id'] }})">Begin Workout</button>
+                                            <div class="w3-staalitches" style="margin:20px"><span style="color:yellow">{{ workout['workout_name'] }}</span></div>
+                                                <button class="w3-button w3-staalitches w3-green" style="margin-left:20px;font-size:14px" onclick="">Begin Workout</button>
                                                 <br><br>
                                                 <div style="font-family:Trebuchet MS, Helvetica, sans-serif;font-size:20px;margin-left:20px">
                                                     {% for exercise in workout['workout'] %}
@@ -211,7 +239,7 @@
                     <div id="delete_programs" class="w3-modal">
                         <div class="w3-modal-content w3-text-theme w3-theme w3-animate-right w3-right" style="width:20%;height:60%">
                             <div class="w3-center"><span style="background: -webkit-linear-gradient(yellow, #ff9e0f);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-size:50px;-webkit-text-stroke: 2px black;">Delete which Program?</span></div>
-                          <div class="w3-container w3-center" style="height:80%;overflow-y:auto">
+                          <div class="w3-container w3-center" style="height:60%;overflow-y:auto">
                               <br>
                               {% for program in programs %}
                                 <input type="button" value="{{ program['program_name'] }}" class="w3-button w3-center w3-animate-opacity w3-red" onclick="deleteProgram({{ program['program_id'] }})" style="width:90%;text-align:center">
@@ -270,7 +298,7 @@
                                 <br>
                                 <br>
                                 {% for workout in workouts %}
-                                    <input type="button" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Monday', 'Monday_Value', '{{ workout['workout_name'] }}', '{{ workout['workout_id'] }}')" style="width:90%;text-align:center">
+                                    <input type="button" id="{{ workout['workout_id'] + 5000 }}" value="{{ workout['workout_name'] }}" class="w3-button w3-center w3-animate-opacity w3-theme2" onclick="addWorkout('Monday', 'Monday_Value', '{{ workout['workout_name'] }}', '{{ workout['workout_id'] }}')" style="width:90%;text-align:center">
                                     <br>
                                     <br>
                                 {% endfor %}
@@ -415,10 +443,10 @@
                     {% for workout in workouts %}
 
                         {% if ns.ex == 0 %}
-                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:10%;margin-right:20px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;height:60%;">
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:5%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-right:20px;background-color:#5e7a87;display:block;overflow:auto;position:absolute;height:60%;width:40%">
                             {% set ns.ex = ns.ex + 1 %}
                         {% else %}
-                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:10%;margin-right:20px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;height:60%;">
+                            <div class="savedWorkout" id="{{ workout['workout_id'] + 12345 }}" style="border-radius:5%;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin-right:20px;background-color:#5e7a87;display:none;overflow:auto;position:absolute;height:60%;width:40%">
                         {% endif %}
 
                                 <div class="w3-staalitches" style="margin:20px">{{ workout['workout_name'] }}</div>
@@ -433,7 +461,7 @@
                                         {% else %}
                                         <img src="/static/images/icons/muscles/{{ exercise['muscle'][0] }}.jpg" width="5%" height="5%" style="border-radius:80%">
                                         {% endif %}
-                                        {{ exercise['exercise'] }}
+                                        <span class="w3-button" onclick="openVideo('{{ exercise['id'] - 100000 }}', '{{ exercise['video'] }}')" style="text-shadow: 2px 2px 4px #000000;">{{ exercise['exercise'] }}</span>
                                         <br>
                                         <br>
 
@@ -441,6 +469,23 @@
                                 </div>
 
                             </div>
+
+                            {% for exercise in workout['workout'] %}
+
+                                <div class="w3-center workout_video w3-animate-opacity" id="{{ exercise['id'] - 100000}}" style="text-shadow: 2px 2px 4px #000000;font-size:20px;position:absolute;display:none;margin-left:43%;margin-top:1%">
+                                    {{ exercise['exercise'] }}
+                                    <br>
+                                    {% if 'youtube' in exercise['video'] %}
+                                        <iframe class="youtube_video_content" id="{{ exercise['video'] }}" width="420" height="315" src="{{ exercise['video'] }}" frameBorder="0" style="border-radius:10%;">
+                                        </iframe>
+                                    {% else %}
+                                        <video class="workout_video_content" id="{{ exercise['video'] }}" src="http://{{ exercise['video'] }}" width="420" height="315" controls style="border-radius:15%;outline:0">
+                                        </video>
+                                    {% endif %}
+
+                                </div>
+
+                            {% endfor %}
 
                     {% endfor %}
 

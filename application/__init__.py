@@ -8,18 +8,28 @@ import requests
 from flask_login import LoginManager
 from flask_login import login_required
 from flask_login import current_user, login_user, logout_user, login_required
+from flask_mail import Mail
 
 app = Flask(__name__)
 
 # config
 app.config.update(
     DEBUG = True,
-    SECRET_KEY = 'secret_xxx'
+    SECRET_KEY = 'secret_xxx',
+
+    MAIL_SERVER = 'smtp.googlemail.com',
+    MAIL_PORT = 465,
+    MAIL_USE_TLS = False,
+    MAIL_USE_SSL = True,
+    MAIL_USERNAME = 'natwai.mailservice@gmail.com',
+    MAIL_PASSWORD = 'natwai1994',
+    MAIL_DEFAULT_SENDER = 'natwai.mailservice@gmail.com'
 )
 
 # login
 login = LoginManager(app) # exported into models.py
 login.login_view = 'login'
+mail = Mail(app)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -45,6 +55,9 @@ def home():
                     for workout in program['program']:
                         if str(workout['workout_id']) == str(request.form['delete_id']):
                             programs.remove(program)
+                            query = "http://127.0.0.1:5001/users/" + current_user.username + "/programs/" + str(
+                                program['program_id'])
+                            requests.delete(query)
 
             elif request.form['action'] == "save program":
 
@@ -101,6 +114,9 @@ def home():
 
         except Exception as e:
             pass
+
+        workouts=get_workouts()
+        programs = get_programs()
 
         return render_template('home.html', programs=programs, workouts=workouts, username=request.form['username'])
 
@@ -173,7 +189,7 @@ def summary():
 
                 print(saved_workout['workout'])
 
-                return render_template('summary.html', programs=programs, energy_value=6, level="Intermediate", energy="Medium", workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
+                return render_template('summary.html', programs=programs, energy_value=6, level=current_user.fitness, energy=saved_workout['workout_name'], workouts=workouts, exercise_list=saved_workout['workout'], username=request.form['username'])
         except Exception as e:
             pass
 
@@ -215,6 +231,8 @@ def summary():
             elif request.form['energy'] == '9':
                 energy = "HIGH"
 
+            energy = "Energy Level: " + energy
+
             return render_template('summary.html', programs=programs, workouts=workouts, level=level, energy=energy, exercise_list=content, raw_exercise_list=response.content, energy_value=request.form['energy'], username=request.form['username'])
 
         except Exception as e:
@@ -246,7 +264,9 @@ def generate():
 
 @app.route('/complete', methods=['GET', 'POST'])
 def complete():
-
+    if request.method == 'POST':
+        print(request.form.data)
+        return render_template('complete.html')
     return render_template('complete.html')
 
 @app.context_processor

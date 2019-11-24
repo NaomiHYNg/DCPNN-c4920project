@@ -25,6 +25,7 @@
 
     function beginWorkout(id) {
 
+
         var input = document.createElement("input");
 
         input.setAttribute("type", "hidden");
@@ -43,10 +44,13 @@
 
         if (workout_name == "Rest") {
             document.getElementById(day_id).innerHTML = "Rest";
+            document.getElementById(day_id).className = "Rest";
             document.getElementById(input_id).value = "Rest"
         } else {
             document.getElementById(day_id).innerHTML = workout_name;
+            document.getElementById(day_id).className = workout;
             document.getElementById(input_id).value = workout;
+
         }
 
         document.getElementById("Add_Monday").style.display = "none";
@@ -89,4 +93,22 @@
         x[i].style.display = "none";
       }
       document.getElementById(workoutName).style.display = "block";
+    }
+
+    function openVideo(id, video_id) {
+        var i;
+        var x = document.getElementsByClassName("workout_video");
+        var y = document.getElementsByClassName("workout_video_content");
+
+        for (i = 0; i < x.length; i++) {
+          x[i].style.display = "none";
+        }
+
+        for (i = 0; i < y.length; i++) {
+          y[i].pause();
+          y[i].load();
+        }
+
+        document.getElementById(id).style.display = "block";
+        document.getElementById(video_id).play();
     }

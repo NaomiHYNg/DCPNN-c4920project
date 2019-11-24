@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DecimalField, RadioField, IntegerField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DecimalField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, optional, length
 from models import User
 from database import DB
@@ -37,9 +37,25 @@ class RegistrationForm(FlaskForm):
         user = DB.find_one("users", {"email": str(email)})
         if user is not None:
             raise ValidationError('Please use a different email address.')
-    
-class submitWorkout(FlaskForm):
-    id = IntegerField('First name', validators=[DataRequired()])
-    username = StringField('Username', validators=[DataRequired()])
+
+class EditWeight(FlaskForm):
+    weight = DecimalField('Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class EditGoalWeight(FlaskForm):
+    goalweight = DecimalField('Goal Weight', places=2, rounding=None, use_locale=False, number_format=None, validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class EditFitness(FlaskForm):
+    fitness = RadioField('Fitness Level', choices=[('Beginner','Beginner'),('Intermediate','Intermediate'),('Advanced','Advanced')], coerce=str)
+    submit = SubmitField('Submit')
+
+class EditPassword(FlaskForm):
+    old_password = PasswordField('Old Password', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    password2 = PasswordField(
+        'Confirm Password', validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Submit')
+
 
 
