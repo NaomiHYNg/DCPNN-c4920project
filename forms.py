@@ -29,9 +29,8 @@ class RegistrationForm(FlaskForm):
         user = DB.find_one("users", {"username": str(username)})
         if user is not None:
             raise ValidationError('Please use a different username.')
-        
-        if(re.search('^[\W]+$', str(username))):
-            raise ValidationError('Invalid characters. Please use alphanumeric')
+        #if(re.search('^[\W]+$', str(username))):
+            #raise ValidationError('Invalid characters. Please use alphanumeric')
 
     def validate_email(self, email):
         user = DB.find_one("users", {"email": str(email)})

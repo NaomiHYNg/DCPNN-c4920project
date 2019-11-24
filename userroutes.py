@@ -51,9 +51,13 @@ def register():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
     form = RegistrationForm()
-    #if form.validate_on_submit():
-    if request.method == 'POST' and form.validate():
-        if form.validate_email(form.email) and form.validate_username(form.username):
+    if form.validate_on_submit():
+    #if request.method == 'POST' and form.validate():
+        print("validated")
+        print(form.validate_email(form.email.data))
+        if not form.validate_email(form.email.data) or not form.validate_username(form.username.data):
+            print(form.email.data)
+
             # create dictionary to pass to User constructor
             info = {
                 "firstname": form.firstname.data, 
@@ -78,6 +82,9 @@ def register():
             # or log user in and go to home
             #login_user(user)
             #return redirect(request.args.get("next") or url_for("home"))
+        else:
+            return render_template('register.html', title='Register', form=form, errors=form.errors)
+            
             
     return render_template('register.html', title='Register', form=form)
 
