@@ -33,8 +33,10 @@ def login():
     form = Login()
     if form.validate_on_submit():
         user = DB.find_one("users", {"username": form.username.data})
-        user.pop('_id', None) # dont need this when creating User object
-        if user and not user['email_confirmed']:
+        if not user:
+            flash("Invalid username")
+        elif user and not user['email_confirmed']:
+            user.pop('_id', None) # dont need this when creating User object
             flash("Please confirm your email")
             return redirect(url_for('login'))
         elif user and User.check_password(user['password'], form.password.data):
