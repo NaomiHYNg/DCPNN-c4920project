@@ -29,7 +29,7 @@ ADVANCED = 3
 
 # Energy levels in integer form
 LOW = 3
-MEDIUM = 6
+MODERATE = 6
 HIGH = 9
 
 
@@ -99,7 +99,7 @@ class AllCollections(Resource):
         energy = args['energy']  # returns an integer
 
         if not energy:
-        	energy = LOW
+        	energy = MODERATE
 
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
