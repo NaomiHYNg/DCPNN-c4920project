@@ -55,6 +55,9 @@ def home():
                     for workout in program['program']:
                         if str(workout['workout_id']) == str(request.form['delete_id']):
                             programs.remove(program)
+                            query = "http://127.0.0.1:5001/users/" + current_user.username + "/programs/" + str(
+                                program['program_id'])
+                            requests.delete(query)
 
             elif request.form['action'] == "save program":
 
@@ -111,6 +114,9 @@ def home():
 
         except Exception as e:
             pass
+
+        workouts=get_workouts()
+        programs = get_programs()
 
         return render_template('home.html', programs=programs, workouts=workouts, username=request.form['username'])
 

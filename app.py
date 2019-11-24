@@ -27,6 +27,11 @@ BEGINNER = 1
 INTEMEDIATE = 2
 ADVANCED = 3
 
+# Energy levels in integer form
+LOW = 3
+MODERATE = 6
+HIGH = 9
+
 
 def intersection(lst1, lst2):
     output_list = []
@@ -76,10 +81,10 @@ def convertFitnessLevel(str_level):
 
 # Setup parser
 parser = reqparse.RequestParser()
-parser.add_argument('energy', type=int, required=True)
+parser.add_argument('energy', type=int)
 parser.add_argument('muscle', action='split')
 parser.add_argument('equipment', action='split')
-parser.add_argument('level', required=True)
+parser.add_argument('level')
 
 
 # GET http://127.0.0.1:5001/exercises?energy=3
@@ -92,9 +97,17 @@ class AllCollections(Resource):
         # Obtain energy entry
         args = parser.parse_args()
         energy = args['energy']  # returns an integer
+
+        if not energy:
+        	energy = MODERATE
+
         usr_muscle_list = args['muscle']  # returns a list of muscles
         equip_usr_list = args['equipment']
         usr_fitness_level = convertFitnessLevel(args['level'])
+
+        if not usr_fitness_level:
+        	usr_fitness_level = BEGINNER
+
         collection = DB.find_all("exercises")
 
         # Abort if collection not found
