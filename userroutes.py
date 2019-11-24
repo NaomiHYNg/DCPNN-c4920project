@@ -70,7 +70,7 @@ def register():
         # add user to db
         user.add()
         send_confirmation_email(user.email)
-        flash('Please check your email to confirm your email address.')
+        #flash('Please check your email to confirm your email address.')
         # user can now log in
         return redirect(url_for('login'))
         # or log user in and go to home
@@ -99,7 +99,7 @@ def confirm_email(token):
     usr.pop("_id")
     user = User(usr)
     if user.email_confirmed:
-        flash('Account already confirmed. Please login.', 'info')
+        #flash('Account already confirmed. Please login.', 'info')
         return redirect(url_for('login'))
     else:
         #user.email_confirmed = True
@@ -107,7 +107,7 @@ def confirm_email(token):
         nowtime = datetime.datetime.now()
         user.confirm_email(datetime.datetime.now())
 
-        flash('Thank you for confirming your email address!')
+        #flash('Thank you for confirming your email address!')
         return redirect(url_for('login'))
 
  
@@ -130,13 +130,11 @@ def user(username):
 @app.route('/editweight', methods=['GET', 'POST'])
 @login_required
 def editweight():
-    print(current_user.__dict__)
     form = EditWeight()
     if form.validate_on_submit():
         current_user.update_weight(form.weight.data)
-        flash('Your changes have been saved.')
-        return redirect(request.args.get("next") or url_for('user', username=current_user.username))
-
+        #flash('Your changes have been saved.')
+        return redirect(request.args.get("next") or url_for('home', username=current_user.username))
     return render_template('editweight.html', form=form)
 
 @app.route('/editpassword', methods=['GET', 'POST'])
@@ -146,8 +144,8 @@ def editpassword():
     if form.validate_on_submit():
         if User.check_password(current_user.password, form.old_password.data):
             current_user.change_password(form.password.data)
-            flash('Your changes have been saved.')
-            return redirect(request.args.get("next") or url_for('user', username=current_user.username))
+            #flash('Your changes have been saved.')
+            return redirect(request.args.get("next") or url_for('home', username=current_user.username))
         else:
             flash("Invalid password")
     #return user.__dict__

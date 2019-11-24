@@ -258,7 +258,9 @@ def generate():
 
 @app.route('/complete', methods=['GET', 'POST'])
 def complete():
-
+    if request.method == 'POST':
+        print(request.form.data)
+        return render_template('complete.html')
     return render_template('complete.html')
 
 @app.context_processor
